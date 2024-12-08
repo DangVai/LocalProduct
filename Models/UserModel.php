@@ -1,5 +1,4 @@
 <?php
-
 class UserModel extends BaseModel
 {
     public function __construct()
@@ -10,31 +9,21 @@ class UserModel extends BaseModel
     // Tìm người dùng theo username
     public function findByUsername($username)
     {
-        // Prepare the SQL query
         $query = "SELECT * FROM users WHERE Name = ?";
 
-        // Check if the query is prepared correctly
-        if ($stmt = $this->connect->prepare($query)) {  // Thay $this->db thành $this->connect
-            // Bind parameters
-            $stmt->bind_param("s", $username); // Assuming 'username' is a string
-
-            // Execute the statement
+        if ($stmt = $this->connect->prepare($query)) {
+            $stmt->bind_param("s", $username);
             $stmt->execute();
-
-            // Get the result
             $result = $stmt->get_result();
 
             if ($result->num_rows > 0) {
-                // Return the user data
                 return $result->fetch_assoc();
             } else {
                 return false; // No user found
             }
-
-            // Close the statement
-            $stmt->close();
         } else {
-            // If prepare fails, return false
+            // Log or handle the error (you can also throw an exception here)
+            error_log("Error preparing the query for finding user by username.");
             return false;
         }
     }
@@ -42,6 +31,11 @@ class UserModel extends BaseModel
     public function createUser($username, $hashedPassword)
     {
         $stmt = $this->connect->prepare("INSERT INTO users (Name, password) VALUES (?, ?)");
+        if ($stmt === false) {
+            // Log or handle the error
+            error_log("Error preparing the statement for user creation.");
+            return false;
+        }
         $stmt->bind_param('ss', $username, $hashedPassword);
 
         return $stmt->execute();
@@ -50,8 +44,7 @@ class UserModel extends BaseModel
     // Kiểm tra thông tin đăng nhập
     public function checkLogin($username, $password)
     {
-        $user = $this->findByUsername($username); // Tìm người dùng theo username
-        var_dump($user); // Xem thông tin người dùng lấy từ cơ sở dữ liệu
+        $user = $this->findByUsername($username);
 
         if ($user) {
             if (password_verify($password, $user['password'])) {
@@ -64,5 +57,53 @@ class UserModel extends BaseModel
         }
     }
 
+    // Tìm người dùng theo email
+    public function findByEmail($email)
+    {
+        $query = "SELECT * FROM users WHERE email = ?";
 
+        if ($stmt = $this->connect->prepare($query)) {
+            $stmt->bind_param("s", $email);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            if ($result->num_rows > 0) {
+                return $result->fetch_assoc();
+            } else {
+                return false;
+            }
+        } else {
+            // Log or handle the error
+            error_log("Error preparing the query for finding user by email.");
+            return false;
+        }
+    }
+
+    // Cập nhật mật khẩu mới
+    public function updatePassword($email, $newPassword)
+    {
+        $hashedPassword = password_hash($newPassword, PASSWORD_BCRYPT);
+        $query = "UPDATE users SET password = ? WHERE email = ?";
+
+        if ($stmt = $this->connect->prepare($query)) {
+            $stmt->bind_param("ss", $hashedPassword, $email);
+            return $stmt->execute();
+        } else {
+            // Log or handle the error
+            error_log("Error preparing the statement for updating password.");
+            return false;
+        }
+    }
+
+    public function saveResetToken($email, $token)
+    {
+        $query = "UPDATE users SET reset_token = ? WHERE email = ?";
+
+        if ($stmt = $this->connect->prepare($query)) {
+            $stmt->bind_param("ss", $token, $email);
+            return $stmt->execute();
+        } else {
+            return false; // Return false if the query fails
+        }
+    }
 }
