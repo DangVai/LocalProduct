@@ -5,7 +5,7 @@ require './Models/BaseModel.php';
 require './Controllers/BaseController.php';
 
 // Lấy tên controller từ tham số 'controller' trong URL (ví dụ: index.php?controller=Home)
-$controllersName = ucfirst(strtolower($_REQUEST['controller'] ?? 'index')) . 'Controller'; // Default to 'IndexController' if not provided
+$controllersName = ucfirst(strtolower($_REQUEST['controller'] ?? 'home')) . 'Controller'; // Default to 'IndexController' if not provided
 
 // Lấy tên action từ tham số 'action' trong URL (ví dụ: index.php?action=view)
 $actionName = $_REQUEST['action'] ?? 'index'; // Default to 'index' if not provided

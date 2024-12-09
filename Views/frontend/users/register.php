@@ -7,7 +7,7 @@
     <title>Đăng Ký</title>
 </head>
 <?php
-include $_SERVER['DOCUMENT_ROOT'] . '/localProducts/Views/layouts/header.php';?>
+// include $_SERVER['DOCUMENT_ROOT'] . '/localProducts/Views/layouts/header.php';?>
 <body>
     <h1>Đăng Ký Tài Khoản</h1>
     <form action="index.php?controller=user&action=storeRegister" method="POST">
@@ -20,7 +20,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/localProducts/Views/layouts/header.php';?>
     <button type="submit">Register</button>
 </form>
 <?php // Đường dẫn tuyệt đối
-include $_SERVER['DOCUMENT_ROOT'] . '/localProducts/Views/layouts/footer.php';
+// include $_SERVER['DOCUMENT_ROOT'] . '/localProducts/Views/layouts/footer.php';
 ?>
 </body>
 

@@ -26,8 +26,27 @@ class BaseController
             die("File view '{$file}' không tồn tại.");
         }
 
-        require($file);
+        // require($file);
+        require("Views/layouts/defaultlayouts.php");
+
     }
+    public function viewwithlayout($layout,$viewPath, array $data = [])
+    {
+        // Truyền trực tiếp mảng data vào view
+        extract($data);  // Biến mảng $data thành các biến động
+
+        // Gọi file view từ thư mục Views/frontend
+        $file = self::VERSION . '/' . str_replace('.', '/', $viewPath) . '.php';
+
+        // Kiểm tra file tồn tại trước khi require
+        if (!file_exists($file)) {
+            die("File view '{$file}' không tồn tại.");
+        }
+
+        // require($file);
+        require($layout);
+    }
+
 
     /**
      * Lấy danh sách các tham số của phương thức.
