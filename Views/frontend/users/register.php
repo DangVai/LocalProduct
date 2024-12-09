@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Đăng Ký</title>
 </head>
-<?php include('views/layouts/header.php'); ?>
+<?php
+include $_SERVER['DOCUMENT_ROOT'] . '/localProducts/Views/layouts/header.php';?>
 <body>
     <h1>Đăng Ký Tài Khoản</h1>
     <form action="index.php?controller=user&action=storeRegister" method="POST">
@@ -18,7 +19,9 @@
     <br>
     <button type="submit">Register</button>
 </form>
-<?php include('views/layouts/footer.php'); ?>
+<?php // Đường dẫn tuyệt đối
+include $_SERVER['DOCUMENT_ROOT'] . '/localProducts/Views/layouts/footer.php';
+?>
 </body>
 
 </html>

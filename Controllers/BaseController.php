@@ -29,7 +29,21 @@ class BaseController
         require($file);
     }
 
-
+    /**
+     * Lấy danh sách các tham số của phương thức.
+     *
+     * @param string $funcName Tên phương thức cần lấy tham số.
+     * @return array Danh sách tên các tham số của phương thức.
+     */
+    public function get_func_argNames($funcName)
+    {
+        $f = new ReflectionMethod($this, $funcName);
+        $result = [];
+        foreach ($f->getParameters() as $param) {
+            $result[] = $param->name;
+        }
+        return $result;
+    }
 
 }
 
