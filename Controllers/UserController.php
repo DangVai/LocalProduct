@@ -28,16 +28,17 @@ class UserController extends BaseController
         $result = $this->userModel->createUser($username, $hashedPassword);
 
         if ($result) {
-            echo "Registration successful!";
+            $this->view('frontend.users.login',['success' => true]);
         } else {
-            echo "Failed to register. Please try again.";
+            $this->view('frontend.users.login', ['success' => false]);
+
         }
     }
 
     // Hiển thị trang đăng nhập
     public function login()
     {
-        $this->view('frontend.users.login');
+        $this->viewwithlayout("Views/layouts/customlayout.php",'frontend.users.login', ['error' => '1']);
     }
 
     // Xử lý đăng nhập
