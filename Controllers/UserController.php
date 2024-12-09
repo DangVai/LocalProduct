@@ -94,7 +94,7 @@ class UserController extends BaseController
         $user = $this->userModel->findByEmail($email);
 
         if ($user) {
-            $this->sendPasswordResetEmail($email);
+            $this->sendResetEmail($email);
             echo "Một email đã được gửi để đặt lại mật khẩu của bạn.";
         } else {
             echo "Không tìm thấy tài khoản với email này.";
@@ -102,7 +102,7 @@ class UserController extends BaseController
     }
 
     // Gửi email thay đổi mật khẩu
-    private function sendPasswordResetEmail($email)
+    private function sendResetEmail($email)
     {
         $token = bin2hex(random_bytes(50));
         $resetLink = "http://localhost/reset-password.php?token=" . $token;
@@ -118,19 +118,13 @@ class UserController extends BaseController
     // Hiển thị trang thay đổi mật khẩu
     public function resetPassword()
     {
-        $token = $_GET['token'] ?? null;
-        if (!$token) {
-            die("Token không hợp lệ.");
-        }
-
-        // Check if token is valid
-        $user = $this->userModel->findByToken($token);
-        if ($user) {
-            $this->view('frontend.users.reset_password', ['token' => $token]);
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $this->handleResetPassword();
         } else {
-            die("Token không hợp lệ.");
+            $this->view('frontend.users.reset_password');
         }
     }
+
 
     // Xử lý thay đổi mật khẩu
     public function handleResetPassword()
@@ -154,6 +148,5 @@ class UserController extends BaseController
             die("Token không hợp lệ.");
         }
     }
-
 
 }
