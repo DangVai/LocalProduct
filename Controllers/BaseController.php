@@ -1,5 +1,5 @@
 <?php
-class BaseController
+class BaseController extends db
 {
     const VERSION = 'Views';  // This is assumed to be the folder name containing your view files
     public function loadModel($model)
