@@ -55,7 +55,7 @@ class UserController extends BaseController
 
         if ($user) {
             $_SESSION['user'] = $user;
-            echo 'Đăng nhập thành công. <a href="index.php?controller=user&action=dashboard">Vào Dashboard</a>';
+            echo 'Đăng nhập thành công. <a href="index.php?controller=user&action=dashboard">Vào Dashboard</a>';//chuyen qua trang chu
         } else {
             die('Sai thông tin đăng nhập.');
         }
