@@ -9,7 +9,6 @@
 <?php
 // include $_SERVER['DOCUMENT_ROOT'] . '/localProducts/Views/layouts/header.php';?>
 <body>
-    <h1>Sign Up</h1>
     <form action="index.php?controller=user&action=storeRegister" method="POST">
     <label for="username">Name:</label>
     <input type="text" name="username" id="username" required>
@@ -25,9 +24,7 @@
     <br>
     <button type="submit">Sign Up</button>
 </form>
-<?php // Đường dẫn tuyệt đối
-// include $_SERVER['DOCUMENT_ROOT'] . '/localProducts/Views/layouts/footer.php';
-?>
+
 </body>
 
 </html>
