@@ -119,22 +119,6 @@
         text-align: center;
         transition: background-color 0.3s ease, transform 0.2s ease;
     }
-    
-    .btn-facebook {
-        background-color: #1877f2;
-    }
-    
-    .btn-facebook:hover {
-        background-color: #63a2f5;
-    }
-    
-    .btn-google {
-        background-color: #db4437;
-    }
-    
-    .btn-google:hover {
-        background-color: #f97364;
-    }
     /* Dấu gạch dọc */
     
     .divider {

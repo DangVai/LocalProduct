@@ -1,12 +1,12 @@
 <?php
 class BaseModel extends db
 {
-
+    protected $connect;
     protected $table_name;
 
     public function __construct(string $table_name)
     {
- // Đảm bảo kết nối được thiết lập
+        $this->connect = $this->connect();  // Đảm bảo kết nối được thiết lập
         $this->table_name = $table_name;
     }
 
