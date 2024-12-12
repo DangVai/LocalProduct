@@ -2,10 +2,14 @@
 class UserModel extends BaseModel
 {
     protected $table_name = "users";
+
     public function __construct()
     {
         parent::__construct('users');
     }
+
+
+
 
     // Tìm người dùng theo username
     public function findByUsername($fullName, $email)
@@ -30,7 +34,8 @@ class UserModel extends BaseModel
         }
     }
 
-    public function storeotp($fullName, $email, $phone, $hashedPassword, $OTP) {
+    public function storeotp($fullName, $email, $phone, $hashedPassword, $OTP)
+    {
         $stmt = $this->connect->prepare("INSERT INTO saveotp (Name, email, phone, password, OTP_code) VALUES (?, ?, ?, ?, ?)");
         if ($stmt) {
             $stmt->bind_param('sssss', $fullName, $email, $phone, $hashedPassword, $OTP);
@@ -43,33 +48,33 @@ class UserModel extends BaseModel
             error_log("SQL Prepare Error: " . $this->connect->error);
             die("SQL prepare error: " . $this->connect->error); // Hiển thị lỗi khi prepare query
         }
-}
+    }
 
 
 
 
     public function createUser($fullName, $email, $phone, $hashedPassword)
-        {
-            $stmt = $this->connect->prepare("INSERT INTO users (Name, email, phone, password) VALUES (?, ?, ?, ?)");
-            if ($stmt === false) {
-                error_log("Error preparing the statement for user creation.");
-                return false;
-            }
-            $stmt->bind_param('ssss', $fullName, $email, $phone, $hashedPassword);
-
-            if (!$stmt->execute()) {
-                echo ("Error executing the statement: " . $stmt->error);
-                return false;
-            }
-            return true;
+    {
+        $stmt = $this->connect->prepare("INSERT INTO users (Name, email, phone, password) VALUES (?, ?, ?, ?)");
+        if ($stmt === false) {
+            error_log("Error preparing the statement for user creation.");
+            return false;
         }
+        $stmt->bind_param('ssss', $fullName, $email, $phone, $hashedPassword);
+
+        if (!$stmt->execute()) {
+            echo ("Error executing the statement: " . $stmt->error);
+            return false;
+        }
+        return true;
+    }
 
 
 
     //Sử dụng MySQLi nha
     public function findByEmail($email)
     {
-        $query = "SELECT * FROM " ."saveotp". " WHERE email = ?";
+        $query = "SELECT * FROM " . "saveotp" . " WHERE email = ?";
         if ($stmt = $this->connect->prepare($query)) {
             $stmt->bind_param("s", $email);
             $stmt->execute();
@@ -81,7 +86,7 @@ class UserModel extends BaseModel
         return false;
     }
 
-   
+
     public function checkOTP($email, $inputOTP)
     {
         $stmt = $this->connect->prepare("SELECT OTP_code FROM saveotp WHERE email = ?");
@@ -105,6 +110,40 @@ class UserModel extends BaseModel
             return false;
         }
     }
+
+
+
+
+    public function findUserByEmail($email)
+    {
+        $query = "SELECT * FROM {$this->table_name} WHERE email = ?";
+        $stmt = $this->connect->prepare($query);
+        $stmt->bind_param('s', $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        return $result->fetch_assoc(); // Trả về người dùng (hoặc null nếu không có kết quả)
+    }
+
+    public function saveResetCode($email, $resetCode, $expiryTime)
+    {
+        $sql = "UPDATE {$this->table_name} SET reset_token = ?, reset_token_expiry = ? WHERE email = ?";
+        $stmt = $this->connect->prepare($sql);
+        $stmt->bind_param('sis', $resetCode, $expiryTime, $email);
+        return $stmt->execute();
+    }
+
+    public function updatePassword($email, $password)
+{
+    $hashedPassword =md5($password); // Mã hóa mật khẩu bằng md5
+    $query = "UPDATE {$this->table_name} SET password = ? WHERE email = ?";
+    $stmt = $this->connect->prepare($query);
+    $stmt->bind_param('ss', $hashedPassword, $email);
+    return $stmt->execute(); // Trả về true nếu cập nhật thành công
+}
+
+
+
+
 
 
 }

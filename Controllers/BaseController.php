@@ -1,9 +1,11 @@
 <?php
 class BaseController extends db
 {
+    
     const VERSION = 'Views';  // This is assumed to be the folder name containing your view files
     public function loadModel($model)
     {
+        session_start();
         require_once './Models/' . $model . '.php';
     }
     /**
@@ -19,7 +21,7 @@ class BaseController extends db
         extract($data);  // Biến mảng $data thành các biến động
 
         // Gọi file view từ thư mục Views/frontend
-        $file = self::VERSION . '/' . str_replace('.', '/', $viewPath) . '.php';
+        $file = self::VERSION . '/'. str_replace('.', '/', $viewPath) . '.php';
 
         // Kiểm tra file tồn tại trước khi require
         if (!file_exists($file)) {
