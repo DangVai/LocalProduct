@@ -1,0 +1,15 @@
+RewriteEngine On
+RewriteBase /localProducts/
+
+# Nếu không có tham số truy vấn, chuyển đến controller và action mặc định
+RewriteCond %{QUERY_STRING} ^$
+RewriteRule ^$ index.php?controller=user&action=introduction [L]
+
+# Nếu file hoặc thư mục tồn tại, thì truy cập trực tiếp
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Nếu không tồn tại, chuyển hướng  đến index.php
+RewriteRule ^ index.php [L]
+

@@ -4,11 +4,11 @@ require './Models/BaseModel.php';
 // Import tệp chứa lớp cơ bản cho các Controllers
 require './Controllers/BaseController.php';
 
-// Lấy tên controller từ tham số 'controller' trong URL (ví dụ: index.php?controller=Home)
-$controllersName = ucfirst(strtolower($_REQUEST['controller'] ?? 'home')) . 'Controller'; // Default to 'IndexController' if not provided
+// Lấy tên controller từ tham số 'controller' trong URL
+$controllersName = ucfirst(strtolower($_REQUEST['controller'] ?? 'index')) . 'Controller'; // Default to 'IndexController'
 
-// Lấy tên action từ tham số 'action' trong URL (ví dụ: index.php?action=view)
-$actionName = $_REQUEST['action'] ?? 'index'; // Default to 'index' if not provided
+// Lấy tên action từ tham số 'action' trong URL
+$actionName = $_REQUEST['action'] ?? 'introduction'; // Default to 'introduction'
 
 // Đường dẫn đến tệp Controller tương ứng
 $controllerPath = './Controllers/' . $controllersName . '.php';
@@ -34,26 +34,6 @@ $controllerObject = new $controllersName();
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_GET['controller'] === 'user' && $_GET['action'] === 'handleLogin') {
     $controllerObject->handleLogin();  // Gọi phương thức handleLogin từ đối tượng hiện tại
 }
-//thêm 5:17 11/12
-
-require_once 'Controllers/UserController.php';
-require_once 'Models/UserModel.php';
-
-$controller = $_GET['controller'] ?? 'user';  // Controller mặc định là 'user'
-$action = $_GET['action'] ?? 'login';  // Action mặc định là 'login'
-
-$controllerName = ucfirst($controller) . 'Controller';  // Ví dụ: 'UserController'
-
-if (class_exists($controllerName)) {
-    $controllerObject = new $controllerName();
-    if (method_exists($controllerObject, $action)) {
-        $controllerObject->$action();  // Gọi action trong controller
-    } else {
-        die('Action không tồn tại');
-    }
-} else {
-    die('Controller không tồn tại');
-}
 
 // Kiểm tra xem phương thức (action) có tồn tại không
 if (!method_exists($controllerObject, $actionName)) {
@@ -74,5 +54,3 @@ function extractProperties(array $array, array $keys): array
 {
     return array_intersect_key($array, array_flip($keys));
 }
-
-?>
