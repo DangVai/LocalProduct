@@ -1,4 +1,11 @@
 <?php
+require_once __DIR__ . '/../PHPMailer-master/src/Exception.php';
+require_once __DIR__ . '/../PHPMailer-master/src/PHPMailer.php';
+require_once __DIR__ . '/../PHPMailer-master/src/SMTP.php';
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+// require_once 'path/to/BaseController.php';
 class UserController extends BaseController
 {
     private $userModel;
@@ -12,142 +19,126 @@ class UserController extends BaseController
     // Hiển thị trang đăng ký
     public function register()
     {
-        $this->view('frontend.users.register');
+        $this->view('frontend.users.register', ['noHeaderFooter' => true]);
     }
 
     public function storeRegister()
-    {
-        $username = $_POST['username'] ?? null;
-        $password = $_POST['password'] ?? null;
+        {
+            $fullName = $_POST['full-name'] ?? null;
+            $email = $_POST['email'] ?? null;
+            $phone = $_POST['phone'] ?? null;
+            $password = $_POST['password'] ?? null;
+            $confirmPassword = $_POST['confirm-password'] ?? null;
+            $OTP = rand(100000, 999999);
 
-        if (!$username || !$password) {
-            die("Username or password cannot be empty!");
+            // Debug: Ghi log thông tin
+            error_log("Register data: fullName=$fullName, email=$email, phone=$phone");
+
+            // Kiểm tra đầu vào
+            if (!$fullName || !$email || !$phone || !$password || !$confirmPassword) {
+                die("All fields are required!");
+            }
+
+            if ($password !== $confirmPassword) {
+                die("Passwords do not match!");
+            }
+
+            $hashedPassword = md5($password);
+
+            // Kiểm tra xem email hoặc tên người dùng đã tồn tại hay chưa
+            if ($this->userModel->findByUsername($fullName, $email)) {
+                die("User with this username or email already exists!");
+            }
+
+            // Lưu thông tin người dùng vào cơ sở dữ liệu
+            $result = $this->userModel->storeotp($fullName, $email, $phone, $hashedPassword, $OTP);
+
+            if ($result) {
+                error_log("User information stored successfully.");
+                if ($this->sendEmail($email, $OTP)) {
+                    error_log("OTP email sent successfully to: $email");
+                    $_SESSION['email_verification'] = $email;
+                    header("Location: index.php?controller=user&action=register&success=ok");
+                    exit;
+                } else {
+                    error_log("Failed to send OTP email to: $email");
+                    die("Failed to send OTP email.");
+                }
+            } else {
+                error_log("Failed to store user information into saveotp table.");
+                die("Failed to register user.");
+            }
         }
 
-        $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
-        $result = $this->userModel->createUser($username, $hashedPassword);
 
-        if ($result) {
-            $this->view('frontend.users.login',['success' => true]);
-        } else {
-            $this->view('frontend.users.login', ['success' => false]);
-
-        }
-    }
-
-    // Hiển thị trang đăng nhập
-    public function login()
+    public function OTP()
     {
-        $this->viewwithlayout("Views/layouts/customlayout.php",'frontend.users.login', ['error' => '1']);
-    }
-
-    // Xử lý đăng nhập
-    public function handleLogin()
-    {
-        $username = $_POST['username'] ?? null;
-        $password = $_POST['password'] ?? null;
-
-        if (!$username || !$password) {
-            die("Username or password cannot be empty!");
-        }
-
-        $user = $this->userModel->checkLogin($username, $password);
-
-        if ($user) {
-            $_SESSION['user'] = $user;
-            echo 'Đăng nhập thành công. <a href="index.php?controller=user&action=dashboard">Vào Dashboard</a>';
-        } else {
-            die('Sai thông tin đăng nhập.');
-        }
-    }
-
-    // Dashboard
-    public function dashboard()
-    {
-        if (!isset($_SESSION['user'])) {
-            die('Bạn cần đăng nhập. <a href="index.php?controller=user&action=login">Đăng nhập</a>');
-        }
-        $this->view('frontend.users.dashboard', ['user' => $_SESSION['user']]);
-    }
-
-    // Đăng xuất
-    public function logout()
-    {
-        session_destroy();
-        echo 'Bạn đã đăng xuất. <a href="index.php?controller=user&action=login">Đăng nhập lại</a>';
-    }
-
-    // Hiển thị trang quên mật khẩu
-    public function forgotPassword()
-    {
-        $this->view('frontend.users.forgot_password');
-    }
-
-    // Xử lý quên mật khẩu
-    public function handleForgotPassword()
-    {
-        $email = $_POST['email'] ?? null;
+        $email = $_SESSION['email_verification'] ?? null;
 
         if (!$email) {
-            die("Email không được để trống!");
+            header("Location: index.php?controller=user&action=register");
+            exit;
         }
 
-        $user = $this->userModel->findByEmail($email);
-
-        if ($user) {
-            $this->sendResetEmail($email);
-            echo "Một email đã được gửi để đặt lại mật khẩu của bạn.";
-        } else {
-            echo "Không tìm thấy tài khoản với email này.";
-        }
-    }
-
-    // Gửi email thay đổi mật khẩu
-    private function sendResetEmail($email)
-    {
-        $token = bin2hex(random_bytes(50));
-        $resetLink = "http://localhost/reset-password.php?token=" . $token;
-
-        // Save token to the database
-        $this->userModel->saveResetToken($email, $token);
-
-        $subject = "Đặt lại mật khẩu của bạn";
-        $message = "Click vào đường link sau để thay đổi mật khẩu của bạn: " . $resetLink;
-        mail($email, $subject, $message);
-    }
-
-    // Hiển thị trang thay đổi mật khẩu
-    public function resetPassword()
-    {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $this->handleResetPassword();
-        } else {
-            $this->view('frontend.users.reset_password');
-        }
+        $this->view('frontend.users.otp', ['noHeaderFooter' => true, 'email' => $email]);
     }
 
 
-    // Xử lý thay đổi mật khẩu
-    public function handleResetPassword()
+
+   public function sendEmail($email, $OTP)
     {
-        $token = $_POST['token'] ?? null;
-        $newPassword = $_POST['new_password'] ?? null;
+        $mail = new PHPMailer(true);
 
-        if (!$token || !$newPassword) {
-            die("Cần điền đủ thông tin.");
+        try {
+            $mail->isSMTP();
+            $mail->Host = 'smtp.gmail.com';
+            $mail->SMTPAuth = true;
+            $mail->Username = 'on.ho26@student.passerellesnumeriques.org'; // Email của bạn
+            $mail->Password = 'jriaycnpewjpslnu'; // Mật khẩu ứng dụng
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+            $mail->Port = 587;
+
+            $mail->setFrom('on.ho26@student.passerellesnumeriques.org', 'Your Website');
+            $mail->addAddress($email);
+
+            $mail->isHTML(true);
+            $mail->Subject = 'OTP verification code';
+            $mail->Body = "Your OTP code: <b>$OTP</b>";
+
+            $mail->send();
+            return true;
+        } catch (Exception $e) {
+            error_log('Mailer Error: ' . $mail->ErrorInfo);
+            return false;
         }
+    }
 
-        $user = $this->userModel->findByToken($token);
-        if ($user) {
-            $hashedPassword = password_hash($newPassword, PASSWORD_BCRYPT);
-            if ($this->userModel->updatePassword($user['email'], $hashedPassword)) {
-                echo "Mật khẩu đã được thay đổi thành công!";
-            } else {
-                die("Có lỗi xảy ra, vui lòng thử lại.");
+       public function verifyOTP()
+        {
+            $email = $_SESSION['email_verification'] ?? null;
+            $inputOTP = $_POST['OTP'] ?? null;
+
+            if (!$email || !$inputOTP) {
+                die("Invalid request.");
             }
-        } else {
-            die("Token không hợp lệ.");
+
+            if ($this->userModel->checkOTP($email, $inputOTP)) {
+                // Nếu OTP hợp lệ, chuyển dữ liệu sang bảng `users`
+                $userData = $this->userModel->findByEmail($email);
+                if (!$userData) {
+                    die("Email not found in saveotp table.");
+                }
+
+                if ($this->userModel->createUser($userData['Name'], $userData['email'], $userData['phone'], $userData['password'])) {
+                    echo "Đăng ký thành công!";
+                    unset($_SESSION['email_verification']);
+                    header("Location: index.php?controller=user&action=login");
+                } else {
+                    die("Error while creating user.");
+                }
+            } else {
+                echo "Mã OTP không hợp lệ.";
+            }
         }
-    }
 
 }
