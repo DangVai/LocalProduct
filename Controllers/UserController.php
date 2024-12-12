@@ -22,67 +22,67 @@ class UserController extends BaseController
         $this->view('frontend.users.register', ['noHeaderFooter' => true]);
     }
 
-    public function storeRegister()
-        {
-            $fullName = $_POST['full-name'] ?? null;
-            $email = $_POST['email'] ?? null;
-            $phone = $_POST['phone'] ?? null;
-            $password = $_POST['password'] ?? null;
-            $confirmPassword = $_POST['confirm-password'] ?? null;
-            $OTP = rand(100000, 999999);
+    // public function storeRegister()
+    // {
+    //     $username = $_POST['username'] ?? null;
+    //     $password = $_POST['password'] ?? null;
 
-            // Debug: Ghi log thông tin
-            error_log("Register data: fullName=$fullName, email=$email, phone=$phone");
+    //     if (!$username || !$password) {
+    //         die("Username or password cannot be empty!");
+    //     }
 
-            // Kiểm tra đầu vào
-            if (!$fullName || !$email || !$phone || !$password || !$confirmPassword) {
-                die("All fields are required!");
-            }
+    //     $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
+    //     $result = $this->userModel->createUser($username, $hashedPassword);
 
-            if ($password !== $confirmPassword) {
-                die("Passwords do not match!");
-            }
+    //     if ($result) {
+    //         $this->view('frontend.users.login',['success' => true]);
+    //     } else {
+    //         $this->view('frontend.users.login', ['success' => false]);
 
-            $hashedPassword = md5($password);
+    //     }
+    // }
 
-            // Kiểm tra xem email hoặc tên người dùng đã tồn tại hay chưa
-            if ($this->userModel->findByUsername($fullName, $email)) {
-                die("User with this username or email already exists!");
-            }
-
-            // Lưu thông tin người dùng vào cơ sở dữ liệu
-            $result = $this->userModel->storeotp($fullName, $email, $phone, $hashedPassword, $OTP);
-
-            if ($result) {
-                error_log("User information stored successfully.");
-                if ($this->sendEmail($email, $OTP)) {
-                    error_log("OTP email sent successfully to: $email");
-                    $_SESSION['email_verification'] = $email;
-                    header("Location: index.php?controller=user&action=register&success=ok");
-                    exit;
-                } else {
-                    error_log("Failed to send OTP email to: $email");
-                    die("Failed to send OTP email.");
-                }
-            } else {
-                error_log("Failed to store user information into saveotp table.");
-                die("Failed to register user.");
-            }
-        }
-
-
-    public function OTP()
+    // Hiển thị trang đăng nhập
+    public function login()
     {
-        $email = $_SESSION['email_verification'] ?? null;
-
-        if (!$email) {
-            header("Location: index.php?controller=user&action=register");
-            exit;
-        }
-
-        $this->view('frontend.users.otp', ['noHeaderFooter' => true, 'email' => $email]);
+        $this->viewwithlayout("Views/layouts/customlayout.php",'frontend.users.login', ['error' => '1']);
     }
 
+    // Xử lý đăng nhập
+    // public function handleLogin()
+    // {
+    //     $username = $_POST['username'] ?? null;
+    //     $password = $_POST['password'] ?? null;
+
+    //     if (!$username || !$password) {
+    //         die("Username or password cannot be empty!");
+    //     }
+
+    //     $user = $this->userModel->checkLogin($username, $password);
+
+    //     if ($user) {
+    //         $_SESSION['user'] = $user;
+    //         echo 'Đăng nhập thành công. <a href="index.php?controller=user&action=dashboard">Vào Dashboard</a>';
+    //     } else {
+    //         die('Sai thông tin đăng nhập.');
+    //     }
+    // }
+
+    // // Dashboard
+    // public function dashboard()
+    // {
+    //     if (!isset($_SESSION['user'])) {
+    //         die('Bạn cần đăng nhập. <a href="index.php?controller=user&action=login">Đăng nhập</a>');
+    //     }
+    //     $this->view('frontend.users.dashboard', ['user' => $_SESSION['user']]);
+    // }
+
+    // Đăng xuất
+    public function logout()
+    {
+        session_destroy();
+        echo 'Bạn đã đăng xuất. <a href="index.php?controller=user&action=login">Đăng nhập lại</a>';
+    }
 
 
    public function sendEmail($email, $OTP)

@@ -34,27 +34,7 @@ $controllerObject = new $controllersName();
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_GET['controller'] === 'user' && $_GET['action'] === 'handleLogin') {
     $controllerObject->handleLogin();  // Gọi phương thức handleLogin từ đối tượng hiện tại
 }
-//thêm 5:17 11/12
-
-require_once 'Controllers/UserController.php';
-require_once 'Models/UserModel.php';
-
-$controller = $_GET['controller'] ?? 'user';  // Controller mặc định là 'user'
-$action = $_GET['action'] ?? 'login';  // Action mặc định là 'login'
-
-$controllerName = ucfirst($controller) . 'Controller';  // Ví dụ: 'UserController'
-
-if (class_exists($controllerName)) {
-    $controllerObject = new $controllerName();
-    if (method_exists($controllerObject, $action)) {
-        $controllerObject->$action();  // Gọi action trong controller
-    } else {
-        die('Action không tồn tại');
-    }
-} else {
-    die('Controller không tồn tại');
-}
-
+//thêm 5:17 
 // Kiểm tra xem phương thức (action) có tồn tại không
 if (!method_exists($controllerObject, $actionName)) {
     error_log("Action '{$actionName}' not found in '{$controllersName}' controller.");

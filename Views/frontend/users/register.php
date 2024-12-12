@@ -9,16 +9,20 @@
 <?php
 // include $_SERVER['DOCUMENT_ROOT'] . '/localProducts/Views/layouts/header.php';?>
 <body>
-    
-    <h1>Đăng Ký Tài Khoản</h1>
     <form action="index.php?controller=user&action=storeRegister" method="POST">
-    <label for="username">Username:</label>
+    <label for="username">Name:</label>
     <input type="text" name="username" id="username" required>
+    <br>
+    <label for="email">Email:</label>
+    <input type="text" name="email" id="email" required>
     <br>
     <label for="password">Password:</label>
     <input type="password" name="password" id="password" required>
     <br>
-    <button type="submit">Register</button>
+    <label for="re-enter Password">Re-enter Password:</label>
+    <input type="text" name="re-enter Password" id="re-enter Password" required>
+    <br>
+    <button type="submit">Sign Up</button>
 </form>
 
 </body>
