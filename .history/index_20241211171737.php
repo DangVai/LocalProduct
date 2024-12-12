@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_GET['controller'] === 'user' && $
     $controllerObject->handleLogin();  // Gọi phương thức handleLogin từ đối tượng hiện tại
 }
 //thêm 5:17 11/12
-
+// index.php
 require_once 'Controllers/UserController.php';
 require_once 'Models/UserModel.php';
 

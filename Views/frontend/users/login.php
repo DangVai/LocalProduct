@@ -10,10 +10,7 @@
 
 <body>
     <div class="login_container">
-        <!-- Logo bên trái -->
         <img src="/LocalProduct/public/imgs//image.png" alt="Logo Left" class="logo-top-left">
-
-        <!-- Logo bên phải -->
         <img src="/LocalProduct/public/imgs/image 14.png" alt="Logo Right" class="logo-top-right">
         <div class="login">
             <h2 class="form-title">Login</h2>
@@ -22,14 +19,13 @@
                     <div class="slider">
                         <div class="slides-container">
                             <img src="/LocalProduct/public/imgs/R.jpg" class="slide" alt="Slide Clone Last">
-                            <img src="/LocalProduct/public/imgs/image 14.png" class="slide" alt="Slide 1">
-                            <img src="/LocalProduct/public/imgs/image.png" class="slide" alt="Slide 2">
+                            <img src="/LocalProduct/public/imgs/slide2.jpg" class="slide" alt="Slide 1">
+                            <img src="/LocalProduct/public/imgs/slide3.jpg" class="slide" alt="Slide 2">
                             <img src="/LocalProduct/public/imgs/R.jpg" class="slide" alt="Slide 3">
                             <img src="/LocalProduct/public/imgs/image 14.png" class="slide" alt="Slide Clone First">
                         </div>
                     </div>
-                    <a href="#" class="btn-social btn-facebook">Facebook</a>
-                    <a href="#" class="btn-social btn-google">Google</a>
+               
                 </div>
                 <div class="divider"></div>
                 <form method="POST" action="index.php?controller=user&action=handleLogin">
