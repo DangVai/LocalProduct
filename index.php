@@ -8,7 +8,7 @@ require './Controllers/BaseController.php';
 $controllersName = ucfirst(strtolower($_REQUEST['controller'] ?? 'index')) . 'Controller'; // Default to 'IndexController' if not provided
 
 // Lấy tên action từ tham số 'action' trong URL (ví dụ: index.php?action=view)
-$actionName = $_REQUEST['action'] ?? 'index'; // Default to 'index' if not provided
+$actionName = $_REQUEST['action'] ?? 'introduction'; // Default to 'index' if not provided
 
 // Đường dẫn đến tệp Controller tương ứng
 $controllerPath = './Controllers/' . $controllersName . '.php';

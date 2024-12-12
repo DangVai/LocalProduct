@@ -17,29 +17,34 @@ class UserController extends BaseController
         $this->userModel = new UserModel();
     }
 
+    public function introduction()
+    {
+        include 'Views/frontend/introduction.php';
+        // $this->view("frontend.introduction");
+    }
     // Hiển thị trang đăng nhập
     public function login()
     {
-        $this->viewwithlayout("Views/layouts/customlayout.php", 'frontend.users.login', ['error' => '1']);
+        $this->view("frontend.users.login");
     }
 
-    // Xử lý đăng nhập
     public function handleLogin()
     {
         $username = $_POST['username'] ?? null;
         $password = $_POST['password'] ?? null;
 
-        if (!$username || !$password) {
-            die("Username or password cannot be empty!");
-        }
-
+        // Kiểm tra thông tin người dùng trong cơ sở dữ liệu
         $user = $this->userModel->checkLogin($username, $password);
 
         if ($user) {
+            // Nếu mật khẩu đúng, lưu thông tin người dùng vào session
             $_SESSION['user'] = $user;
-            echo 'Đăng nhập thành công. <a href="index.php?controller=user&action=dashboard">Vào Dashboard</a>';
+            header('Location: index.php?controller=user&action=dashboard&success=' . urlencode('Log in successfully!'));
+            exit;
         } else {
-            die('Sai thông tin đăng nhập.');
+            // Nếu sai thông tin đăng nhập, hiển thị thông báo lỗi
+            header('Location: index.php?controller=user&action=login&error=' . urlencode('Wrong login information.'));
+            exit;
         }
     }
 
@@ -47,17 +52,13 @@ class UserController extends BaseController
     // Hiển thị trang quên mật khẩu
     public function forgot_password()
     {
-        $this->view('frontend.users.forgot_password');
+        require('Views/frontend/users/forgot_password.php');
     }
-
-    // Xử lý quên mật khẩu
     // Xử lý quên mật khẩu
     public function forgotPassword()
     {
-        error_log("Forgot Password method called."); // Ghi log để kiểm tra
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
-            error_log("Email entered: " . $email); // Ghi log email
 
             if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
                 $this->view('frontend.users.forgot_password', ['error' => 'Invalid email format.']);
@@ -65,39 +66,38 @@ class UserController extends BaseController
             }
 
             $user = $this->userModel->findUserByEmail($email);
-            error_log("User found: ". print_r($user, true)); // Ghi log thông tin người dùng
 
             if ($user) {
-                $resetCode = bin2hex(random_bytes(8));
-                $expiryTime = time() + 3600; // Mã có hiệu lực trong 1 giờ
+                $resetCode = str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT);
+                $expiryTime = time() + 6000;
                 $this->userModel->saveResetCode($email, $resetCode, $expiryTime);
-                error_log("Reset code generated: " . $resetCode); // Ghi log mã reset
+
+                $_SESSION['reset_code'] = $resetCode;
+                $_SESSION['reset_email'] = $email;
 
                 if ($this->sendResetEmail($email, $resetCode)) {
-                    $_SESSION['reset_code'] = $resetCode;
-                    $_SESSION['reset_email'] = $email;
-                    header('Location: index.php?controller=user&action=resetPasswordForm');
+                    header('Location: index.php?controller=user&action=forgot_password&success=' . urlencode('The password reset code has been sent to your email.'));
                     exit;
                 } else {
-                    $this->view('frontend.users.forgot_password', ['error' => 'Failed to send email. Please try again.======']);
+                    header('Location: index.php?controller=user&action=forgot_password&error=' . urlencode('Unable to send email. Please try again.'));
                 }
             } else {
-                $this->view('frontend.users.forgot_password', ['error' => 'Email not found========.']);
+                header('Location: index.php?controller=user&action=forgot_password&error=' . urlencode('Email does not exist.'));
             }
         }
     }
 
     // Gửi email với mã reset
-    private function sendResetEmail($email, $resetCode)
+    public function sendResetEmail($email, $resetCode)
     {
         $mail = new PHPMailer(true);
 
         try {
             $mail->isSMTP();
-            $mail->Host = 'smtp.gmail.com'; // Hoặc máy chủ SMTP của bạn
+            $mail->Host = 'smtp.gmail.com';
             $mail->SMTPAuth = true;
             $mail->Username = 'dangvai30@gmail.com';
-            $mail->Password = 'vhjz fvwk huze xbqs';
+            $mail->Password = 'vhjz fvwk huze xbqs'; // Không nên để thông tin nhạy cảm trong mã nguồn
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
             $mail->Port = 587;
 
@@ -109,50 +109,59 @@ class UserController extends BaseController
             $mail->Body = "Use the following code to reset your password: <b>$resetCode</b>";
 
             $mail->send();
-            return true; // Gửi thành công
+            return true;
+
         } catch (Exception $e) {
-            error_log('Email could not be sent. Mailer Error: ' . $mail->ErrorInfo); // Ghi log lỗi
-            return false; // Gửi thất bại
+            // error_log('Mailer Error: ' . $mail->ErrorInfo);
+            return false;
         }
     }
+
+
 
     // Hiển thị form nhập mật khẩu mới
-    public function resetPasswordForm()
-    {
-        if (!isset($_SESSION['reset_code'])) {
-            echo "Invalid request.";
-            exit;
-        }
-
-        $this->view('frontend.users.reset_password');
-    }
 
     public function resetPassword()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $newPassword = htmlspecialchars($_POST['newPassword'] ?? '', ENT_QUOTES, 'UTF-8'); // Đảm bảo tên tham số chính xác
+            $newPassword = htmlspecialchars($_POST['newPassword'] ?? '', ENT_QUOTES, 'UTF-8');
+            $resetCode = htmlspecialchars($_POST['resetCode'] ?? '', ENT_QUOTES, 'UTF-8');
 
-            if (empty($newPassword)) { // Kiểm tra mật khẩu
-                echo "Password cannot be empty.";
+            // Lấy email và mã xác nhận từ session
+            $email = $_SESSION['reset_email'] ?? null;
+            $sessionResetCode = $_SESSION['reset_code'] ?? null;
+
+            // Kiểm tra email và mã xác nhận trong session
+            if (is_null($email) || is_null($sessionResetCode)) {
+                header('Location: index.php?controller=user&action=forgot_password&error=' . urlencode('Reset session data is missing'));
                 return;
             }
 
-            $email = $_SESSION['reset_email'] ?? null; // Lấy email từ session
-            if (is_null($email)) {
-                echo "Email is not set in the session.";
+            // So sánh mã xác nhận
+            if ($resetCode !== $sessionResetCode) {
+                header('Location: index.php?controller=user&action=forgot_password&error=' . urlencode('Verification code is incorrect.'));
                 return;
             }
 
-            $result = $this->userModel->updatePassword($email, $newPassword); // Cập nhật mật khẩu
+            // Mã hóa mật khẩu mới bằng md5
+            $hashedPassword = md5($newPassword);
+
+            // Cập nhật mật khẩu
+            $result = $this->userModel->updatePassword($email, $hashedPassword);
 
             if ($result) {
-                unset($_SESSION['reset_code'], $_SESSION['reset_email']); // Xóa session
+                // Xóa session sau khi đặt lại mật khẩu thành công
+                unset($_SESSION['reset_code'], $_SESSION['reset_email']);
+
                 // Chuyển hướng đến trang đăng nhập
-                header('Location: index.php?controller=user&action=login');
+                header('Location: index.php?controller=user&action=login&success='.$sessionResetCode. urlencode('Password reset successful.'));
                 exit;
             } else {
-                echo "Failed to reset password. Please try again.";
+                header('Location: index.php?controller=user&action=login&error='. $sessionResetCode . $resetCode. urlencode('Failed to reset password.'));
             }
         }
     }
+
+
+
 }

@@ -30,9 +30,8 @@ class BaseController extends db
         require("Views/layouts/defaultlayouts.php");
 
     }
-    public function viewwithlayout($layout,$viewPath, array $data = [])
+    public function viewWithoutLayout($viewPath, array $data = [])
     {
-        // Truyền trực tiếp mảng data vào view
         extract($data);  // Biến mảng $data thành các biến động
 
         // Gọi file view từ thư mục Views/frontend
@@ -43,8 +42,8 @@ class BaseController extends db
             die("File view '{$file}' không tồn tại.");
         }
 
-        // require($file);
-        require($layout);
+        // require file view mà không có layout
+        require($file);
     }
 
 

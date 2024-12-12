@@ -11,36 +11,40 @@ class UserModel extends BaseModel
     public function findByUsername($username)
     {
         $query = "SELECT * FROM users WHERE Name = ?";
+        try {
+            if ($stmt = $this->connect->prepare($query)) {
+                $stmt->bind_param("s", $username);
+                $stmt->execute();
+                $result = $stmt->get_result();
 
-        if ($stmt = $this->connect->prepare($query)) {
-            $stmt->bind_param("s", $username);
-            $stmt->execute();
-            $result = $stmt->get_result();
-
-            if ($result->num_rows > 0) {
-                return $result->fetch_assoc();
+                if ($result->num_rows > 0) {
+                    return $result->fetch_assoc();
+                } else {
+                    return null; // Không tìm thấy người dùng
+                }
             } else {
-                return false; // No user found
+                throw new Exception("Error preparing the query for finding user by username.");
             }
-        } else {
-            // Log or handle the error (you can also throw an exception here)
-            error_log("Error preparing the query for finding user by username.");
-            return false;
+        } catch (Exception $e) {
+            // error_log($e->getMessage());
+            return false; // Xử lý lỗi chung
         }
     }
+
 
     public function checkLogin($username, $password)
     {
         $user = $this->findByUsername($username);
 
         if ($user) {
-            // So sánh mật khẩu dưới dạng văn bản thuần túy
-            if ($password === $user['password']) {
+            if (($password) === $user['password']) {
                 return $user; // Đăng nhập thành công
             } else {
+                // echo "Sai mật khẩu"; // Thông báo lỗi
                 return false; // Mật khẩu không khớp
             }
         } else {
+            // echo "Không tìm thấy người dùng"; // Thông báo lỗi
             return false; // Không tìm thấy người dùng
         }
     }
@@ -56,13 +60,6 @@ class UserModel extends BaseModel
         return $result->fetch_assoc(); // Trả về người dùng (hoặc null nếu không có kết quả)
     }
 
-    public function createUser($username, $hashedPassword)
-    {
-        $stmt = $this->connect->prepare("INSERT INTO $this->table_name (Name, password) VALUES (?, ?)");
-        $stmt->bind_param('ss', $username, $hashedPassword);
-        return $stmt->execute();
-    }
-
     public function saveResetCode($email, $resetCode, $expiryTime)
     {
         $sql = "UPDATE {$this->table_name} SET reset_token = ?, reset_token_expiry = ? WHERE email = ?";
@@ -72,10 +69,12 @@ class UserModel extends BaseModel
     }
 
     public function updatePassword($email, $password)
-    {
-        $query = "UPDATE {$this->table_name} SET password = ? WHERE email = ?";
-        $stmt = $this->connect->prepare($query);
-        $stmt->bind_param('ss', $password, $email);
-        return $stmt->execute(); // Trả về true nếu cập nhật thành công
-    }
+{
+    $hashedPassword =md5($password); // Mã hóa mật khẩu bằng md5
+    $query = "UPDATE {$this->table_name} SET password = ? WHERE email = ?";
+    $stmt = $this->connect->prepare($query);
+    $stmt->bind_param('ss', $hashedPassword, $email);
+    return $stmt->execute(); // Trả về true nếu cập nhật thành công
+}
+
 }
