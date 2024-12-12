@@ -38,8 +38,7 @@ class UserController extends BaseController
     // Hiển thị trang đăng nhập
     public function login()
     {
-         require_once 'Views/frontend/users/login.php';
-        // $this->viewwithlayout("Views/layouts/customlayout.php",'frontend.users.login', ['error' => '1']);
+        // require_once 'Views/frontend/users/login.php';
     }
 
     // Xử lý đăng nhập

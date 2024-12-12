@@ -1,7 +1,7 @@
 <?php
 class BaseModel extends db
 {
-
+    protected $connect;
     protected $table_name;
 
     public function __construct(string $table_name)
