@@ -24,11 +24,11 @@
         <h1>Sign Up</h1>
         <!-- Left Content: Form đăng ký -->
         <div class="left-content">
-            <form id="registration-form" action="index.php?controller=user&action=storeRegister" method="POST"
-                onsubmit="return validatePasswords(event)">
 
-                <label for="name">User Name:</label>
-                <input type="name" name="full-name" id="full-name" required>
+            <form id="registration-form" action="index.php?controller=user&action=storeRegister" method="POST" onsubmit="return validatePasswords(event)" >
+
+                 <label for="name">User Name:</label>
+                <input type ="name" name="full-name" id="full-name" required>
 
                 <label for="email">Email:</label>
                 <input type="email" name="email" id="email" required>
@@ -44,7 +44,9 @@
 
                 <button type="submit">Sign in</button>
             </form>
+
             <?php
+
             if (isset($_GET['success']) && $_GET['success'] === 'ok') {
                 echo '<div id="otp-form-container">
                     <form id="otp-form" action="index.php?controller=user&action=verifyOTP" method="POST">

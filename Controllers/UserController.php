@@ -18,14 +18,10 @@ class UserController extends BaseController
 
     public function logout()
     {
-        // Hủy tất cả các biến session
         session_unset();
-
-        // Hủy phiên làm việc
         session_destroy();
+        header("Location: index.php");
 
-        // Chuyển hướng người dùng về trang đăng nhập
-        header("Location: index.php");  // Hoặc 'login.php' nếu bạn có trang đăng nhập riêng
         exit();
     }
     public function introduction()
