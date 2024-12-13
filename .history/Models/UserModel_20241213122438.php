@@ -9,6 +9,37 @@ class UserModel extends BaseModel
     }
 
 
+// Tìm người dùng theo username
+   public function findByUsername($username) {
+        $query = "SELECT * FROM users WHERE Name = ?";
+        $stmt = $this->connect->prepare($query); // Sử dụng kết nối từ BaseModel
+        if (!$stmt) {
+            die("Database error: " . $this->connect->error);
+        }
+        $stmt->bind_param("s", $username); // Ràng buộc tham số
+        $stmt->execute();
+        $result = $stmt->get_result();
+        echo "$query";
+
+        return $result->num_rows > 0 ? $result->fetch_assoc() : false;
+    }
+
+//Kiểm tra ng dùng khi đăng nhập
+      public function checkLogin($username, $password) {
+        $user = $this->findByUsername($username);
+        if ($user) {
+            // Mã hóa mật khẩu đầu vào bằng MD5 để so sánh
+            if ($user['password'] === md5($password)) {
+                return $user; // Mật khẩu khớp, trả về thông tin người dùng
+            } else {
+                echo "Mật khẩu không đúng.";
+            }
+        } else {
+            echo "Không tìm thấy người dùng.";
+        }
+        return false;
+    }
+
 
 
     // Tìm người dùng theo username
@@ -144,37 +175,6 @@ class UserModel extends BaseModel
 
 
 
-
-    // Tìm người dùng theo username
-   public function findusername($username) {
-        $query = "SELECT * FROM users WHERE Name = ?";
-        $stmt = $this->connect->prepare($query); // Sử dụng kết nối từ BaseModel
-        if (!$stmt) {
-            die("Database error: " . $this->connect->error);
-        }
-        $stmt->bind_param("s", $username); // Ràng buộc tham số
-        $stmt->execute();
-        $result = $stmt->get_result();
-        echo "$query";
-
-        return $result->num_rows > 0 ? $result->fetch_assoc() : false;
-    }
-
-//Kiểm tra ng dùng khi đăng nhập
-      public function checkLogin($username, $password) {
-        $user = $this->findusername($username);
-        if ($user) {
-            // Mã hóa mật khẩu đầu vào bằng MD5 để so sánh
-            if ($user['password'] === md5($password)) {
-                return $user; // Mật khẩu khớp, trả về thông tin người dùng
-            } else {
-                echo "Mật khẩu không đúng.";
-            }
-        } else {
-            echo "Không tìm thấy người dùng.";
-        }
-        return false;
-    }
 
 
 }

@@ -273,10 +273,6 @@ class UserController extends BaseController
             echo "Invalid OTP code.";
         }
     } 
-
-
-
-    
        // Hiển thị trang đăng nhập
     public function login() {
         include "Views/frontend/users/login.php"; // Đường dẫn đến view

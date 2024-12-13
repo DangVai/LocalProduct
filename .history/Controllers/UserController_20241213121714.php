@@ -273,41 +273,4 @@ class UserController extends BaseController
             echo "Invalid OTP code.";
         }
     } 
-
-
-
-    
-       // Hiển thị trang đăng nhập
-    public function login() {
-        include "Views/frontend/users/login.php"; // Đường dẫn đến view
-    }
-
-    // Xử lý đăng nhập
-    public function handleLogin() {
-        $username = $_POST['username'] ?? null;
-        $password = $_POST['password'] ?? null;
-
-        if (!$username || !$password) {
-            $error = "Not enough.";
-            header('Location: index.php?controller=user&action=login&error=' . urlencode('Please enter enough all fieldss!'));
-        exit;
-        }
-
-        $user = $this->userModel->checkLogin($username, $password); // Kiểm tra đăng nhập
-        if ($user) {
-            $_SESSION['user'] = $user; // Lưu thông tin người dùng vào session
-            header("Location: index.php?controller=user&action=home");
-            exit; // Điều hướng tới home.
-        } 
-    else {
-           $error = "invalid your infomationinfomation";
-        header('Location: index.php?controller=user&action=login&error=' . urlencode('Please enter right your information!'));
-        exit;
-    }
-    }
-
-    // Hiển thị trang đăng nhập (tuỳ chọn)
-    public function showLoginPage() {
-        include "Views/frontend/users/login.php"; // Đường dẫn tới view
-    }
 }
