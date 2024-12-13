@@ -24,14 +24,14 @@ class BaseModel extends db
         return $result->fetch_assoc();
     }
 
-    public function findByUsername($username)
-    {
-        $stmt = $this->connect->prepare("SELECT * FROM $this->table_name WHERE Name = ?");
-        $stmt->bind_param("s", $username);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        return $result->fetch_assoc();
-    }
+    // public function findByUsername($username)
+    // {
+    //     $stmt = $this->connect->prepare("SELECT * FROM $this->table_name WHERE Name = ?");
+    //     $stmt->bind_param("s", $username);
+    //     $stmt->execute();
+    //     $result = $stmt->get_result();
+    //     return $result->fetch_assoc();
+    // }
 
     public function store($columns, $values)
     {

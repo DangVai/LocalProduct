@@ -12,43 +12,30 @@ class UserController extends BaseController
 
     public function __construct()
     {
-        session_start();
         $this->loadModel('UserModel');
         $this->userModel = new UserModel();
     }
 
+    public function logout()
+    {
+        // Hủy tất cả các biến session
+        session_unset();
+
+        // Hủy phiên làm việc
+        session_destroy();
+
+        // Chuyển hướng người dùng về trang đăng nhập
+        header("Location: index.php");  // Hoặc 'login.php' nếu bạn có trang đăng nhập riêng
+        exit();
+    }
     public function introduction()
     {
         include 'Views/frontend/introduction.php';
-        // $this->view("frontend.introduction");
     }
-    // Hiển thị trang đăng nhập
-    public function login()
+    public function home()
     {
-        $this->view("frontend.users.login");
+        $this->view('frontend/home');
     }
-
-    public function handleLogin()
-    {
-        $username = $_POST['username'] ?? null;
-        $password = $_POST['password'] ?? null;
-
-        // Kiểm tra thông tin người dùng trong cơ sở dữ liệu
-        $user = $this->userModel->checkLogin($username, $password);
-
-        if ($user) {
-            // Nếu mật khẩu đúng, lưu thông tin người dùng vào session
-            $_SESSION['user'] = $user;
-            header('Location: index.php?controller=user&action=dashboard&success=' . urlencode('Log in successfully!'));
-            exit;
-        } else {
-            // Nếu sai thông tin đăng nhập, hiển thị thông báo lỗi
-            header('Location: index.php?controller=user&action=login&error=' . urlencode('Wrong login information.'));
-            exit;
-        }
-    }
-
-
     // Hiển thị trang quên mật khẩu
     public function forgot_password()
     {
@@ -164,4 +151,133 @@ class UserController extends BaseController
 
 
 
+
+
+
+    // Hiển thị trang đăng ký
+    public function register()
+    {
+        // $this->view('frontend.users.register', ['noHeaderFooter' => true]);
+        require('Views/frontend/users/register.php');
+
+    }
+
+    public function storeRegister()
+    {
+        $fullName = $_POST['full-name'] ?? null;
+        $email = $_POST['email'] ?? null;
+        $phone = $_POST['phone'] ?? null;
+        $password = $_POST['password'] ?? null;
+        $confirmPassword = $_POST['confirm-password'] ?? null;
+        $OTP = rand(100000, 999999);
+
+        // Debug: Ghi log thông tin
+        error_log("Register data: fullName=$fullName, email=$email, phone=$phone");
+
+        // Kiểm tra đầu vào
+        if (!$fullName || !$email || !$phone || !$password || !$confirmPassword) {
+            die("All fields are required!");
+        }
+
+        if ($password !== $confirmPassword) {
+            die("Passwords do not match!");
+        }
+
+        $hashedPassword = md5($password);
+
+        // Kiểm tra xem email hoặc tên người dùng đã tồn tại hay chưa
+        if ($this->userModel->findByUsername($fullName, $email)) {
+            die("User with this username or email already exists!");
+        }
+
+        // Lưu thông tin người dùng vào cơ sở dữ liệu
+        $result = $this->userModel->storeotp($fullName, $email, $phone, $hashedPassword, $OTP);
+
+        if ($result) {
+            error_log("User information stored successfully.");
+            if ($this->sendEmail($email, $OTP)) {
+                error_log("OTP email sent successfully to: $email");
+                $_SESSION['email_verification'] = $email;
+                header("Location: index.php?controller=user&action=register&success=ok");
+                exit;
+            } else {
+                error_log("Failed to send OTP email to: $email");
+                die("Failed to send OTP email.");
+            }
+        } else {
+            error_log("Failed to store user information into saveotp table.");
+            die("Failed to register user.");
+        }
+    }
+
+
+    public function OTP()
+    {
+        $email = $_SESSION['email_verification'] ?? null;
+
+        if (!$email) {
+            header("Location: index.php?controller=user&action=register");
+            exit;
+        }
+
+        $this->view('frontend.users.otp', ['noHeaderFooter' => true, 'email' => $email]);
+    }
+
+
+
+    public function sendEmail($email, $OTP)
+    {
+        $mail = new PHPMailer(true);
+
+        try {
+            $mail->isSMTP();
+            $mail->Host = 'smtp.gmail.com';
+            $mail->SMTPAuth = true;
+            $mail->Username = 'on.ho26@student.passerellesnumeriques.org'; // Email của bạn
+            $mail->Password = 'jriaycnpewjpslnu'; // Mật khẩu ứng dụng
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+            $mail->Port = 587;
+
+            $mail->setFrom('on.ho26@student.passerellesnumeriques.org', 'Your Website');
+            $mail->addAddress($email);
+
+            $mail->isHTML(true);
+            $mail->Subject = 'OTP verification code';
+            $mail->Body = "Your OTP code: <b>$OTP</b>";
+
+            $mail->send();
+            return true;
+        } catch (Exception $e) {
+            error_log('Mailer Error: ' . $mail->ErrorInfo);
+            return false;
+        }
+    }
+
+    public function verifyOTP()
+    {
+        $email = $_SESSION['email_verification'] ?? null;
+        $inputOTP = $_POST['OTP'] ?? null;
+
+        if (!$email || !$inputOTP) {
+            die("Invalid request.");
+        }
+
+        if ($this->userModel->checkOTP($email, $inputOTP)) {
+            // Nếu OTP hợp lệ, chuyển dữ liệu sang bảng `users`
+            $userData = $this->userModel->findByEmail($email);
+            if (!$userData) {
+                die("Email not found in saveotp table.");
+            }
+
+            if ($this->userModel->createUser($userData['Name'], $userData['email'], $userData['phone'], $userData['password'])) {
+                echo "Đăng ký thành công!";
+                unset($_SESSION['email_verification']);
+                header("Location: index.php?controller=user&action=login");
+            } else {
+                die("Error while creating user.");
+            }
+        } else {
+            echo "Mã OTP không hợp lệ.";
+        }
+    } 
 }

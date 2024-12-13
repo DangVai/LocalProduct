@@ -4,11 +4,11 @@ require './Models/BaseModel.php';
 // Import tệp chứa lớp cơ bản cho các Controllers
 require './Controllers/BaseController.php';
 
-// Lấy tên controller từ tham số 'controller' trong URL (ví dụ: index.php?controller=Home)
-$controllersName = ucfirst(strtolower($_REQUEST['controller'] ?? 'index')) . 'Controller'; // Default to 'IndexController' if not provided
+// Lấy tên controller từ tham số 'controller' trong URL
+$controllersName = ucfirst(strtolower($_REQUEST['controller'] ?? 'index')) . 'Controller'; // Default to 'IndexController'
 
-// Lấy tên action từ tham số 'action' trong URL (ví dụ: index.php?action=view)
-$actionName = $_REQUEST['action'] ?? 'introduction'; // Default to 'index' if not provided
+// Lấy tên action từ tham số 'action' trong URL
+$actionName = $_REQUEST['action'] ?? 'introduction'; // Default to 'introduction'
 
 // Đường dẫn đến tệp Controller tương ứng
 $controllerPath = './Controllers/' . $controllersName . '.php';

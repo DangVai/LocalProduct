@@ -41,7 +41,7 @@
     <video id="autoPlayVideo" autoplay loop muted>
         <source src="/localProducts/public/videos/6122180284134.mp4" type="video/mp4">
     </video>
-    <button id="button" onclick="window.location.href='Views/frontend/users/forgot_password.php'">Go to home
+    <button id="button" onclick="window.location.href='/localProducts/index.php?controller=user&action=forgot_password'">Go to home
         pages</button>
     <script>
         const video = document.getElementById('autoPlayVideo');
