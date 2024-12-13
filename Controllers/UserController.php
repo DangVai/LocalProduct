@@ -12,26 +12,17 @@ class UserController extends BaseController
 
     public function __construct()
     {
+        session_start();
         $this->loadModel('UserModel');
         $this->userModel = new UserModel();
     }
 
-    public function logout()
-    {
-        session_unset();
-        session_destroy();
-        header("Location: index.php");
-
-        exit();
-    }
     public function introduction()
     {
         include 'Views/frontend/introduction.php';
+        // $this->view("frontend.introduction");
     }
-    public function home()
-    {
-        $this->view('frontend/home');
-    }
+
     // Hiển thị trang quên mật khẩu
     public function forgot_password()
     {
@@ -172,7 +163,7 @@ class UserController extends BaseController
 
         // Kiểm tra đầu vào
         if (!$fullName || !$email || !$phone || !$password || !$confirmPassword) {
-            die("All fields are required!");
+            die("You have not entered enough fields!");
         }
 
         if ($password !== $confirmPassword) {
@@ -183,7 +174,7 @@ class UserController extends BaseController
 
         // Kiểm tra xem email hoặc tên người dùng đã tồn tại hay chưa
         if ($this->userModel->findByUsername($fullName, $email)) {
-            die("User with this username or email already exists!");
+            die("User with this username or email already exists!Please choose another username or email.");
         }
 
         // Lưu thông tin người dùng vào cơ sở dữ liệu
@@ -202,7 +193,7 @@ class UserController extends BaseController
             }
         } else {
             error_log("Failed to store user information into saveotp table.");
-            die("Failed to register user.");
+            die("Your registration failed.");
         }
     }
 
@@ -266,14 +257,14 @@ class UserController extends BaseController
             }
 
             if ($this->userModel->createUser($userData['Name'], $userData['email'], $userData['phone'], $userData['password'])) {
-                echo "Đăng ký thành công!";
+                echo "Registration successfully!";
                 unset($_SESSION['email_verification']);
                 header("Location: index.php?controller=user&action=login");
             } else {
                 die("Error while creating user.");
             }
         } else {
-            echo "Mã OTP không hợp lệ.";
+            echo "Invalid OTP code.";
         }
     } 
 }

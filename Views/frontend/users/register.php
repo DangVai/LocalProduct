@@ -5,16 +5,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Un</title>
-    <link rel="stylesheet" href="/localProducts/public/css/signUp.css">
-    <script src="/localProducts/public/js/signUp.js"></script>
+    <link rel="stylesheet" href="/LocalProduct/public/css/signUp.css">
+    <script src="/LocalProduct/public/js/signUp.js"></script>
 
 </head>
-
-<body>
+ <body>
     <!-- Phần 1: Logo, tiêu đề, và hình ảnh trang phục -->
     <div class="header-section">
-        <img src="/localProducts/public/images/logo.jpg" alt="Logo" class="logo">
-        <img src="/localProducts/public/images/sao.jpg" alt="Logo" class="logo">
+        <img src="/LocalProduct/public/images/logo.jpg" alt="Logo" class="logo">
+        <img src="/LocalProduct/public/images/sao.jpg" alt="Logo" class="logo">
     </div>
 
     <!-- <h1>Sign Up</h1> -->
@@ -24,7 +23,6 @@
         <h1>Sign Up</h1>
         <!-- Left Content: Form đăng ký -->
         <div class="left-content">
-
             <form id="registration-form" action="index.php?controller=user&action=storeRegister" method="POST" onsubmit="return validatePasswords(event)" >
 
                  <label for="name">User Name:</label>
@@ -44,9 +42,7 @@
 
                 <button type="submit">Sign in</button>
             </form>
-
-            <?php
-
+            <?php 
             if (isset($_GET['success']) && $_GET['success'] === 'ok') {
                 echo '<div id="otp-form-container">
                     <form id="otp-form" action="index.php?controller=user&action=verifyOTP" method="POST">
@@ -58,11 +54,11 @@
             } else {
                 echo '<div id="otp-form-container" style="display: none;"></div>';
             }
-            ?>
+        ?>
         </div>
 
 
-        <!-- Thanh dọc phân cách -->
+            <!-- Thanh dọc phân cách -->
         <div class="vertical-divider"></div>
 
         <!-- Right Content: Nút đăng nhập Google và Facebook -->
