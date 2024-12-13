@@ -11,8 +11,8 @@
     <script src="/localProducts/public/js/ForgotPassword.js"></script>
 <body>
   <div class="logo-container">
-    <img class="logo" src="https://media-cdn-v2.laodong.vn/Storage/NewsPortal/2023/3/10/1156158/Anh-5.JPG" alt="">
-    <img class="logo" src="https://media-cdn-v2.laodong.vn/Storage/NewsPortal/2023/3/10/1156158/Anh-5.JPG" alt="">
+    <img class="logo" src="public/images/logo.jpg" alt="">
+    <img class="logo" src="public/images/sao.jpg" alt="">
   </div>
     <h1>Forgot Password</h1>
 
