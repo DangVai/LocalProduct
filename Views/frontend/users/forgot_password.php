@@ -6,9 +6,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Forgot Password</title>
-  <link rel="stylesheet" href="/localProducts/public/css/ForgotPassword.css">
+  <link rel="stylesheet" href="/LocalProduct/public/css/ForgotPassword.css">
 </head>
-    <script src="/localProducts/public/js/ForgotPassword.js"></script>
+    <script src="/LocalProduct/public/js/ForgotPassword.js"></script>
 <body>
   <div class="logo-container">
     <img class="logo" src="public/images/logo.jpg" alt="">

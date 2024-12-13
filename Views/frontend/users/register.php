@@ -10,6 +10,16 @@
 
 </head>
  <body>
+     <?php
+          // Kiểm tra lỗi hoặc thông báo thành công từ URL
+          if (isset($_GET['error'])) {
+            echo '<p style="color: red;">' . htmlspecialchars($_GET['error']) . '</p>';
+          }
+          if (isset($_GET['success'])) {
+            echo '<p style="color: green;">' . htmlspecialchars($_GET['success']) . '</p>';
+            echo "<script>showAdditionalFields();</script>";
+          }
+    ?>
     <!-- Phần 1: Logo, tiêu đề, và hình ảnh trang phục -->
     <div class="header-section">
         <img src="/LocalProduct/public/images/logo.jpg" alt="Logo" class="logo">
@@ -80,6 +90,8 @@
     <div class="last">
         Have you been an account? <a href="./login.php">log in</a>
     </div>
+
+   
 
 
 </body>

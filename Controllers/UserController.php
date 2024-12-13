@@ -12,7 +12,7 @@ class UserController extends BaseController
 
     public function __construct()
     {
-        session_start();
+        // session_start();
         $this->loadModel('UserModel');
         $this->userModel = new UserModel();
     }
@@ -141,6 +141,10 @@ class UserController extends BaseController
 
 
 
+
+
+
+
     // Hiển thị trang đăng ký
     public function register()
     {
@@ -168,13 +172,15 @@ class UserController extends BaseController
 
         if ($password !== $confirmPassword) {
             die("Passwords do not match!");
+            
         }
 
         $hashedPassword = md5($password);
 
         // Kiểm tra xem email hoặc tên người dùng đã tồn tại hay chưa
         if ($this->userModel->findByUsername($fullName, $email)) {
-            die("User with this username or email already exists!Please choose another username or email.");
+            header('Location: index.php?controller=user&action=register&error=' . urlencode('User with this username or email already exists!Please choose another username or email!'));
+        exit;
         }
 
         // Lưu thông tin người dùng vào cơ sở dữ liệu
@@ -188,8 +194,8 @@ class UserController extends BaseController
                 header("Location: index.php?controller=user&action=register&success=ok");
                 exit;
             } else {
-                error_log("Failed to send OTP email to: $email");
-                die("Failed to send OTP email.");
+                 header('Location: index.php?controller=user&action=register&error=' . urlencode('Failed to send OTP email.'));
+            exit;
             }
         } else {
             error_log("Failed to store user information into saveotp table.");
@@ -203,7 +209,7 @@ class UserController extends BaseController
         $email = $_SESSION['email_verification'] ?? null;
 
         if (!$email) {
-            header("Location: index.php?controller=user&action=register");
+            header("Location: index.php?controller=user&action=register".urlencode('OTP have been send.'));
             exit;
         }
 
@@ -230,7 +236,7 @@ class UserController extends BaseController
 
             $mail->isHTML(true);
             $mail->Subject = 'OTP verification code';
-            $mail->Body = "Your OTP code: <b>$OTP</b>";
+            $mail->Body = "Your OTP code:<b>$OTP</b>";
 
             $mail->send();
             return true;
@@ -259,7 +265,7 @@ class UserController extends BaseController
             if ($this->userModel->createUser($userData['Name'], $userData['email'], $userData['phone'], $userData['password'])) {
                 echo "Registration successfully!";
                 unset($_SESSION['email_verification']);
-                header("Location: index.php?controller=user&action=login");
+                header("Location: index.php?controller=user&action=login".urlencode('Login page.'));
             } else {
                 die("Error while creating user.");
             }
