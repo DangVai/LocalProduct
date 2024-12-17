@@ -12,10 +12,11 @@
     <header>
         <nav>
             <ul>
-                <li><a href="index.php?controller=product&action=index">Trang chủ</a></li>
+                <li><a href="index.php?controller=user&action=introduction">Trang chủ</a></li>
                 <li><a href="index.php?controller=user&action=login">Đăng nhập</a></li>
                 <li><a href="index.php?controller=user&action=register">Đăng ký</a></li>
-                <li><a href="index.php?controller=user&action=home">Đăng Xuất</a></li>
+                <li><a href="index.php?controller=user&action=logout">Đăng Xuất</a></li>
+
             </ul>
         </nav>
     </header>
