@@ -11,8 +11,8 @@
     <script src="/LocalProduct/public/js/ForgotPassword.js"></script>
 <body>
   <div class="logo-container">
-    <img class="logo" src="public/images/logo.jpg" alt="">
-    <img class="logo" src="public/images/sao.jpg" alt="">
+    <img class="logo" src="/LocalProduct/public/images/logo.jpg" alt="">
+    <img class="logo" src="/LocalProduct/public/images/sao.jpg" alt="">
   </div>
     <h1>Forgot Password</h1>
 
