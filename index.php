@@ -1,7 +1,6 @@
 <?php
 require './Config/db.php';
 require './Models/BaseModel.php';
-// Import tệp chứa lớp cơ bản cho các Controllers
 require './Controllers/BaseController.php';
 
 // Lấy tên controller từ tham số 'controller' trong URL
@@ -15,42 +14,54 @@ $controllerPath = './Controllers/' . $controllersName . '.php';
 
 // Kiểm tra xem tệp Controller có tồn tại không
 if (!file_exists($controllerPath)) {
-    error_log("Controller file '{$controllersName}.php' not found.");
-    exit("Controller not found");
+    // error_log("Controller file '{$controllersName}.php' not found.");
+    // Nếu không tìm thấy controller hoặc action, hiển thị trang 404
+    header('Location: /LocalProduct/Views/frontend/404.php');
+    // include '/LocalProduct/Views/frontend/404.php';
+    exit;
+
 }
 
 require $controllerPath; // Nhúng file Controller
 
 // Kiểm tra xem lớp Controller có tồn tại không
 if (!class_exists($controllersName)) {
-    error_log("Controller class '{$controllersName}' not found.");
-    exit("Controller class not found");
+    header('Location: /LocalProduct/Views/frontend/404.php');
+    // include '/LocalProduct/Views/frontend/404.php';
+    exit;
 }
 
 // Tạo đối tượng từ lớp Controller đã nhập
 $controllerObject = new $controllersName();
 
-// Kiểm tra xem có yêu cầu 'handleLogin' từ controller 'user'
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_GET['controller'] === 'user' && $_GET['action'] === 'handleLogin') {
-    $controllerObject->handleLogin();  // Gọi phương thức handleLogin từ đối tượng hiện tại
-}
-
-// Kiểm tra xem phương thức (action) có tồn tại không
+// Kiểm tra nếu phương thức (action) có tồn tại không
 if (!method_exists($controllerObject, $actionName)) {
-    error_log("Action '{$actionName}' not found in '{$controllersName}' controller.");
-    exit("Action not found");
+    header('Location: /LocalProduct/Views/frontend/404.php');
+    // include '/LocalProduct/Views/frontend/404.php';
+    exit;
 }
 
 // Lấy danh sách tham số của phương thức
-$actionNameArgs = $controllerObject->get_func_argNames($actionName);
+$actionNameArgs = get_func_argNames($controllerObject, $actionName);
 
-// Kiểm tra nếu phương thức có tham số và extract chúng từ $_REQUEST
-$intersectKeys = extractProperties($_REQUEST, $actionNameArgs);
+// Lọc tham số từ $_REQUEST và truyền vào phương thức
+$params = [];
+foreach ($actionNameArgs as $argName) {
+    $params[] = $_REQUEST[$argName] ?? null; // Nếu không có tham số, truyền giá trị null
+}
 
-$controllerObject->$actionName(...array_values($intersectKeys));
+// Gọi phương thức với các tham số đã xử lý
+$controllerObject->$actionName(...$params);
 
-// Hàm lấy tên các tham số của phương thức
-function extractProperties(array $array, array $keys): array
+/**
+ * Hàm lấy danh sách tham số của một phương thức
+ * @param object $object - Đối tượng chứa phương thức
+ * @param string $methodName - Tên phương thức
+ * @return array - Danh sách tên các tham số
+ */
+function get_func_argNames($object, $methodName)
 {
-    return array_intersect_key($array, array_flip($keys));
+    $reflection = new ReflectionMethod($object, $methodName);
+    $params = $reflection->getParameters();
+    return array_map(fn($param) => $param->getName(), $params);
 }
