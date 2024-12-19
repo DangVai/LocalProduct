@@ -1,15 +1,17 @@
+# Bật chế độ Rewrite
 RewriteEngine On
-RewriteBase /localProducts/
 
-# Nếu không có tham số truy vấn, chuyển đến controller và action mặc định
+# Đặt thư mục gốc cho Rewrite
+RewriteBase /LocalProduct/
+
+# Nếu không có tham số truy vấn, chuyển hướng đến controller và action mặc định
 RewriteCond %{QUERY_STRING} ^$
-RewriteRule ^$ index.php?controller=user&action=introduction [L]
+RewriteRule ^$ index.php?controller=user&action=login [L]
 
-# Nếu file hoặc thư mục tồn tại, thì truy cập trực tiếp
+# Nếu file hoặc thư mục tồn tại, cho phép truy cập trực tiếp
 RewriteCond %{REQUEST_FILENAME} -f [OR]
 RewriteCond %{REQUEST_FILENAME} -d
 RewriteRule ^ - [L]
 
-# Nếu không tồn tại, chuyển hướng  đến index.php
-RewriteRule ^ index.php [L]
-
+# Chuyển hướng tất cả các yêu cầu còn lại về index.php
+RewriteRule ^ index.php [L,QSA]

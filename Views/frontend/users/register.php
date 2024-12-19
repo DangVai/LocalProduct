@@ -6,10 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Un</title>
     <link rel="stylesheet" href="/LocalProduct/public/css/signUp.css">
+    <link rel="stylesheet" href="/LocalProduct/public/css/load.css">
     <script src="/LocalProduct/public/js/signUp.js"></script>
+    <script src="/LocalProduct/public/js/load.js"></script>
 
 </head>
  <body>
+                <div id="loading" class="loading-overlay">
+                <div class="spinner"></div>
+                <p>Loading...</p>
+            </div>
      <?php
           // Kiểm tra lỗi hoặc thông báo thành công từ URL
           if (isset($_GET['error'])) {
@@ -19,6 +25,7 @@
             echo '<p style="color: green;">' . htmlspecialchars($_GET['success']) . '</p>';
             echo "<script>showAdditionalFields();</script>";
           }
+
     ?>
     <!-- Phần 1: Logo, tiêu đề, và hình ảnh trang phục -->
     <div class="header-section">
@@ -88,12 +95,8 @@
 
     <!-- Phần cuối: Đường dẫn đến trang đăng nhập -->
     <div class="last">
-        Have you been an account? <a href="./login.php">log in</a>
+        Have you been an account? <a href="index.php?controller=user&action=login">log in</a>
     </div>
-
-   
-
-
 </body>
 
 </html>
