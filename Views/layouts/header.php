@@ -16,7 +16,6 @@
                 <li><a href="index.php?controller=user&action=login">Đăng nhập</a></li>
                 <li><a href="index.php?controller=user&action=register">Đăng ký</a></li>
                 <li><a href="index.php?controller=user&action=logout">Đăng Xuất</a></li>
-
             </ul>
         </nav>
     </header>

@@ -23,6 +23,20 @@ class UserController extends BaseController
         // $this->view("frontend.introduction");
     }
 
+    public function logOut()
+    {
+        session_start(); // Bắt đầu phiên làm việc
+
+        // Xóa các giá trị session
+        session_unset();
+
+        // Hủy phiên làm việc
+        session_destroy();
+
+        // Chuyển hướng người dùng đến trang đăng nhập
+        header("Location: /LocalProduct/index.php?controller=user&action=login");
+        exit();
+    }
     // Hiển thị trang quên mật khẩu
     public function forgot_password()
     {
@@ -265,7 +279,7 @@ class UserController extends BaseController
             if ($this->userModel->createUser($userData['Name'], $userData['email'], $userData['phone'], $userData['password'])) {
                 echo "Registration successfully!";
                 unset($_SESSION['email_verification']);
-                header("Location: index.php?controller=user&action=login".urlencode('Login page.'));
+                header("Location: index.php?controller=user&action=login");
             } else {
                 die("Error while creating user.");
             }
@@ -296,7 +310,12 @@ class UserController extends BaseController
         $user = $this->userModel->checkLogin($username, $password); // Kiểm tra đăng nhập
         if ($user) {
             $_SESSION['user'] = $user; // Lưu thông tin người dùng vào session
-            header("Location: index.php?controller=user&action=home");
+            $_SESSION['user_id'] = $user['user_id'];
+            $_SESSION['user_name'] = $user['Name'];
+            $_SESSION['user_email'] = $user['email'];
+            $_SESSION['user_phone'] = $user['phone'];
+            $_SESSION['user_avatar'] = $user['avata']; // Nếu có
+            header("Location: index.php?controller=product&action=showProduct");
             exit; // Điều hướng tới home.
         } 
     else {
@@ -311,15 +330,6 @@ class UserController extends BaseController
         include "Views/frontend/users/login.php"; // Đường dẫn tới view
     }
 
-
-    //Logout
-    public function logout()
-    {
-        session_unset();
-        session_destroy();
-        header("Location: index.php");
-        exit();
-    }
     public function home()
     {
         $this->view('frontend/home');
