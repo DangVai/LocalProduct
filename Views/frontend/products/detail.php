@@ -154,7 +154,7 @@ if (isset($_SESSION['order_error'])) {
                                 </span>&#9829;</button>
                         </div>
                         <h3>Details</h3>
-                        <p class="product-description"><?php echo $product['description']; ?></p>
+                        <p class="product-descriptions"><?php echo $product['description']; ?></p>
                     </div>
 
                 </div>
@@ -167,7 +167,7 @@ if (isset($_SESSION['order_error'])) {
 
                                 <div class="product-details">
                                     <div>
-                                        <h3 class="product-description"><?php echo $product['name']; ?></h3>
+                                        <h3 class="product-descriptions"><?php echo $product['name']; ?></h3>
                                         <p> Price: <span id="product-price"
                                                 class="product-price"><?php echo number_format($product['price'], 2, ',', '.'); ?>$
                                             </span></p>

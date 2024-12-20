@@ -45,7 +45,7 @@
             width: 450px;
         }
 
-        .product-description {
+        .product-descriptions {
             width: 100%;
             font-size: 16px;
             color: #666;
@@ -277,12 +277,6 @@
             flex-grow: 1;
         }
 
-        .product-description {
-            width: 100%;
-            font-size: 16px;
-            margin: 0;
-            font-weight: bold;
-        }
 
         .product-price {
             font-size: 20px;
