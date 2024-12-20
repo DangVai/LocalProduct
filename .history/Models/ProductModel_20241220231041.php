@@ -3,18 +3,20 @@ class ProductModel extends BaseModel
 {
 
     const TABLE_NAME = 'products';
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct(self::TABLE_NAME);
     }
 
-    // Mảng chứa các sản phẩm
+// Mảng chứa các sản phẩm
     public function getAll()
     {
         return $this->all();
     }
 
-    public function findProduct($id) {}
+    public function findProduct($id)
+    {
+        
+    }
     public function getById($id)
     {
         // Truy vấn lấy thông tin sản phẩm
@@ -147,17 +149,5 @@ ON
         } else {
             return false;
         }
-    }
-    //Home featured productsproducts
-    public function getFeaturedProductsByQuantity()
-    {
-        $query = "SELECT p.product_id, p.name, p.category, p.price, p.quantity, i.img AS image_url
-                  FROM products p
-                  LEFT JOIN image i ON p.product_id = i.product_id
-                  ORDER BY p.quantity DESC
-                  LIMIT 10"; // Lấy 10 sản phẩm có số lượng lớn nhất
-
-        $result = $this->connect->query($query);
-        return $result->fetch_all(MYSQLI_ASSOC);
     }
 }

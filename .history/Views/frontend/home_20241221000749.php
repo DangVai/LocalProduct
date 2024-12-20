@@ -119,7 +119,9 @@
         </div>
     </div>
     </div>
-    <script src="/LocalProduct/public/js/home.js"></script>
+    <script src="/LocalProduct">
+
+    </script>
 </body>
 
 </html>
