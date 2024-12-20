@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Un</title>
     <link rel="stylesheet" href="/LocalProduct/public/css/signUp.css">
-    <link rel="stylesheet" href="/LocalProduct/public/css/load.css">
     <script src="/LocalProduct/public/js/signUp.js"></script>
+    <link rel="stylesheet" href="/LocalProduct/public/css/load.css">
     <script src="/LocalProduct/public/js/load.js"></script>
 
 </head>
@@ -16,17 +16,6 @@
                 <div class="spinner"></div>
                 <p>Loading...</p>
             </div>
-     <?php
-          // Kiểm tra lỗi hoặc thông báo thành công từ URL
-          if (isset($_GET['error'])) {
-            echo '<p style="color: red;">' . htmlspecialchars($_GET['error']) . '</p>';
-          }
-          if (isset($_GET['success'])) {
-            echo '<p style="color: green;">' . htmlspecialchars($_GET['success']) . '</p>';
-            echo "<script>showAdditionalFields();</script>";
-          }
-
-    ?>
     <!-- Phần 1: Logo, tiêu đề, và hình ảnh trang phục -->
     <div class="header-section">
         <img src="/LocalProduct/public/images/logo.jpg" alt="Logo" class="logo">
@@ -56,7 +45,18 @@
 
                 <label for="confirm-password">Re-enter Password:</label>
                 <input type="password" name="confirm-password" id="confirm-password" required>
+                 <div id="error-message" style="color: red;"></div>
+                    <?php
+                    // Kiểm tra lỗi hoặc thông báo thành công từ URL
+                    if (isset($_GET['error'])) {
+                        echo '<p style="color: red;">' . htmlspecialchars($_GET['error']) . '</p>';
+                    }
+                    if (isset($_GET['success'])) {
+                        echo '<p style="color: green;">' . htmlspecialchars($_GET['success']) . '</p>';
+                        echo "<script>showAdditionalFields();</script>";
+                    }
 
+                    ?>
                 <button type="submit">Sign in</button>
             </form>
             <?php 
@@ -97,6 +97,38 @@
     <div class="last">
         Have you been an account? <a href="index.php?controller=user&action=login">log in</a>
     </div>
+
+    <script>
+        document.querySelector("form").addEventListener("submit", function (event) {
+    const phoneInput = document.getElementById("phone").value.trim();
+    const errorMessage = document.getElementById("error-message"); // Đảm bảo có phần tử với id "error-message"
+
+    // Xóa thông báo lỗi cũ (nếu có)
+    errorMessage.textContent = "";
+
+    // Kiểm tra nếu rỗng
+    if (phoneInput === "") {
+        errorMessage.textContent = "Phone number is required.";
+        event.preventDefault();
+        return;
+    }
+
+    // Kiểm tra nếu không phải số hoặc không đủ độ dài
+    if (!/^\d{10,}$/.test(phoneInput)) {
+        errorMessage.textContent = "Phone number must be at least 10 digits long.";
+        event.preventDefault();
+        return;
+    }
+
+    // Kiểm tra nếu không bắt đầu bằng số 0
+    if (!phoneInput.startsWith("0")) {
+        errorMessage.textContent = "Phone number must start with 0.";
+        event.preventDefault();
+        return;
+    }
+});
+
+    </script>
 </body>
 
 </html>
