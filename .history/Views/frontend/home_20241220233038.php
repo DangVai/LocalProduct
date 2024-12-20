@@ -119,7 +119,23 @@
         </div>
     </div>
     </div>
-    <script src="/LocalProduct/public/js/home.js"></script>
+    <script>
+        function autoSlide(sliderId) {
+            const slides = document.querySelector(`#${sliderId}`);
+            const totalSlides = slides.children.length;
+            let currentSlide = 0;
+
+            setInterval(() => {
+                currentSlide = (currentSlide + 1) % totalSlides;
+                const offset = -currentSlide * 100;
+                slides.style.transform = `translateX(${offset}%)`;
+            }, 3000); // Thay đổi ảnh sau mỗi 3 giây
+        }
+
+        autoSlide('slider1');
+        autoSlide('slider2');
+        autoSlide('slider3');
+    </script>
 </body>
 
 </html>
