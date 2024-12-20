@@ -17,7 +17,6 @@
 <body>
     <div class=" footer ">
         <!-- Follow Us -->
-
         <div class="footer-follow ">
             <!-- Logo -->
             <!-- <div class="box_logo ">
@@ -36,9 +35,13 @@
         <div class="footer-aboutus ">
             <h3>About Us</h3>
 
-            <p>The website selling traditional products of the Bru - Vân Kiều and Pa Cô people offers unique items, from
+            <<<<<<< HEAD
+                <p>The website selling traditional products of the Bru - Vân Kiều and Pa Cô people offers unique items, from
                 clothing to handicrafts. Each product reflects distinct cultural traits and contributes to the
                 preservation of cultural heritage.</p>
+                =======
+                <p>The website selling traditional products of the Bru - Vân Kiều and Pa Cô people offers unique items, from clothing to handicrafts. Each product reflects distinct cultural traits and contributes to the preservation of cultural heritage.</p>
+                >>>>>>> 1921997579a8f09c82194ee3cbb13d0929ea7f9e
 
         </div>
 

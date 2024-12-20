@@ -10,6 +10,7 @@ class ProductController extends BaseController
     }
 
 
+
     public function index()
     {
         $products = $this->productModel->getAll();
@@ -24,6 +25,7 @@ class ProductController extends BaseController
         $this->view('frontend.products.index', ['products' => $products]);
     }
     public function search($extractProperties) {}
+
 
     public function detail($id)
     {

@@ -45,7 +45,7 @@
             width: 450px;
         }
 
-        .product-description {
+        .product-descriptions {
             width: 100%;
             font-size: 16px;
             color: #666;
@@ -277,12 +277,6 @@
             flex-grow: 1;
         }
 
-        .product-description {
-            width: 100%;
-            font-size: 16px;
-            margin: 0;
-            font-weight: bold;
-        }
 
         .product-price {
             font-size: 20px;
@@ -438,3 +432,39 @@
         .comment-input button:hover {
             background-color: #0056b3; /* Màu xanh đậm hơn khi hover */
         }
+
+
+
+        /* Thông báo thành công */
+.success-message {
+    background-color: #4CAF50; /* Màu nền xanh lá */
+    color: white;
+    padding: 20px;
+    margin: 15px 0;
+    border-radius: 5px;
+    text-align: center;
+}
+
+/* Thông báo lỗi */
+.error-message {
+    background-color: #f44336; /* Màu nền đỏ */
+    color: white;
+    padding: 20px;
+    margin: 15px 0;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.success-message:hover {
+    opacity: 0.9;
+}
+.error-message:hover {
+    opacity: 0.9;
+}
+/* Đảm bảo thông báo không bị tràn màn hình trên các thiết bị nhỏ */
+@media (max-width: 600px) {
+    .success-message {
+        font-size: 14px;
+        padding: 15px;
+    }
+}
