@@ -14,7 +14,10 @@ class ProductModel extends BaseModel
         return $this->all();
     }
 
-    public function findProduct($id) {}
+    public function findProduct($id)
+    {
+
+    }
     public function getById($id)
     {
         // Truy vấn lấy thông tin sản phẩm
@@ -186,21 +189,6 @@ class ProductModel extends BaseModel
         }
     }
 
-    //Home featured productsproducts
-    public function getFeaturedProductsByQuantity()
-    {
-        $query = "SELECT p.product_id, p.name, p.category, p.price, p.quantity, i.img AS image_url
-                  FROM products p
-                  LEFT JOIN image i ON p.product_id = i.product_id
-                  ORDER BY p.quantity DESC
-                  LIMIT 10"; // Lấy 10 sản phẩm có số lượng lớn nhất
-
-        $result = $this->connect->query($query);
-        return $result->fetch_all(MYSQLI_ASSOC);
-    }
-}
-
-
 
     public function addToCart($userId, $productId, $size, $quantity)
     {
@@ -214,5 +202,17 @@ class ProductModel extends BaseModel
 
         return $stmt->execute();
     }
-}
 
+    //Home featured productsproducts
+    public function getFeaturedProductsByQuantity()
+    {
+        $query = "SELECT p.product_id, p.name, p.category, p.price, p.quantity, i.img AS image_url
+                  FROM products p
+                  LEFT JOIN image i ON p.product_id = i.product_id
+                  ORDER BY p.quantity DESC
+                  LIMIT 10"; // Lấy 10 sản phẩm có số lượng lớn nhất
+
+        $result = $this->connect->query($query);
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+}
