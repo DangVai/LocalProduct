@@ -14,10 +14,7 @@ class ProductModel extends BaseModel
         return $this->all();
     }
 
-    public function findProduct($id)
-    {
-
-    }
+    public function findProduct($id) {}
     public function getById($id)
     {
         // Truy vấn lấy thông tin sản phẩm
@@ -79,32 +76,30 @@ class ProductModel extends BaseModel
     }
 
 
-    public function getByCategory($category, $excludeId)
+
+
+
+    public function getAllProductsWithImages()
     {
         $sql = "SELECT 
-        p.product_id AS product_id,
-        p.name AS product_name,
-        p.category,
-        p.quantity,
-        p.type,
-        p.price,
-        p.product_view_at,
-        p.description,
-        -- Chỉ lấy một hình ảnh đầu tiên cho mỗi sản phẩm
-        MAX(pi.img) AS product_image
-    FROM 
-        products p
-    LEFT JOIN 
-        image pi
-    ON 
-        p.product_id = pi.product_id
-    WHERE 
-        p.category = ? AND p.product_id != ? AND pi.img IS NOT NULL
-    GROUP BY 
-        p.product_id"; // Nhóm theo product_id để mỗi sản phẩm xuất hiện một lầnu
+    p.product_id AS product_id,
+    p.name AS product_name,
+    p.category,
+    p.quantity,
+    p.type,
+    p.price,
+    p.product_view_at,
+    p.description,
+    pi.img AS product_image
+FROM 
+    products p
+LEFT JOIN 
+    image pi
+ON 
+    p.product_id = pi.product_id;
+";
 
         $stmt = $this->connect->prepare($sql);
-        $stmt->bind_param("si", $category, $excludeId); // Liên kết cả category và excludeId với câu truy vấn SQL
         $stmt->execute();
         $result = $stmt->get_result();
 
@@ -116,41 +111,6 @@ class ProductModel extends BaseModel
 
         return $result->fetch_all(MYSQLI_ASSOC);
     }
-
-
-    public function getAllProductsWithImages()
-    {
-        $sql = "SELECT 
-        p.product_id AS product_id,
-        p.name AS product_name,
-        p.category,
-        p.quantity,
-        p.type,
-        p.price,
-        p.product_view_at,
-        p.description,
-        pi.img AS product_image
-    FROM 
-        products p
-    LEFT JOIN 
-        image pi
-    ON 
-        p.product_id = pi.product_id";  // Không cần WHERE, lấy tất cả sản phẩm
-
-        $stmt = $this->connect->prepare($sql);
-        $stmt->execute();
-        $result = $stmt->get_result();
-
-        if ($result->num_rows === 0) {
-            // Debug thông báo nếu không tìm thấy sản phẩm
-            error_log("Không tìm thấy sản phẩm nào trong cơ sở dữ liệu.");
-            return [];
-        }
-
-        return $result->fetch_all(MYSQLI_ASSOC);  // Lấy tất cả sản phẩm trong cơ sở dữ liệu
-    }
-
-
 
 
 
@@ -188,21 +148,6 @@ class ProductModel extends BaseModel
             return false;
         }
     }
-
-
-    public function addToCart($userId, $productId, $size, $quantity)
-    {
-        $size = $size ?? 'Default Size';  // Nếu không có size, sử dụng 'Default Size'
-        $quantity = $quantity ?? 1;       // Nếu không có quantity, sử dụng 1
-
-        // Chuẩn bị câu lệnh SQL để thêm sản phẩm vào giỏ hàng
-        $query = "INSERT INTO cart (user_id, product_id, size, quantity) VALUES (?, ?, ?, ?)";
-        $stmt = $this->connect->prepare($query);
-        $stmt->bind_param("iisi", $userId, $productId, $size, $quantity); // 'i' cho integer, 's' cho string
-
-        return $stmt->execute();
-    }
-
     //Home featured productsproducts
     public function getFeaturedProductsByQuantity()
     {
