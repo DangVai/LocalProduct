@@ -1,0 +1,230 @@
+    /* Reset mặc định */
+    
+    body,
+    h1,
+    p,
+    a,
+    button,
+    input {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+    }
+    
+    .login_container {
+        background-color: white;
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    /* Phần login */
+    
+    .logo-top-left {
+        position: absolute;
+        top: 10px;
+        left: 30px;
+        width: 145px;
+        height: 140px;
+        z-index: 10;
+    }
+    
+    .logo-top-right {
+        position: absolute;
+        top: 20px;
+        right: 30px;
+        width: 145px;
+        height: 140px;
+        z-index: 10;
+    }
+    
+    .login_container {
+        position: relative;
+    }
+    
+    .login {
+        width: 100%;
+        height: 100vh;
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    /* Tiêu đề form (dấu gạch ngang) */
+    
+    .form-title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 60px;
+        margin-bottom: 10px;
+        margin-top: 94px;
+        color: #333;
+    }
+    
+    .form-title::before,
+    .form-title::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background-color: #ccc;
+    }
+    /* Body của login */
+    
+    .body_signin {
+        display: flex;
+        width: 100%;
+        gap: 20px;
+        align-items: center;
+        justify-content: space-between;
+        flex: 1;
+    }
+    /* Phần ảnh và nút */
+    
+    .anh {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+    }
+    
+    .slider {
+        width: 650px;
+        height: 500px;
+        overflow: hidden;
+        border-radius: 10px;
+        position: relative;
+    }
+    
+    .slides-container {
+        display: flex;
+        transition: transform 0.5s ease-in-out;
+    }
+    
+    .slide {
+        width: 650px;
+        height: 500px;
+        object-fit: cover;
+        flex-shrink: 0;
+    }
+    
+    .btn-social {
+        padding: 10px 20px;
+        font-size: 20px;
+        font-weight: bold;
+        color: rgb(5, 5, 5);
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        text-decoration: none;
+        width: 100%;
+        max-width: 300px;
+        height: 30px;
+        text-align: center;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+    /* Dấu gạch dọc */
+    
+    .divider {
+        width: 3px;
+        border-radius: 5px;
+        background-color: #060606;
+        height: 550px;
+        margin-bottom: 20px
+    }
+    /* Phần form */
+    
+    label {
+        display: block;
+        font-size: 20px;
+        font-weight: bold;
+        margin-bottom: 5px;
+        color: #333;
+        margin-right: 450px;
+    }
+    
+    form input {
+        width: 500px;
+        height: 50px;
+        padding: 10px;
+        font-size: 20px;
+        border: 1px solid #302626;
+        border-radius: 7px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(255, 255, 255, 0.5) inset;
+        margin-bottom: 20px;
+        /* Thêm khoảng cách giữa các input */
+    }
+    /* Thêm style cho form */
+    
+    form {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        align-items: center;
+    }
+    
+    form button {
+        padding: 10px;
+        width: 200px;
+        height: 50px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-size: 20px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(255, 255, 255, 0.5) inset;
+    }
+    
+    form button:hover {
+        background-color: #2e6fb3;
+    }
+    
+    form a {
+        color: #070707;
+        text-decoration: none;
+        font-size: 20px;
+    }
+    
+    form a:hover {
+        text-decoration: underline;
+    }
+    /* Phần đăng ký */
+    
+    p {
+        font-size: 20px
+    }
+    
+    .register-link {
+        margin-top: 0px;
+        color: #040404;
+        text-decoration: none;
+        font-size: 20px;
+    }
+    
+    .register-link :hover {
+        text-decoration: underline;
+    }
+    /* Responsive */
+    
+    @media (max-width: 768px) {
+        .body_signin {
+            flex-direction: column;
+            align-items: center;
+        }
+        .divider {
+            display: none;
+        }
+        .register-link {
+            margin-top: 10px;
+        }
+    }

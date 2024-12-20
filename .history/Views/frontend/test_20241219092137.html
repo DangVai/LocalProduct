@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Banner</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        
+        .container-Home {
+            background-color: white;
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .text-run {
+            width: 100%;
+            height: 50px;
+            overflow: hidden;
+            background: rgb(113, 74, 74);
+            white-space: nowrap;
+            box-sizing: border-box;
+            margin-bottom: 0px;
+            text-align: center;
+        }
+        
+        .text-run span {
+            display: inline-block;
+            padding-left: 100%;
+            animation: marquee 10s linear infinite;
+            font-size: 15px;
+            padding-top: 18px;
+            font-weight: bold;
+            color: white;
+        }
+        
+        @keyframes marquee {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+        
+        .banner {
+            position: relative;
+            width: 100%;
+            height: 600px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .banner img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.5);
+        }
+        
+        .img-sliders {
+            width: 100%;
+            height: 250px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+        }
+        
+        .slider-container {
+            flex: 1;
+            overflow: hidden;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+        }
+        
+        .slides {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+        
+        .slide {
+            width: 100%;
+            flex-shrink: 0;
+            object-fit: cover;
+        }
+        
+        .header {
+            top: 0;
+            left: 0;
+            display: flex;
+            width: 100%;
+            height: 200px;
+            align-items: center;
+            position: fixed;
+            z-index: 4;
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.1);
+            background-color: white;
+        }
+        
+        .box_logo {
+            width: 20%;
+            display: flex;
+            align-items: center;
+        }
+        
+        .box_logo img {
+            position: absolute;
+            top: 10px;
+            left: 30px;
+            width: 170px;
+            height: 160px;
+            z-index: 10;
+            margin-right: 100px;
+        }
+        
+        .nav {
+            width: 40%;
+            height: 45%;
+            display: flex;
+            margin-right: 200px;
+            justify-content: center;
+            align-items: center;
+            justify-content: space-evenly;
+            border-radius: 10px;
+            font-size: 40px;
+            color: black;
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.1);
+            background-color: rgba(163, 116, 116, 0.667);
+        }
+        
+        .nav p {
+            cursor: pointer;
+        }
+        
+        .nav p:hover {
+            font-size: 30px;
+        }
+        /* Sreach  */
+        
+        .searchHome {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: white;
+            border: 2px black solid;
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            border-radius: 20px;
+            width: 450px;
+            height: 20%;
+        }
+        
+        .searchInput {
+            flex: 1;
+            border: none;
+            padding: 5px 10px;
+            font-size: 30px;
+            outline: none;
+        }
+        
+        .searchButton {
+            border: none;
+            background-color: #ffffff;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+            height: 40px;
+            width: 40px;
+        }
+        
+        .searchButton:hover {
+            background-color: #fcfeff;
+        }
+        /* end search */
+        
+        .account {
+            width: 4%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .box-account {
+            border: 2px solid rgb(6, 6, 6);
+            width: 70px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            margin-left: 100px;
+        }
+        
+        .box-account i {
+            font-size: 35px;
+            color: white;
+            cursor: pointer;
+        }
+        
+        a {
+            text-decoration: none;
+            color: #fff;
+        }
+        
+        .categories {
+            width: 100%;
+            height: 250px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+        }
+        
+        .categories .page {
+            height: 200px;
+            flex: 1;
+            overflow: hidden;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="header">
+        <!-- Logo -->
+        <div class="box_logo">
+            <img src="/public/images/logo.jpg" alt="logo">
+        </div>
+
+        <!-- Navigation Menu -->
+        <div class="nav">
+            <p><b>Home</b></p>
+            <p><b>Thời Trang</b></p>
+            <p><b>Ẩm thực</b></p>
+            <p><b>Khác</b></p>
+        </div>
+
+        <!-- Search -->
+        <div class="searchHome">
+            <input type="text" placeholder="Tìm kiếm..." class="searchInput">
+            <button class="searchButton">
+                🔍
+    </button>
+        </div>
+
+        <!-- User Account -->
+        <div class="account">
+            <div class="box-account">
+                <i class="fa-regular fa-user"></i>
+            </div>
+        </div>
+
+        <!-- User Name and Dropdown Menu -->
+        <div class="name-user">
+            <p>
+                <p>John Doe</p>
+            </p>
+            <div class="dropdown-menu" id="account-menu">
+                <div>
+                    <a href="#"><i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i> Profile</a>
+                </div>
+
+                <div>
+                    <a href="#"><i class="fas fa-sign-in-alt fa-sm fa-fw mr-2 text-gray-400"></i> Log in</a>
+                </div>
+                <div>
+                    <a href="#"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i> Log out</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-Home">
+        <!-- Chữ chạy -->
+        <div class="text-run">
+            <span>Chào mừng bạn đến với cửa hàng thời trang Vân Kiều và Pa Cô! Khám phá các sản phẩm đặc sắc ngay hôm nay!</span>
+        </div>
+
+        <!-- Banner -->
+        <div class="banner">
+            <img src="/public/images/Vân Kiều - Pa Cô.png" alt="Banner">
+        </div>
+
+        <!-- Các mục hình ảnh -->
+        <div class="img-sliders">
+            <!-- Slider 1 -->
+            <div class="slider-container">
+                <div class="slides" id="slider1">
+                    <img src="/public/images/R.jpg" class="slide" alt="Slide 1">
+                    <img src="/public/images/slide2.jpg" class="slide" alt="Slide 2">
+                    <img src="/public/images/slide3.jpg" class="slide" alt="Slide 3">
+                </div>
+            </div>
+
+            <!-- Slider 2 -->
+            <div class="slider-container">
+                <div class="slides" id="slider2">
+                    <img src="/public/images/slide3.jpg" class="slide" alt="Slide 1">
+                    <img src="/public/images/R.jpg" class="slide" alt="Slide 2">
+                    <img src="/public/images/slide2.jpg" class="slide" alt="Slide 3">
+                </div>
+            </div>
+
+            <!-- Slider 3 -->
+            <div class="slider-container">
+                <div class="slides" id="slider3">
+                    <img src="/public/images/slide2.jpg" class="slide" alt="Slide 1">
+                    <img src="/public/images/slide3.jpg" class="slide" alt="Slide 2">
+                    <img src="/public/images/R.jpg" class="slide" alt="Slide 3">
+                </div>
+            </div>
+        </div>
+        <div class="categories">
+            <div class="page">
+
+                <a href="#"> Fashion</a>
+            </div>
+            <div class="page">
+                <a href="#"> cuisin</a>
+            </div>
+            <div class="page">
+                <a href="#"> other</a>
+            </div>
+        </div>
+
+        <script>
+            function autoSlide(sliderId) {
+                const slides = document.querySelector(`#${sliderId}`);
+                const totalSlides = slides.children.length;
+                let currentSlide = 0;
+
+                setInterval(() => {
+                    currentSlide = (currentSlide + 1) % totalSlides;
+                    const offset = -currentSlide * 100;
+                    slides.style.transform = `translateX(${offset}%)`;
+                }, 3000); // Thay đổi ảnh sau mỗi 3 giây
+            }
+
+            autoSlide('slider1');
+            autoSlide('slider2');
+            autoSlide('slider3');
+        </script>
+</body>
+
+</html>

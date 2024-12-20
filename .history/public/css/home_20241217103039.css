@@ -1,0 +1,142 @@
+.container-Home {
+    background-color: white;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.banner {
+    background-color: white;
+    width: 100%;
+    height: 800px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.text-runrun {
+    width: 100%;
+    overflow: hidden;
+    background: #f8f8f8;
+    /* Màu nền */
+    white-space: nowrap;
+    /* Ngăn chữ xuống dòng */
+    box-sizing: border-box;
+}
+
+.text-runrun span {
+    display: inline-block;
+    padding-left: 100%;
+    animation: marquee 10s linear infinite;
+    /* Animation chạy ngang */
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    /* Màu chữ */
+}
+
+@keyframes marquee {
+    0% {
+        transform: translateX(0);
+        /* Bắt đầu từ đầu */
+    }
+    100% {
+        transform: translateX(-100%);
+        /* Chạy hết màn hình */
+    }
+}
+
+.sliders {
+    width: 650px;
+    height: 500px;
+    overflow: hidden;
+    border-radius: 10px;
+    position: relative;
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+.slide {
+    width: 650px;
+    height: 500px;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.text-run {}
+
+
+/* Products: */
+
+.featured {
+    text-align: center;
+    padding: 20px;
+}
+
+.featured h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.selectproduct {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.product-card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 10px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.product-image {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.product-title {
+    font-size: 1.1rem;
+    margin: 10px 0;
+}
+
+.product-price {
+    font-size: 1rem;
+    color: #28a745;
+}
+
+.product-actions {
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.btn-cart,
+.btn-buy {
+    border: none;
+    background-color: #f0f0f0;
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 1.2rem;
+    transition: background-color 0.3s;
+}
+
+.btn-cart:hover {
+    background-color: #ffc107;
+}
+
+.btn-buy:hover {
+    background-color: #28a745;
+    color: #fff;
+}
+
+
+/*END product*/

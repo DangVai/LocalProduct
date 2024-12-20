@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Header Example</title>
+    <!-- Thêm link đến Font Awesome cho các biểu tượng (nếu chưa có) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link src="/public/css/header.css">
+    <style>
+        .header {
+            top: 0;
+            left: 0;
+            display: flex;
+            width: 100%;
+            height: 200px;
+            align-items: center;
+            position: fixed;
+            z-index: 4;
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.1);
+            background-color: white;
+        }
+        
+        .box_logo {
+            width: 30%;
+            display: flex;
+            align-items: center;
+        }
+        
+        .box_logo img {
+            position: absolute;
+            top: 10px;
+            left: 30px;
+            width: 145px;
+            height: 140px;
+            z-index: 10;
+        }
+        
+        .nav {
+            width: 50%;
+            height: 40%;
+            display: flex;
+            margin-right: 200px;
+            justify-content: center;
+            align-items: center;
+            justify-content: space-evenly;
+            border-radius: 45px;
+            font-size: 20px;
+            color: blackblack;
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.1);
+            background-color: rgba(163, 116, 116, 0.667);
+        }
+        
+        .nav p {
+            cursor: pointer;
+        }
+        
+        .nav p:hover {
+            font-size: 30px;
+        }
+        /* Sreach  */
+        
+        .searchHome {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: white;
+            border: 2px black solid;
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            border-radius: 20px;
+            width: 450px;
+            height: 20%;
+        }
+        
+        .searchInput {
+            flex: 1;
+            /* height: 50%;
+            width: 400px; */
+            border: none;
+            padding: 5px 10px;
+            /* border-radius: 10px; */
+            /* border: 2px black solid;
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.1); */
+            outline: none;
+        }
+        
+        .searchButton {
+            border: none;
+            background-color: #ffffff;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+        }
+        
+        .searchButton:hover {
+            background-color: #0056b3;
+        }
+        /* end search */
+        
+        .account {
+            width: 4%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .box-account {
+            border: 22px solid white;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+        
+        .box-account i {
+            font-size: 35px;
+            color: white;
+            cursor: pointer;
+        }
+        
+        a {
+            text-decoration: none;
+            color: #fff;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="header">
+        <!-- Logo -->
+        <div class="box_logo">
+            <img src="/public/images/logo.jpg" alt="logo">
+        </div>
+
+        <!-- Navigation Menu -->
+        <div class="nav">
+            <p><b>Home</b></p>
+            <p><b>Thời Trang</b></p>
+            <p><b>Ẩm thực</b></p>
+            <p><b>Khác</b></p>
+        </div>
+
+        <!-- Search -->
+        <div class="searchHome">
+            <input type="text" placeholder="Tìm kiếm..." class="searchInput">
+            <button class="searchButton">
+                🔍
+    </button>
+        </div>
+
+        <!-- User Account -->
+        <div class="account">
+            <div class="box-account">
+                <i class="fa-regular fa-user"></i>
+            </div>
+        </div>
+
+        <!-- User Name and Dropdown Menu -->
+        <div class="name-user">
+            <p>
+                <p>John Doe</p>
+            </p>
+            <div class="dropdown-menu" id="account-menu">
+                <div>
+                    <a href="../public/profile.php"><i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i> Profile</a>
+                </div>
+                <div>
+                    <a href=""><i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i> Settings</a>
+                </div>
+                <div>
+                    <a href=""><i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i> Activity Log</a>
+                </div>
+                <div>
+                    <a href="public/login.php"><i class="fas fa-sign-in-alt fa-sm fa-fw mr-2 text-gray-400"></i> Log in</a>
+                </div>
+                <div>
+                    <a href="controllers/logout.php"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i> Log out</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
+<!-- <div class="header">
+    <div class="box_logo">
+        <img src="/public/images/logo.jpg" alt="logo">
+    </div>
+    <div class="nav">
+        <p><b>Home</b></p>
+        <p><b>Thời Trang</b></p>
+        <p><b>Ẩm thực</b></p>
+         <p><b>Khác</b></p>
+    </div>
+    
+    <div class="account">
+        <div class="box-account">
+            <i class="fa-regular fa-user"></i>
+        </div>
+    </div>
+    <div class="name-user">
+        <p>
+        
+        </p>
+        <div class="dropdown-menu" id="account-menu">
+            <div>
+                <a href="../public/profile.php"><i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i> Profile</a>
+            </div>
+            <div>
+                <a href=""><i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i> Settings</a>
+            </div>
+            <div>
+                <a href=""><i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i> Activity Log</a>
+            </div>
+            <div>
+                <a href="public/login.php"><i class="fas fa-sign-in-alt fa-sm fa-fw mr-2 text-gray-400"></i> Log in</a>
+            </div>
+            <div>
+                <a href="controllers/logout.php"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i> Log out</a>
+            </div>
+        </div>
+    </div>
+</div> -->
