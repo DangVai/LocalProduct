@@ -123,6 +123,32 @@ document.addEventListener("DOMContentLoaded", function () {
     updatePrice();
 });
 
+
+
+function addToCart() {
+    if (!userId || userId === 'null') {
+        const userChoice = confirm('You need to log in to add products to the cart. Do you want to log in now?');
+        if (userChoice) {
+            // Người dùng chọn "OK" -> chuyển hướng đến trang đăng nhập
+            window.location.href = 'index.php?controller=user&action=login';
+        } else {
+            // Người dùng chọn "Cancel" -> không làm gì
+            console.log('User chose not to log in.');
+        }
+        return; // Dừng hàm nếu chưa đăng nhập
+    }
+    const size = document.getElementById('size-selector')?.value || null;
+    const quantity = parseInt(document.querySelector('.quantity')?.value) || null;
+
+    fetch('index.php?controller=product&action=addtocart', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_id: userId, product_id: productId, size, quantity }),
+    })
+        .then(res => res.json())
+        .then(({ success, message }) => alert(message))
+        .catch(err => console.error('Error:', err));
+}
 // document.querySelector("form").addEventListener("submit", function (event) {
 //     const fullName = document.getElementById("fullName").value.trim();
 //     const phone = document.getElementById("phone").value.trim();
