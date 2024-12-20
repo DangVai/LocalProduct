@@ -1,6 +1,7 @@
         /* Reset and basic styling */
         body {
-            margin: 0;
+            position: relative;
+            top: 85px;
             font-family: Arial, sans-serif;
             background-color: #f8f9fa;
         }
@@ -31,27 +32,6 @@
             padding: 0 20px;
             border-left: 1px solid #ddd;
         }
-
-        .preview-thumbnail {
-            display: flex;
-            margin-top: 10px;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .preview-thumbnail img {
-            width: 60px;
-            height: 60px;
-            border-radius: 4px;
-            border: 1px solid #ddd;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-        }
-
-        .preview-thumbnail img:hover {
-            transform: scale(1.1);
-        }
-
 
         .product-title {
             width: 340px;
@@ -236,7 +216,7 @@
         }
 
         /* Footer Section */
-        .footer {
+        .footers {
             margin-top: 30px;
             padding: 20px;
             background-color: #f1f1f1;
@@ -244,13 +224,13 @@
             border-radius: 10px;
         }
 
-        .footer p {
+        .footers p {
             font-size: 16px;
             margin-bottom: 15px;
             color: #333;
         }
 
-        .footer .buy-now {
+        .footers .buy-now {
             padding: 10px 20px;
             background-color: #28a745;
             color: white;
@@ -260,7 +240,7 @@
             font-size: 16px;
         }
 
-        .footer .buy-now:hover {
+        .footers .buy-now:hover {
             background-color: #218838;
         }
 
@@ -360,113 +340,101 @@
             text-align: center;
             font-size: 16px;
         }
+                /* Tổng thể container của gallery */
+        .image-gallery {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* Phần hiển thị ảnh chính */
+        .preview-pic {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .preview-thumbnail {
+            display: flex;
+            margin-top: -50px;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .preview-thumbnail img {
+            width: 100px;
+            height: 100px;
+            margin-left: 5px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .preview-thumbnail img:hover {
+            transform: scale(1.1);
+        }
+
+        .preview-thumbnail ul {
+            display: flex;
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+
+        /* Khi không có ảnh */
+        .preview-thumbnail p,
+        .preview-pic p {
+            text-align: center;
+            color: #888;
+            font-size: 14px;
+            margin: 0;
+        }
+
+        /* Đảm bảo ảnh thu nhỏ không bị lệch */
+        .preview-thumbnail a {
+            display: block;
+            text-align: center;
+        }
+        .img-responsive
+        {
+            width: 350px;
+            height: 300px;
+        }
 
 
 
+        .comment-input {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            padding: 5px;
+            border: 1px solid #ddd; /* Đường viền nhẹ để tách biệt phần nhập liệu */
+            border-radius: 5px;
+            background-color: #f9f9f9; /* Nền nhẹ */
+        }
 
+        .comment-input input[type="text"] {
+            flex-grow: 1; /* Input chiếm hết chiều ngang có thể */
+            padding: 10px;
+            border: 1px solid #ccc; /* Đường viền nhẹ */
+            border-radius: 5px; /* Bo góc */
+            font-size: 14px; /* Kích thước chữ vừa phải */
+            margin-right: 10px; /* Khoảng cách giữa input và nút */
+        }
 
-        /* Tổng thể container của gallery */
-.image-gallery {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-}
+        .comment-input button {
+            padding: 10px 20px;
+            background-color: #007bff; /* Màu xanh nổi bật */
+            color: white; /* Chữ màu trắng */
+            border: none; /* Không có đường viền */
+            border-radius: 5px; /* Bo góc */
+            font-size: 14px; /* Kích thước chữ */
+            cursor: pointer; /* Con trỏ trỏ tay khi hover */
+            transition: background-color 0.3s ease; /* Hiệu ứng hover */
+        }
 
-/* Phần hiển thị ảnh chính */
-.preview-pic {
-    text-align: center;
-    margin-bottom: 20px;
-}
-/* Phần thumbnail */
-.preview-thumbnail {
-    display: flex;
-    justify-content: center;
-    margin-top: 10px;
-}
-
-.preview-thumbnail ul {
-    display: flex;
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-}
-
-.preview-thumbnail li {
-    margin-right: 10px;
-}
-
-.preview-thumbnail li img {
-    width: 50px;
-    height: 50px;
-    object-fit: cover;
-    cursor: pointer;
-    transition: transform 0.3s ease;
-}
-
-.preview-thumbnail li.active img {
-    border: 2px solid #000;
-    transform: scale(1.1);
-}
-
-/* Hiệu ứng khi hover lên thumbnail */
-.preview-thumbnail li img:hover {
-    transform: scale(1.1);
-}
-
-/* Khi không có ảnh */
-.preview-thumbnail p,
-.preview-pic p {
-    text-align: center;
-    color: #888;
-    font-size: 14px;
-    margin: 0;
-}
-
-/* Đảm bảo ảnh thu nhỏ không bị lệch */
-.preview-thumbnail a {
-    display: block;
-    text-align: center;
-}
-.img-responsive
-{
-    width: 350px;
-    height: 300px;
-}
-
-
-
-.comment-input {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 20px;
-    padding: 5px;
-    border: 1px solid #ddd; /* Đường viền nhẹ để tách biệt phần nhập liệu */
-    border-radius: 5px;
-    background-color: #f9f9f9; /* Nền nhẹ */
-}
-
-.comment-input input[type="text"] {
-    flex-grow: 1; /* Input chiếm hết chiều ngang có thể */
-    padding: 10px;
-    border: 1px solid #ccc; /* Đường viền nhẹ */
-    border-radius: 5px; /* Bo góc */
-    font-size: 14px; /* Kích thước chữ vừa phải */
-    margin-right: 10px; /* Khoảng cách giữa input và nút */
-}
-
-.comment-input button {
-    padding: 10px 20px;
-    background-color: #007bff; /* Màu xanh nổi bật */
-    color: white; /* Chữ màu trắng */
-    border: none; /* Không có đường viền */
-    border-radius: 5px; /* Bo góc */
-    font-size: 14px; /* Kích thước chữ */
-    cursor: pointer; /* Con trỏ trỏ tay khi hover */
-    transition: background-color 0.3s ease; /* Hiệu ứng hover */
-}
-
-.comment-input button:hover {
-    background-color: #0056b3; /* Màu xanh đậm hơn khi hover */
-}
+        .comment-input button:hover {
+            background-color: #0056b3; /* Màu xanh đậm hơn khi hover */
+        }

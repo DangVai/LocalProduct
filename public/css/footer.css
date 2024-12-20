@@ -39,7 +39,7 @@
  .footer-aboutus {
      flex: 1;
      width: 100px;
-     margin: 0 15px;
+     margin: 20px 15px;
  }
  
  .footer-contact {
@@ -79,3 +79,33 @@
  .contact-details p {
      margin: 0;
  }
+
+ 
+
+.footer-follow a {
+    display: inline-block;
+    margin: 5px;
+    font-size: 14px;
+    color: white;
+    text-decoration: none;
+    background-color: #007bff;
+    padding: 8px 12px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.footer-follow a:hover {
+    background-color: #0056b3;
+}
+
+.footer-follow .fb {
+    background-color: #4267B2;
+}
+
+.footer-follow .zalo {
+    background-color: #007AFF;
+}
+
+.footer-follow .tiktok {
+    background-color: #000000;
+}
