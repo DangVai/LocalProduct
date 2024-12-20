@@ -33,13 +33,13 @@
     // Auto-slide every 3 seconds
     function autoSlide() {
       nextSlide();
-      setTimeout(autoSlide, 4000);
+      setTimeout(autoSlide, 3000);
     }
 
     // Initialize slider
     document.addEventListener('DOMContentLoaded', () => {
       showSlide(currentIndex);
-      setTimeout(autoSlide, 4000);
+      setTimeout(autoSlide, 3000);
     });
 
 

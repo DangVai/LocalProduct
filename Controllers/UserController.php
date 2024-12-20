@@ -329,4 +329,9 @@ class UserController extends BaseController
     public function showLoginPage() {
         include "Views/frontend/users/login.php"; // Đường dẫn tới view
     }
+
+    public function home()
+    {
+        $this->view('frontend/home');
+    }
 }

@@ -88,5 +88,41 @@ public function onlinePayment()
     
         header('Location: ' . $jsonResult['payUrl']);
 }
+// NGUYEN VAN A	9704 0000 0000 0018	03/07
+    public function storeOrder()
+    {
+        // Lấy dữ liệu từ form hoặc session
+        $orderData = [
+            "size" => $_POST['size'],
+            "quantity" => $_POST['quantity'],
+            "product_name" => $_POST['product_name'],
+            "product_id" => $_POST['product_id'],
+            "product_price" => $_POST['product_price'],
+            "full_name" => $_POST['full_name'],
+            "phone" => $_POST['phone'],
+            "location" => $_POST['location'],
+            "specific_address" => $_POST['specific_address'],
+            "payment_method" => $_POST['payment_method'],
+            "user_id" => $_SESSION['user_id'],  // Lấy từ session
+            "name" => $_SESSION['user_name'],   // Lấy từ session
+            "total_price" => $_POST['total_price']
+        ];
+
+        // Gọi phương thức createOrder để lưu đơn hàng
+        if ($this->productModel->createOrder($orderData)) {
+            // Lưu thông báo thành công vào session
+            $_SESSION['order_success'] = 'Đơn hàng của bạn đã được đặt thành công!';
+            // Điều hướng đến trang chi tiết sản phẩm
+            header("Location: index.php?controller=product&action=detail&id=" . $_POST['product_id']);
+            exit();
+        } else {
+            // Lưu thông báo lỗi vào session
+            $_SESSION['order_error'] = 'Có lỗi xảy ra trong quá trình đặt hàng. Vui lòng thử lại!';
+            // Điều hướng đến trang lỗi
+            header("Location: index.php?controller=product&action=detail&id=" . $_POST['product_id']);
+            exit();
+        }
+    }
+
 
 }

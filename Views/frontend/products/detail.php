@@ -10,6 +10,40 @@
     <script src="/LocalProduct/public/js/load.js"></script>
 </head>
 <style>
+/* Thông báo thành công */
+.success-message {
+    background-color: #4CAF50; /* Màu nền xanh lá */
+    color: white;
+    padding: 20px;
+    margin: 15px 0;
+    border-radius: 5px;
+    text-align: center;
+}
+
+/* Thông báo lỗi */
+.error-message {
+    background-color: #f44336; /* Màu nền đỏ */
+    color: white;
+    padding: 20px;
+    margin: 15px 0;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.success-message:hover {
+    opacity: 0.9;
+}
+.error-message:hover {
+    opacity: 0.9;
+}
+/* Đảm bảo thông báo không bị tràn màn hình trên các thiết bị nhỏ */
+@media (max-width: 600px) {
+    .success-message {
+        font-size: 14px;
+        padding: 15px;
+    }
+}
+
 </style>
 
 <body>
@@ -17,6 +51,23 @@
         <div class="spinner"></div>
         <p>Loading...</p>
     </div>
+
+
+<?php
+// Kiểm tra xem có thông báo thành công không
+if (isset($_SESSION['order_success'])) {
+    echo '<div class="success-message">' . $_SESSION['order_success'] . '</div>';
+    unset($_SESSION['order_success']);
+}
+
+// Kiểm tra xem có thông báo lỗi không
+if (isset($_SESSION['order_error'])) {
+    echo '<div class="error-message">' . $_SESSION['order_error'] . '</div>';
+    unset($_SESSION['order_error']);
+}
+?>
+
+
     <?php if (isset($product)): ?>
 
         <body>
@@ -109,7 +160,7 @@
                 </div>
                 <!-- Phần Địa chỉ -->
                 <div class="address-section">
-                    <form method="POST" action="index.php?controller=product&action=storeOrder">
+                    <form method="POST" action="index.php?controller=checkout&action=storeOrder">
                         <div class="detail-product">
                             <div class="product">
                                 <img class="product-image" src="<?php echo htmlspecialchars($product['images'][0]); ?>" alt="Product Image">
@@ -155,7 +206,7 @@
 
                         <label>Phone Number</label>
                         <input type="text" name="phone"
-                            value="<?php echo isset($_SESSION['user_phone']) ? htmlspecialchars($_SESSION['user_name']) : ''; ?>"
+                            value="<?php echo isset($_SESSION['user_phone']) ? htmlspecialchars($_SESSION['user_phone']) : ''; ?>"
                             placeholder="" required>
 
                         <label>Province/City, District/County, Ward/Commune</label>
@@ -181,10 +232,10 @@
                         </div>
                         <input type="hidden" name="user_id"
                             value="<?php echo isset($_SESSION['user_id']) ? htmlspecialchars($_SESSION['user_id']) : ''; ?>">
-
-                        <div class="footer">
+                        <div id="error-message" style="color: red;"></div>
+                        <div class="footers">
                             <p><span id="shipping-price"></span></p>
-                            <p>Total Price: <span id="total-price"></span>$</p>
+                            <p>Total Price: <span id="total-price"></span></p>
                             <input type="hidden" id="hidden-total-price" name="total_price" value="">
                             <button type="submit" class="buy-now">Buy Now</button>
                         </div>
@@ -200,7 +251,6 @@
             <?php include_once 'listProductbycatelogy.php'; ?>
         </div>
     </body>
-
 </html>
 <script src="/LocalProduct/public/js/detail.js"></script>
 <script>
@@ -220,18 +270,23 @@
         updateHiddenTotalPrice();
     });
 });
-
-
-function addToCart() 
-{
+const userId = <?php echo isset($_SESSION['user_id']) ? json_encode($_SESSION['user_id']) : 'null'; ?>;
     const productId = <?php echo json_encode($product['product_id']); ?>;
-    const userId = <?php echo json_encode($_SESSION['user_id']); ?>;
 
-    if (!userId) {
-        alert('You need to log in to add products to the cart.');
+
+function addToCart() {
+if (!userId || userId === 'null') {
+    const userChoice = confirm('You need to log in to add products to the cart. Do you want to log in now?');
+    if (userChoice) {
+        // Người dùng chọn "OK" -> chuyển hướng đến trang đăng nhập
         window.location.href = 'index.php?controller=user&action=login';
-        return; // Dừng hàm nếu chưa đăng nhập
+    } else {
+        // Người dùng chọn "Cancel" -> không làm gì
+        console.log('User chose not to log in.');
     }
+    return; // Dừng hàm nếu chưa đăng nhập
+}
+
 
     const size = document.getElementById('size-selector')?.value || null;
     const quantity = parseInt(document.querySelector('.quantity')?.value) || null;
@@ -247,3 +302,4 @@ function addToCart()
 }
 
 </script>
+
