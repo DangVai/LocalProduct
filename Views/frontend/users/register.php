@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Un</title>
     <link rel="stylesheet" href="/LocalProduct/public/css/signUp.css">
-    <link rel="stylesheet" href="/LocalProduct/public/css/load.css">
     <script src="/LocalProduct/public/js/signUp.js"></script>
+    <link rel="stylesheet" href="/LocalProduct/public/css/load.css">
     <script src="/LocalProduct/public/js/load.js"></script>
 
 </head>

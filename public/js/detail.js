@@ -37,7 +37,7 @@ document.querySelector(".momo-btn").addEventListener("click", function () {
     }
 
     // Chuyển hướng đến trang khác (ví dụ: trang Momo)
-    window.location.href = "index.php?controller=product&action=checkout"; // Thay đổi URL theo nhu cầu
+    window.location.href = "index.php?controller=checkout&action=onlinePayment"; // Thay đổi URL theo nhu cầu
 });
 
 
@@ -122,5 +122,4 @@ document.addEventListener("DOMContentLoaded", function () {
     // Khởi tạo giá trị ban đầu
     updatePrice();
 });
-
 

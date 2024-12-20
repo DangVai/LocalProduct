@@ -1,14 +1,3 @@
-<?php
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-
-if (!isset($_SESSION['user'])) {
-    echo '<p>You need to <a href="index.php?controller=user&action=login">log in</a> to make a purchase.</p>';
-    exit();
-}
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -17,11 +6,17 @@ if (!isset($_SESSION['user'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product Details</title>
     <link rel="stylesheet" href="/LocalProduct/public/css/detail.css">
+    <link rel="stylesheet" href="/LocalProduct/public/css/load.css">
+    <script src="/LocalProduct/public/js/load.js"></script>
 </head>
 <style>
 </style>
 
 <body>
+    <div id="loading" class="loading-overlay">
+        <div class="spinner"></div>
+        <p>Loading...</p>
+    </div>
     <?php if (isset($product)): ?>
 
         <body>
@@ -40,10 +35,8 @@ if (!isset($_SESSION['user'])) {
                                                 src="<?php echo htmlspecialchars($product['images'][0]); ?>" alt="Product Image"
                                                 id="mainImage" width="150">
                                         </div>
-
                                     <?php else: ?>
                                         <p>No images available for this product.</p>
-
                                     <?php endif; ?>
                                 </div>
 
@@ -88,6 +81,7 @@ if (!isset($_SESSION['user'])) {
                                         <img src="image2.jpg" alt="Review Image">
                                     </div>
                                 </div>
+
                                 <div class="comment-input">
                                     <input type="text" placeholder="Write your review">
                                     <button type="button">Submit</button>
@@ -104,8 +98,9 @@ if (!isset($_SESSION['user'])) {
                             <div class="rating">
                                 <h4>Rating: ★★★★★</h4>
                             </div>
-                            <button class="add-to-cart btn btn-default" type="button">Add to Cart</button>
-                            <button class="like btn btn-default" type="button"><span class="fa fa-heart"> </span>&#9829;</button>
+                            <button class="add-to-cart btn btn-default" id="add-to-cart-btn" type="button" onclick="addToCart()">Add to Cart</button>
+                            <button class="like btn btn-default" type="button"><span class="fa fa-heart">
+                                </span>&#9829;</button>
                         </div>
                         <h3>Details</h3>
                         <p class="product-description"><?php echo $product['description']; ?></p>
@@ -117,7 +112,7 @@ if (!isset($_SESSION['user'])) {
                     <form method="POST" action="index.php?controller=product&action=storeOrder">
                         <div class="detail-product">
                             <div class="product">
-                                <img class="product-image" src="<?php echo $image; ?>" alt="Product Image">
+                                <img class="product-image" src="<?php echo htmlspecialchars($product['images'][0]); ?>" alt="Product Image">
 
                                 <div class="product-details">
                                     <div>
@@ -126,13 +121,15 @@ if (!isset($_SESSION['user'])) {
                                                 class="product-price"><?php echo number_format($product['price'], 2, ',', '.'); ?>$
                                             </span></p>
                                     </div>
-                                    <select name="size" id="size-selector" class="size-selector" style="display: inline-block;">
+                                    <select name="size" id="size-selector" class="size-selector"
+                                        style="display: inline-block;">
                                         <option value="" disabled selected>Choose Size</option>
                                         <?php if (empty($product['sizes'])): ?>
                                             <option value="" disabled>No sizes available</option>
                                         <?php else: ?>
                                             <?php foreach ($product['sizes'] as $size): ?>
-                                                <option value="<?= htmlspecialchars($size) ?>"><?= htmlspecialchars($size) ?></option>
+                                                <option value="<?= htmlspecialchars($size) ?>"><?= htmlspecialchars($size) ?>
+                                                </option>
                                             <?php endforeach; ?>
                                         <?php endif; ?>
                                     </select>
@@ -152,12 +149,14 @@ if (!isset($_SESSION['user'])) {
                         <p>To place an order, please add your delivery address</p>
 
                         <label>Full Name</label>
-                        <input type="text" name="full_name" value="<?php echo $_SESSION['user_name']; ?>" placeholder=""
-                            required>
+                        <input type="text" name="full_name"
+                            value="<?php echo isset($_SESSION['user_name']) ? htmlspecialchars($_SESSION['user_name']) : ''; ?>"
+                            placeholder="Enter your full name" required>
 
                         <label>Phone Number</label>
-                        <input type="text" name="phone" value="<?php echo $_SESSION['user_phone']; ?>" placeholder=""
-                            required>
+                        <input type="text" name="phone"
+                            value="<?php echo isset($_SESSION['user_phone']) ? htmlspecialchars($_SESSION['user_name']) : ''; ?>"
+                            placeholder="" required>
 
                         <label>Province/City, District/County, Ward/Commune</label>
                         <input type="text" name="location" placeholder="Province/City, District/County, Ward/Commune"
@@ -180,7 +179,8 @@ if (!isset($_SESSION['user'])) {
                             <button type="button" class="cod-btn">Cash on Delivery</button>
                             <button type="button" name="payUrl" class="momo-btn">Pay via Momo</button>
                         </div>
-                        <input type="hidden" name="user_id" value="<?php echo $_SESSION['user_id']; ?>">
+                        <input type="hidden" name="user_id"
+                            value="<?php echo isset($_SESSION['user_id']) ? htmlspecialchars($_SESSION['user_id']) : ''; ?>">
 
                         <div class="footer">
                             <p><span id="shipping-price"></span></p>
@@ -197,9 +197,7 @@ if (!isset($_SESSION['user'])) {
             <p>Product not found!</p>
         <?php endif; ?>
         <div>
-            <?php
-            // require_once 'list.php';
-            ?>
+            <?php include_once 'listProductbycatelogy.php'; ?>
         </div>
     </body>
 
@@ -207,61 +205,45 @@ if (!isset($_SESSION['user'])) {
 <script src="/LocalProduct/public/js/detail.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const totalPriceElement = document.getElementById('total-price'); // Phần tử hiển thị tổng giá
-        const hiddenTotalPrice = document.getElementById('hidden-total-price'); // Trường ẩn để gửi tổng giá
-        const quantityInput = document.querySelector('.quantity'); // Trường nhập số lượng
-        const form = document.querySelector('form'); // Biểu mẫu để xử lý
+    const totalPriceElement = document.getElementById('total-price'); // Phần tử hiển thị tổng giá
+    const hiddenTotalPrice = document.getElementById('hidden-total-price'); // Trường ẩn để gửi tổng giá
+    const quantityInput = document.querySelector('.quantity'); // Trường nhập số lượng
+    const form = document.querySelector('form'); // Biểu mẫu để xử lý
 
-        // Cập nhật giá trị trong trường ẩn
-        const updateHiddenTotalPrice = () => {
-            hiddenTotalPrice.value = totalPriceElement.textContent.trim(); // Đồng bộ giá trị
-        };
+    // Cập nhật giá trị trong trường ẩn
+    const updateHiddenTotalPrice = () => {
+        hiddenTotalPrice.value = totalPriceElement.textContent.trim(); // Đồng bộ giá trị
+    };
 
-        // Khi số lượng thay đổi, cập nhật giá hiển thị và trường ẩn
-        quantityInput.addEventListener('input', function () {
-            updateHiddenTotalPrice();
-        });
+    // Khi số lượng thay đổi, cập nhật giá hiển thị và trường ẩn
+    quantityInput.addEventListener('input', function () {
+        updateHiddenTotalPrice();
     });
+});
 
 
-
-    function addToCart() {
+function addToCart() 
+{
     const productId = <?php echo json_encode($product['product_id']); ?>;
-            const productName = <?php echo json_encode($product['name']); ?>;
-            const productPrice = <?php echo json_encode($product['price']); ?>;
-            const userId = <?php echo json_encode($_SESSION['user_id']); ?>;
+    const userId = <?php echo json_encode($_SESSION['user_id']); ?>;
 
-            // Lấy size từ selector
-            const size = document.getElementById('size-selector').value;
-            // Lấy số lượng từ trường nhập
-            const quantity = parseInt(document.querySelector('.quantity').value);
+    if (!userId) {
+        alert('You need to log in to add products to the cart.');
+        window.location.href = 'index.php?controller=user&action=login';
+        return; // Dừng hàm nếu chưa đăng nhập
+    }
 
-            fetch('index.php?controller=cart&action=add', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    product_id: productId,
-                    product_name: productName,
-                    product_price: productPrice,
-                    user_id: userId,
-                    size: size, // Gửi size
-                    quantity: quantity // Gửi số lượng
-                }),
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        alert('Product added to cart successfully!');
-                    } else {
-                        alert('Failed to add product to cart.');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('An error occurred while adding to cart.');
-                });
-        }
+    const size = document.getElementById('size-selector')?.value || null;
+    const quantity = parseInt(document.querySelector('.quantity')?.value) || null;
+
+    fetch('index.php?controller=product&action=addtocart', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_id: userId, product_id: productId, size, quantity }),
+    })
+        .then(res => res.json())
+        .then(({ success, message }) => alert(message))
+        .catch(err => console.error('Error:', err));
+}
 
 </script>
