@@ -37,7 +37,7 @@ document.querySelector(".momo-btn").addEventListener("click", function () {
     }
 
     // Chuyển hướng đến trang khác (ví dụ: trang Momo)
-    window.location.href = "index.php?controller=product&action=checkout"; // Thay đổi URL theo nhu cầu
+    window.location.href = "index.php?controller=checkout&action=onlinePayment"; // Thay đổi URL theo nhu cầu
 });
 
 
@@ -123,4 +123,43 @@ document.addEventListener("DOMContentLoaded", function () {
     updatePrice();
 });
 
+// document.querySelector("form").addEventListener("submit", function (event) {
+//     const fullName = document.getElementById("fullName").value.trim();
+//     const phone = document.getElementById("phone").value.trim();
+//     const location = document.getElementById("location").value.trim();
+//     const specificAddress = document.getElementById("specificAddress").value.trim();
 
+//     const errorMessage = document.getElementById("error-message"); // Phần tử hiển thị thông báo lỗi
+
+//     // Xóa thông báo lỗi cũ (nếu có)
+//     errorMessage.textContent = "";
+
+//     // Kiểm tra nếu tên đầy đủ rỗng
+//     if (fullName === "") {
+//         errorMessage.textContent = "Full Name is required.";
+//         event.preventDefault(); // Ngăn chặn form gửi
+//         return;
+//     }
+
+//     // Kiểm tra nếu số điện thoại không hợp lệ
+//     const phoneRegex = /^\d{10}$/;
+//     if (!phoneRegex.test(phone)) {
+//         errorMessage.textContent = "Please enter a valid 10-digit phone number.";
+//         event.preventDefault();
+//         return;
+//     }
+
+//     // Kiểm tra nếu location quá ngắn
+//     if (location.length < 40) {
+//         errorMessage.textContent = "Location must be at least 40 characters long.";
+//         event.preventDefault();
+//         return;
+//     }
+
+//     // Kiểm tra nếu địa chỉ cụ thể quá ngắn
+//     if (specificAddress.length < 40) {
+//         errorMessage.textContent = "Specific Address must be at least 40 characters long.";
+//         event.preventDefault();
+//         return;
+//     }
+// });

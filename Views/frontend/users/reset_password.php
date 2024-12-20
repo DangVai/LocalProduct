@@ -5,9 +5,15 @@
     <title>Đặt lại mật khẩu</title>
     <link rel="stylesheet" href="https://unpkg.com/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <script src="/localProducts/public/js/ForgotPassword.js"></script>
+    <link rel="stylesheet" href="/LocalProduct/public/css/load.css">
+    <script src="/LocalProduct/public/js/load.js"></script>
 </head>
 
 <body>
+                    <div id="loading" class="loading-overlay">
+                <div class="spinner"></div>
+                <p>Loading...</p>
+            </div>
     <div class="bg-light py-3 py-md-5">
         <div class="container">
             <div class="row justify-content-md-center">

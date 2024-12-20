@@ -197,7 +197,7 @@ class ProductModel extends BaseModel
         $result = $this->connect->query($query);
         return $result->fetch_all(MYSQLI_ASSOC);
     }
-
+}
 
 
     public function addToCart($userId, $productId, $size, $quantity)
@@ -212,4 +212,5 @@ class ProductModel extends BaseModel
 
         return $stmt->execute();
     }
-}
+
+

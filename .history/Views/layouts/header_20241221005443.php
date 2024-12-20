@@ -53,9 +53,9 @@
                 <div class="dropdown-menu" id="account-menu">
                     <a href="#"><i class="fas fa-user fa-sm"></i> Profile</a>
                     <a href="#"><i class="fas fa-cogs fa-sm"></i> Settings</a>
-
-                    <a href="#"><i class="fas fa-sign-in-alt fa-sm"></i> Log in</a>
-                    <a href="#"><i class="fas fa-sign-out-alt fa-sm"></i> Log out</a>
+                    <<<<<<< HEAD
+                        <a href="#"><i class="fas fa-sign-in-alt fa-sm"></i> Log in</a>
+                        <a href="#"><i class="fas fa-sign-out-alt fa-sm"></i> Log out</a>
 
 
                 </div>

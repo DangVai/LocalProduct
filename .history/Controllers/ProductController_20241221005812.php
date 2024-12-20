@@ -8,7 +8,7 @@ class ProductController extends BaseController
         $this->loadModel('ProductModel');
         $this->productModel = new ProductModel();
     }
-
+<<<<<<< HEAD
 
     public function index()
     {
