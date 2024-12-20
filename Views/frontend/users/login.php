@@ -6,9 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Page with Slider</title>
     <link rel="stylesheet" href="/LocalProduct/public/css/signin.css">
+    <link rel="stylesheet" href="/LocalProduct/public/css/load.css">
+    <script src="/LocalProduct/public/js/load.js"></script>
 </head>
 
 <body>
+                    <div id="loading" class="loading-overlay">
+                <div class="spinner"></div>
+                <p>Loading...</p>
+            </div>
     <div class="login_container">
         <img src="/LocalProduct/public/images//logo.jpg" alt="Logo Left" class="logo-top-left">
         <img src="/LocalProduct/public/images/sao.jpg" alt="Logo Right" class="logo-top-right">

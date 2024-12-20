@@ -7,9 +7,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Forgot Password</title>
   <link rel="stylesheet" href="/LocalProduct/public/css/ForgotPassword.css">
+    <link rel="stylesheet" href="/LocalProduct/public/css/load.css">
+    <script src="/LocalProduct/public/js/load.js"></script>
 </head>
     <script src="/LocalProduct/public/js/ForgotPassword.js"></script>
 <body>
+                  <div id="loading" class="loading-overlay">
+                <div class="spinner"></div>
+                <p>Loading...</p>
+            </div>
   <div class="logo-container">
     <img class="logo" src="/LocalProduct/public/images/logo.jpg" alt="">
     <img class="logo" src="/LocalProduct/public/images/sao.jpg" alt="">
