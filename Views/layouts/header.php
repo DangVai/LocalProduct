@@ -4,9 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<<<<<<< HEAD
     <!-- Thêm link đến Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="/LocalProduct/public/css/header.css">
+=======
+    <title>Website</title>
+    <link rel="stylesheet" href="public/css/header.css">
+>>>>>>> 90affc598e2c5a974f565b10a8329f21f3c46880
 </head>
 
 <body>
