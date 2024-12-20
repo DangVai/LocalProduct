@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Website</title>
-    <link rel="stylesheet" href="path/to/your/styles.css">
+    <link rel="stylesheet" href="public/css/header.css">
 </head>
 
 <body>

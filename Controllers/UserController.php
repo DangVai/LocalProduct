@@ -330,15 +330,6 @@ class UserController extends BaseController
         include "Views/frontend/users/login.php"; // Đường dẫn tới view
     }
 
-
-    //Logout
-    public function logout()
-    {
-        session_unset();
-        session_destroy();
-        header("Location: index.php");
-        exit();
-    }
     public function home()
     {
         $this->view('frontend/home');
