@@ -10,40 +10,6 @@
     <script src="/LocalProduct/public/js/load.js"></script>
 </head>
 <style>
-/* Thông báo thành công */
-.success-message {
-    background-color: #4CAF50; /* Màu nền xanh lá */
-    color: white;
-    padding: 20px;
-    margin: 15px 0;
-    border-radius: 5px;
-    text-align: center;
-}
-
-/* Thông báo lỗi */
-.error-message {
-    background-color: #f44336; /* Màu nền đỏ */
-    color: white;
-    padding: 20px;
-    margin: 15px 0;
-    border-radius: 5px;
-    text-align: center;
-}
-
-.success-message:hover {
-    opacity: 0.9;
-}
-.error-message:hover {
-    opacity: 0.9;
-}
-/* Đảm bảo thông báo không bị tràn màn hình trên các thiết bị nhỏ */
-@media (max-width: 600px) {
-    .success-message {
-        font-size: 14px;
-        padding: 15px;
-    }
-}
-
 </style>
 
 <body>
@@ -51,8 +17,6 @@
         <div class="spinner"></div>
         <p>Loading...</p>
     </div>
-
-
 <?php
 // Kiểm tra xem có thông báo thành công không
 if (isset($_SESSION['order_success'])) {
@@ -66,14 +30,11 @@ if (isset($_SESSION['order_error'])) {
     unset($_SESSION['order_error']);
 }
 ?>
-
-
     <?php if (isset($product)): ?>
 
         <body>
             <div class="container">
                 <div class="card">
-
                     <div class="wrapper">
                         <!-- Hình ảnh sản phẩm và hình thu nhỏ -->
                         <div class="preview col-md-6">
@@ -154,7 +115,7 @@ if (isset($_SESSION['order_error'])) {
                                 </span>&#9829;</button>
                         </div>
                         <h3>Details</h3>
-                        <p class="product-description"><?php echo $product['description']; ?></p>
+                        <p class="product-descriptions"><?php echo $product['description']; ?></p>
                     </div>
 
                 </div>
@@ -167,7 +128,7 @@ if (isset($_SESSION['order_error'])) {
 
                                 <div class="product-details">
                                     <div>
-                                        <h3 class="product-description"><?php echo $product['name']; ?></h3>
+                                        <h3 class="product-descriptions"><?php echo $product['name']; ?></h3>
                                         <p> Price: <span id="product-price"
                                                 class="product-price"><?php echo number_format($product['price'], 2, ',', '.'); ?>$
                                             </span></p>
@@ -271,35 +232,8 @@ if (isset($_SESSION['order_error'])) {
     });
 });
 const userId = <?php echo isset($_SESSION['user_id']) ? json_encode($_SESSION['user_id']) : 'null'; ?>;
-    const productId = <?php echo json_encode($product['product_id']); ?>;
+const productId = <?php echo json_encode($product['product_id']); ?>;
 
-
-function addToCart() {
-if (!userId || userId === 'null') {
-    const userChoice = confirm('You need to log in to add products to the cart. Do you want to log in now?');
-    if (userChoice) {
-        // Người dùng chọn "OK" -> chuyển hướng đến trang đăng nhập
-        window.location.href = 'index.php?controller=user&action=login';
-    } else {
-        // Người dùng chọn "Cancel" -> không làm gì
-        console.log('User chose not to log in.');
-    }
-    return; // Dừng hàm nếu chưa đăng nhập
-}
-
-
-    const size = document.getElementById('size-selector')?.value || null;
-    const quantity = parseInt(document.querySelector('.quantity')?.value) || null;
-
-    fetch('index.php?controller=product&action=addtocart', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ user_id: userId, product_id: productId, size, quantity }),
-    })
-        .then(res => res.json())
-        .then(({ success, message }) => alert(message))
-        .catch(err => console.error('Error:', err));
-}
 
 </script>
 

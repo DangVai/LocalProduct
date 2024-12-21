@@ -14,9 +14,7 @@ class ProductModel extends BaseModel
         return $this->all();
     }
 
-    public function findProduct($id)
-    {
-    }
+    public function findProduct($id) {}
     public function getById($id)
     {
         // Truy vấn lấy thông tin sản phẩm
@@ -188,6 +186,20 @@ class ProductModel extends BaseModel
         }
     }
 
+
+    public function addToCart($userId, $productId, $size, $quantity)
+    {
+        $size = $size ?? 'Default Size';  // Nếu không có size, sử dụng 'Default Size'
+        $quantity = $quantity ?? 1;       // Nếu không có quantity, sử dụng 1
+
+        // Chuẩn bị câu lệnh SQL để thêm sản phẩm vào giỏ hàng
+        $query = "INSERT INTO cart (user_id, product_id, size, quantity) VALUES (?, ?, ?, ?)";
+        $stmt = $this->connect->prepare($query);
+        $stmt->bind_param("iisi", $userId, $productId, $size, $quantity); // 'i' cho integer, 's' cho string
+
+        return $stmt->execute();
+    }
+
     //Home featured productsproducts
     public function getFeaturedProductsByQuantity()
     {
@@ -204,17 +216,17 @@ class ProductModel extends BaseModel
 
 
 
-    public function addToCart($userId, $productId, $size, $quantity)
-    {
-        $size = $size ?? 'Default Size';  // Nếu không có size, sử dụng 'Default Size'
-        $quantity = $quantity ?? 1;       // Nếu không có quantity, sử dụng 1
+    // public function addToCart($userId, $productId, $size, $quantity)
+    // {
+    //     $size = $size ?? 'Default Size';  // Nếu không có size, sử dụng 'Default Size'
+    //     $quantity = $quantity ?? 1;       // Nếu không có quantity, sử dụng 1
 
-        // Chuẩn bị câu lệnh SQL để thêm sản phẩm vào giỏ hàng
-        $query = "INSERT INTO cart (user_id, product_id, size, quantity) VALUES (?, ?, ?, ?)";
-        $stmt = $this->connect->prepare($query);
-        $stmt->bind_param("iisi", $userId, $productId, $size, $quantity); // 'i' cho integer, 's' cho string
+    //     // Chuẩn bị câu lệnh SQL để thêm sản phẩm vào giỏ hàng
+    //     $query = "INSERT INTO cart (user_id, product_id, size, quantity) VALUES (?, ?, ?, ?)";
+    //     $stmt = $this->connect->prepare($query);
+    //     $stmt->bind_param("iisi", $userId, $productId, $size, $quantity); // 'i' cho integer, 's' cho string
 
-        return $stmt->execute();
-    }
+    //     return $stmt->execute();
+    // }
 }
 

@@ -8,20 +8,6 @@ class ProductController extends BaseController
         $this->loadModel('ProductModel');
         $this->productModel = new ProductModel();
     }
-    public function index()
-    {
-        $products = $this->productModel->getAll();
-        $this->view('frontend.products.index', ['products' => $products]);
-    }
-
-    public function show($id)
-    {
-        // echo "Chi tiết sản phẩm id: $description ";
-        $products = $this->productModel->find($id);
-        $this->view('frontend.products.index', ['products' => $products]);
-    }
-    public function search($extractProperties) {}
-
     public function detail($id)
     {
         // Kiểm tra xem id có hợp lệ không trước khi gọi getById
