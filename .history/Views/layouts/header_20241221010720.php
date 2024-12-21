@@ -13,15 +13,24 @@
     <div class="header">
         <!-- Logo -->
         <div class="box_logo">
+
             <img src="/public/images/logo.jpg" alt="logo">
+
         </div>
 
         <!-- Navigation Menu -->
         <div class="nav">
-            <a href="?page=home"><b>Home</b></a>
-            <a href="?page=fashion"><b>Thời Trang</b></a>
-            <a href="?page=food"><b>Ẩm thực</b></a>
-            <a href="?page=others"><b>Khác</b></a>
+
+            <<<<<<< HEAD
+                <a href="?page=home"><b>Home</b></a>
+
+                <a href="?page=fashion"><b>Thời Trang</b></a>
+                =======
+                <a href="index.php?controller=home&action=home"><b>Home</b></a>
+                <a href="index.php?controller=product&action=showProduct"><b>Thời Trang</b></a>
+                >>>>>>> 1921997579a8f09c82194ee3cbb13d0929ea7f9e
+                <a href="?page=food"><b>Ẩm thực</b></a>
+                <a href="?page=others"><b>Khác</b></a>
         </div>
 
         <!-- Search -->
