@@ -8,7 +8,7 @@ class ProductController extends BaseController
         $this->loadModel('ProductModel');
         $this->productModel = new ProductModel();
     }
-
+<<<<<<< HEAD
 
 
     public function index()
@@ -26,7 +26,7 @@ class ProductController extends BaseController
     }
     public function search($extractProperties) {}
 
-
+=======
     public function detail($id)
     {
         // Kiểm tra xem id có hợp lệ không trước khi gọi getById
