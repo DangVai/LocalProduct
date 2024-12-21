@@ -128,7 +128,7 @@
                         <h3 class="product-name"><?php echo htmlspecialchars($product['product_name']); ?></h3>
                         <p class="product-price">Giá: <?php echo number_format($product['price'], 0, ',', '.'); ?> VNĐ</p>
                         <p class="product-type">Loại: <?php echo htmlspecialchars($product['type']); ?></p>
-                        <img src="<?php echo htmlspecialchars($product['product_image']); ?>" alt="Hình sản phẩm"
+                        <img src="/LocalProduct/<?php echo htmlspecialchars($product['product_image']); ?>" alt="Hình sản phẩm"
                             class="product-image" width="150">
                         <br>
                         <a href="index.php?controller=product&action=detail&id=<?php echo $product['product_id']; ?>"
