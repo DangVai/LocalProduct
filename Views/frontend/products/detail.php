@@ -44,7 +44,7 @@ if (isset($_SESSION['order_error'])) {
                                         <!-- Hiển thị hình ảnh đầu tiên từ mảng $product['images'] -->
                                         <div class="tab-pane active" id="pic-1">
                                             <img class="img-responsive"
-                                                src="<?php echo htmlspecialchars($product['images'][0]); ?>" alt="Product Image"
+                                                src="/LocalProduct/<?php echo htmlspecialchars($product['images'][0]); ?>" alt="Product Image"
                                                 id="mainImage" width="150">
                                         </div>
                                     <?php else: ?>
@@ -59,7 +59,7 @@ if (isset($_SESSION['order_error'])) {
                                                 <li class="<?php echo $index === 0 ? 'active' : ''; ?>">
                                                     <a href="#" data-target="#pic-
                                         <?php echo $index + 1; ?>" data-toggle="tab">
-                                                        <img src="<?php echo $image; ?>" alt="Thumbnail
+                                                        <img src="/LocalProduct/<?php echo $image; ?>" alt="Thumbnail
                                         <?php echo $index + 1; ?>" onclick="changeImage('
                                         <?php echo $image; ?>')">
                                                     </a>
@@ -124,7 +124,7 @@ if (isset($_SESSION['order_error'])) {
                     <form method="POST" action="index.php?controller=checkout&action=storeOrder">
                         <div class="detail-product">
                             <div class="product">
-                                <img class="product-image" src="<?php echo htmlspecialchars($product['images'][0]); ?>" alt="Product Image">
+                                <img class="product-image" src="/LocalProduct/<?php echo htmlspecialchars($product['images'][0]); ?>" alt="Product Image">
 
                                 <div class="product-details">
                                     <div>

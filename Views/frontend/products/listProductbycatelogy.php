@@ -134,7 +134,7 @@
             <li class="related-product-item">
                 <a href="index.php?controller=product&action=detail&id=<?php echo $relatedProduct['product_id']; ?>"
                     class="view-details-link">
-                <img src="<?php echo htmlspecialchars($relatedProduct['product_image'] ?? '#'); ?>" alt="Hình sản phẩm"
+                <img src="/LocalProduct/<?php echo htmlspecialchars($relatedProduct['product_image'] ?? '#'); ?>" alt="Hình sản phẩm"
                     class="product-images">
                 <div class="product-details">
                     <h4 class="product-name">

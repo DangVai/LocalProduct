@@ -14,7 +14,7 @@
         <!-- Logo -->
         <div class="box_logo">
 
-            <img src="/public/images/logo.jpg" alt="logo">
+            <img src="" alt="logo">
 
         </div>
 
