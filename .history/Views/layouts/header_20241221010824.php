@@ -14,7 +14,6 @@
         <!-- Logo -->
         <div class="box_logo">
             <img src="/public/images/logo.jpg" alt="logo">
-
         </div>
 
         <!-- Navigation Menu -->
