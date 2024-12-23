@@ -185,7 +185,6 @@ class ProductModel extends BaseModel
             return false;
         }
     }
-
     //Home featured productsproducts
     public function getFeaturedProductsByQuantity()
     {
@@ -200,6 +199,7 @@ class ProductModel extends BaseModel
     }
 
 
+
     public function addToCart($userId, $productId, $size, $quantity)
     {
         $size = $size ?? 'Default Size';  // Nếu không có size, sử dụng 'Default Size'
@@ -212,4 +212,5 @@ class ProductModel extends BaseModel
 
         return $stmt->execute();
     }
-}
+
+
