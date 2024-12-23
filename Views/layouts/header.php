@@ -20,6 +20,7 @@
             <img src="/LocalProduct/public/images/logo.jpg" alt="logo">
 
             <img src="/public/images/logo.jpg" alt="logo">
+
         </div>
 
         <!-- Navigation Menu -->
