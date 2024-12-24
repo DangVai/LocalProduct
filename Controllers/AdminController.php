@@ -1,4 +1,11 @@
  <?php
+require_once __DIR__ . '/../PHPMailer-master/src/Exception.php';
+require_once __DIR__ . '/../PHPMailer-master/src/PHPMailer.php';
+require_once __DIR__ . '/../PHPMailer-master/src/SMTP.php';
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
  class AdminController extends BaseController
  {
      private $AdminModel;
@@ -10,23 +17,18 @@
          $this->AdminModel = new AdminModel(); // Tạo đối tượng model
      }
 
-     // Các phương thức khác của AdminController có thể được thêm ở đây
- 
-
-
-
      //=====================================================Product Management===========================================
      public function index()
      {
          $products = $this->AdminModel->getAllProducts();
-         $this->view('frontend.Admin.products.index', ['products' => $products]);
+         $this->viewWithoutLayout('frontend.Admin.products.index', ['products' => $products]);
      }
 
 
      // Hiển thị form thêm sản phẩm
      public function create()
      {
-         $this->view("frontend.Admin.products.create");
+         $this->viewWithoutLayout("frontend.Admin.products.create");
 
      }
 
@@ -76,7 +78,6 @@
                  }
              }
 
-             // Lưu nhiều kích thước vào bảng product_sizes
              // Lưu kích thước vào bảng product_sizes (chỉ nếu có size đã chọn)
              if (!empty($_POST['size'])) {
                  foreach ($_POST['size'] as $size) {
@@ -102,7 +103,7 @@
          $id = $_GET['id'] ?? null;
          if ($id) {
              $product = $this->AdminModel->getProductById($id);
-             $this->view("frontend.Admin.products.edit", ["product" => $product]);
+             $this->viewWithoutLayout("frontend.Admin.products.edit", ["product" => $product]);
          } else {
              echo "Invalid product ID.";
          }
@@ -222,6 +223,97 @@
         header("Location: index.php?controller=admin&action=showOrders");
     }
 }
+
+//===================================================End Oder tracking==========================================================
+
+
+
+//===================================================Admin login==========================================================
+    
+// Hiển thị trang đăng nhập admin
+    public function login() {
+        $this->viewWithoutLayout("frontend.Admin.login");
+    }
+
+    // Xử lý gửi OTP qua email
+    public function sendOTP() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $email = $_POST['email'];
+
+            // Kiểm tra email có hợp lệ hay không
+            if (!$this->AdminModel->isValidAdminEmail($email)) {
+                header("Location: index.php?controller=admin&action=login&error=email_invalid");
+                exit();
+            }
+
+            // Tạo mã OTP và gửi qua email
+            $otp = $this->AdminModel->generateOTP($email);
+            $this->sendEmail($email, $otp);
+
+            // Chuyển tới form nhập OTP kèm email
+            header("Location: index.php?controller=admin&action=login&success=success&email=" . urlencode($email));
+            exit();
+        }
+    }
+
+    // Xử lý xác thực mã OTP
+    public function processOTP() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $email = $_POST['email'];
+            $otp = $_POST['otp'];
+
+            // Xác minh OTP
+            if ($this->AdminModel->verifyOTP($email, $otp)) {
+                // Đăng nhập thành công
+                $_SESSION['admin_logged_in'] = true; 
+                session_regenerate_id(true); 
+                header("Location: index.php?controller=admin&action=home");
+                exit();
+            } else {
+                die("Mã OTP không hợp lệ hoặc đã hết hạn!");
+            }
+        }
+    }
+
+    // Hiển thị trang Dashboard
+    public function home() {
+        if (!isset($_SESSION['admin_logged_in'])) {
+            header("Location: index.php?controller=admin&action=login");
+            exit();
+        }
+
+        $this->viewWithoutLayout("frontend.Admin.home");
+    }
+
+
+    public function sendEmail($email, $otp)
+    {
+        $mail = new PHPMailer(true);
+
+        try {
+            $mail->isSMTP();
+            $mail->Host = 'smtp.gmail.com';
+            $mail->SMTPAuth = true;
+            $mail->Username = 'on.ho26@student.passerellesnumeriques.org'; // Email của bạn
+            $mail->Password = 'jriaycnpewjpslnu'; // Mật khẩu ứng dụng
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+            $mail->Port = 587;
+
+            $mail->setFrom('on.ho26@student.passerellesnumeriques.org', 'Your Website');
+            $mail->addAddress($email);
+
+            $mail->isHTML(true);
+            $mail->Subject = 'OTP verification code';
+            $mail->Body = "Your OTP code:<b>$otp</b>";
+
+            $mail->send();
+            return true;
+        } catch (Exception $e) {
+            error_log('Mailer Error: ' . $mail->ErrorInfo);
+            return false;
+        }
+    }
+//===================================================End Admin login==========================================================
 
  }
 ?>
