@@ -1,0 +1,102 @@
+/* General Styles */
+body {
+    font-family: 'Times New Roman', serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f2f2f2;
+    background: url('/public/images/cá\ nướng.jpg') no-repeat center center fixed;
+    background-size: cover;
+    /* Background nhẹ nhàng lấy cảm hứng từ vùng cao */
+}
+
+/* Header Styles */
+.header {
+    text-align: center;
+    /* padding: 20px; */
+    color:#a54d2f;
+    font-size: 28px;
+    font-family: 'Georgia', serif;
+    font-weight: bold;
+}
+
+/* Table Styles */
+table {
+    width: 95%;
+    margin: 20px auto;
+    border-collapse: collapse;
+    background-color: #fff;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+table thead th {
+    background-color: #a54d2f;
+    color: #fff;
+    padding: 15px;
+    font-family: 'Arial', sans-serif;
+    font-weight: bold;
+    border: 1px solid #d4cec5;
+}
+
+table tbody tr:nth-child(even) {
+    background-color: #f9f4eb;
+}
+
+table tbody tr:nth-child(odd) {
+    background-color: #fdfcf8;
+}
+
+table tbody td {
+    padding: 12px;
+    text-align: center;
+    border: 1px solid #d4cec5;
+}
+
+/* Dropdown Styles */
+.status-dropdown {
+    padding: 8px;
+    font-size: 14px;
+    font-family: 'Times New Roman', serif;
+    border: 1px solid #d4cec5;
+    background-color: #fdfcf8;
+    color: #6a4e1f;
+}
+
+.status-dropdown:hover {
+    border-color: #a54d2f;
+}
+
+/* Links for Actions */
+a {
+    text-decoration: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    color: #fff;
+    font-size: 14px;
+    font-family: 'Arial', sans-serif;
+}
+
+.btn-edit {
+    background-color: #d8ad56;
+}
+
+.btn-edit:hover {
+    background-color: #f9a827;
+}
+
+.btn-delete {
+    background-color: #c44f4b;
+}
+
+.btn-delete:hover {
+    background-color: #de423c;
+}
+
+/* No Orders Message */
+tbody td[colspan] {
+    text-align: center;
+    padding: 20px;
+    background-color: #fdfcf8;
+    font-style: italic;
+    font-size: 16px;
+    color: #6a4e1f;
+}

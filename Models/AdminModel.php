@@ -9,7 +9,7 @@ class AdminModel extends BaseModel
         parent::__construct('products');
     }
 
-
+//=====================================================Product Management===========================================
 public function getAllProducts() {
     $query = "
         SELECT p.*, 
@@ -311,6 +311,37 @@ public function delete($id)
         return false;
     }
 }
+//=====================================================End Product Management===========================================
+
+//===================================================Oder tracking==========================================================
+public function getOrders() {
+    $query = "SELECT id, user_id, product_id, phone, 
+                     CONCAT( specific_address, ', ', location) AS address,
+                     total_price, payment_method, status
+              FROM orders";
+
+    $result = $this->connect->query($query);
+
+    if (!$result) {
+        die("SQL Error: " . $this->connect->error); 
+    }
+    $orders = $result->fetch_all(MYSQLI_ASSOC);
+
+    return $orders;
+}
+
+public function updateOrderStatus($orderId, $status)
+{
+    $stmt = $this->connect->prepare("UPDATE orders SET status = ? WHERE id = ?");
+    $stmt->bind_param("si", $status, $orderId);
+
+    if (!$stmt->execute()) {
+        die("SQL Error: " . $this->connect->error);
+    }
+
+    $stmt->close();
+}
+
 
 
 
