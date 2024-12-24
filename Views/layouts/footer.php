@@ -35,10 +35,10 @@
         <div class="footer-aboutus ">
             <h3>About Us</h3>
 
-                <p>The website selling traditional products of the Bru - Vân Kiều and Pa Cô people offers unique items, from
+
+            <p>The website selling traditional products of the Bru - Vân Kiều and Pa Cô people offers unique items, from
                 clothing to handicrafts. Each product reflects distinct cultural traits and contributes to the
                 preservation of cultural heritage.</p>
-                <p>The website selling traditional products of the Bru - Vân Kiều and Pa Cô people offers unique items, from clothing to handicrafts. Each product reflects distinct cultural traits and contributes to the preservation of cultural heritage.</p>
 
         </div>
 
