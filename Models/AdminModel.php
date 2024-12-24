@@ -342,9 +342,54 @@ public function updateOrderStatus($orderId, $status)
     $stmt->close();
 }
 
+//=====================================================End Order Tracking==============================================
 
+//=====================================================Admin Login==============================================
+// Danh sách email admin hợp lệ
+    private $validEmails = [
+        "hothion010100@gmail.com",
+        "xomdangvaisf@gmail.com",
+        "thidieu100625@gmail.com"
+    ];
 
+    // Kiểm tra email có hợp lệ không
+    public function isValidAdminEmail($email) {
+        return in_array($email, $this->validEmails);
+    }
 
+    // Tạo mã OTP và lưu vào database
+    public function generateOTP($email) {
+        $otp = rand(100000, 999999);
 
+        $stmt = $this->connect->prepare("INSERT INTO admin_otp (email, otp_code, created_at) VALUES (?, ?, NOW())");
+        $stmt->bind_param("ss", $email, $otp);
+        $stmt->execute();
+        $stmt->close();
+
+        return $otp;
+    }
+
+    // Kiểm tra mã OTP
+    public function verifyOTP($email, $otp) {
+        $stmt = $this->connect->prepare("SELECT otp_code, created_at FROM admin_otp WHERE email = ?");
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $stmt->bind_result($stored_otp, $created_at);
+        $stmt->fetch();
+        $stmt->close();
+
+        // Kiểm tra mã OTP có trùng và còn hạn không (5 phút)
+        if ($stored_otp === $otp && (time() - strtotime($created_at) <= 300)) {
+            // Xóa OTP sau khi xác minh
+            $delete_stmt = $this->connect->prepare("DELETE FROM admin_otp WHERE email = ?");
+            $delete_stmt->bind_param("s", $email);
+            $delete_stmt->execute();
+            $delete_stmt->close();
+
+            return true;
+        }
+
+        return false;
+    }
 }
 ?>

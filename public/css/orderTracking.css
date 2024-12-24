@@ -6,14 +6,13 @@ body {
     background-color: #f2f2f2;
     background: url('/public/images/cá\ nướng.jpg') no-repeat center center fixed;
     background-size: cover;
-    /* Background nhẹ nhàng lấy cảm hứng từ vùng cao */
 }
 
 /* Header Styles */
-.header {
+p {
+    margin-top: 80px;
     text-align: center;
-    /* padding: 20px; */
-    color:#a54d2f;
+    color: #a54d2f;
     font-size: 28px;
     font-family: 'Georgia', serif;
     font-weight: bold;
@@ -21,7 +20,8 @@ body {
 
 /* Table Styles */
 table {
-    width: 95%;
+    width: 100%;
+    max-width: 1200px;
     margin: 20px auto;
     border-collapse: collapse;
     background-color: #fff;
@@ -35,6 +35,7 @@ table thead th {
     font-family: 'Arial', sans-serif;
     font-weight: bold;
     border: 1px solid #d4cec5;
+    text-align: center;
 }
 
 table tbody tr:nth-child(even) {
@@ -49,6 +50,12 @@ table tbody td {
     padding: 12px;
     text-align: center;
     border: 1px solid #d4cec5;
+    word-wrap: break-word;
+    /* Bẻ dòng nếu nội dung quá dài */
+    white-space: normal;
+    /* Đảm bảo nội dung dài sẽ xuống dòng */
+    vertical-align: middle;
+    /* Căn giữa nội dung theo chiều dọc */
 }
 
 /* Dropdown Styles */
@@ -68,7 +75,11 @@ table tbody td {
 /* Links for Actions */
 a {
     text-decoration: none;
+    display: inline-block;
+    /* Đảm bảo nút nằm riêng biệt */
     padding: 8px 12px;
+    margin: 5px;
+    /* Tạo khoảng cách giữa các nút */
     border-radius: 6px;
     color: #fff;
     font-size: 14px;
@@ -89,6 +100,17 @@ a {
 
 .btn-delete:hover {
     background-color: #de423c;
+}
+
+/* Ensure Action buttons stack vertically if needed */
+td .action-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    /* Các nút sẽ xuống dòng nếu không đủ không gian */
+    gap: 8px;
+    /* Khoảng cách giữa các nút */
+    justify-content: center;
+    /* Căn giữa các nút */
 }
 
 /* No Orders Message */

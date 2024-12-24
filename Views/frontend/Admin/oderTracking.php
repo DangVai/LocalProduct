@@ -7,9 +7,7 @@
     <link rel="stylesheet" href="/LocalProduct/public/css/orderTracking.css">
 </head>
 <body>
-    <div class="header">
-    <h1>Order List</h1>
-  </div>
+    <p>Order List</p>
   
   <!-- Bảng danh sách đơn hàng -->
   <table>
