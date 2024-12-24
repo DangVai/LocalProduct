@@ -151,14 +151,36 @@ class ProductModel extends BaseModel
     }
 
 
+    public function updateQuantity($productId, $quantity)
+    {
+        // Câu lệnh SQL để cập nhật số lượng sản phẩm
+        $query = "UPDATE products SET quantity = quantity - ? WHERE product_id = ?";
+
+        // Chuẩn bị câu lệnh SQL
+        $stmt = $this->connect->prepare($query);
+
+        // Liên kết các tham số
+        $stmt->bind_param("ii", $quantity, $productId);
+
+        // Thực thi và kiểm tra kết quả
+        if ($stmt->execute()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
 
 
     // Phương thức lưu đơn hàng vào CSDL
     public function createOrder($orderData)
     {
+        // Bắt đầu transaction để đảm bảo các thao tác đồng bộ
+        $this->connect->begin_transaction();
+
+        // Câu lệnh SQL để thêm đơn hàng vào bảng orders
         $query = "INSERT INTO orders (size, quantity, product_name, product_id, product_price, full_name, phone, location, specific_address, payment_method, user_id, name, total_price) 
-                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         // Chuẩn bị câu lệnh SQL
         $stmt = $this->connect->prepare($query);
@@ -181,10 +203,21 @@ class ProductModel extends BaseModel
             $orderData['total_price']
         );
 
-        // Thực thi và kiểm tra kết quả
+        // Thực thi câu lệnh và kiểm tra kết quả
         if ($stmt->execute()) {
-            return true;
+            // Cập nhật số lượng sản phẩm trong bảng products
+            if ($this->updateQuantity($orderData['product_id'], $orderData['quantity'])) {
+                // Commit transaction nếu cả hai câu lệnh đều thành công
+                $this->connect->commit();
+                return true;
+            } else {
+                // Rollback transaction nếu cập nhật số lượng sản phẩm không thành công
+                $this->connect->rollback();
+                return false;
+            }
         } else {
+            // Rollback transaction nếu không thể thêm đơn hàng
+            $this->connect->rollback();
             return false;
         }
     }
@@ -192,16 +225,28 @@ class ProductModel extends BaseModel
 
     public function addToCart($userId, $productId, $size, $quantity)
     {
-        $size = $size ?? 'Default Size';  // Nếu không có size, sử dụng 'Default Size'
-        $quantity = $quantity ?? 1;       // Nếu không có quantity, sử dụng 1
+        // Kiểm tra xem sản phẩm đã có trong giỏ hàng chưa
+        $checkQuery = "SELECT * FROM cart WHERE user_id = ? AND product_id = ? AND size = ?";
+        $stmt = $this->connect->prepare($checkQuery);
+        $stmt->bind_param("iis", $userId, $productId, $size); // 'i' cho integer, 's' cho string
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-        // Chuẩn bị câu lệnh SQL để thêm sản phẩm vào giỏ hàng
-        $query = "INSERT INTO cart (user_id, product_id, size, quantity) VALUES (?, ?, ?, ?)";
-        $stmt = $this->connect->prepare($query);
-        $stmt->bind_param("iisi", $userId, $productId, $size, $quantity); // 'i' cho integer, 's' cho string
-
-        return $stmt->execute();
+        if ($result->num_rows > 0) {
+            // Nếu sản phẩm đã có, chỉ cần cập nhật số lượng
+            $updateQuery = "UPDATE cart SET quantity = quantity + ? WHERE user_id = ? AND product_id = ? AND size = ?";
+            $updateStmt = $this->connect->prepare($updateQuery);
+            $updateStmt->bind_param("iiis", $quantity, $userId, $productId, $size);
+            return $updateStmt->execute();
+        } else {
+            // Nếu sản phẩm chưa có, thêm mới vào giỏ hàng
+            $insertQuery = "INSERT INTO cart (user_id, product_id, size, quantity) VALUES (?, ?, ?, ?)";
+            $insertStmt = $this->connect->prepare($insertQuery);
+            $insertStmt->bind_param("iisi", $userId, $productId, $size, $quantity);
+            return $insertStmt->execute();
+        }
     }
+
 
     //Home featured productsproducts
     public function getFeaturedProductsByQuantity()
@@ -210,9 +255,100 @@ class ProductModel extends BaseModel
                   FROM products p
                   LEFT JOIN image i ON p.product_id = i.product_id
                   ORDER BY p.quantity DESC
-                  LIMIT 10"; // Lấy 10 sản phẩm có số lượng lớn nhất
+                  "; // Lấy 10 sản phẩm có số lượng lớn nhất
 
         $result = $this->connect->query($query);
         return $result->fetch_all(MYSQLI_ASSOC);
     }
+
+    public function getCartItems($userId)
+    {
+        // Lấy danh sách sản phẩm trong giỏ hàng của người dùng
+        $cartItems = $this->getCartProductDetails($userId);
+
+        // Tính toán giá theo số lượng cho mỗi sản phẩm trong giỏ hàng
+        foreach ($cartItems as &$item) {
+            $item['total_price'] = $item['price'] * $item['quantity'];  // Tính tổng giá của sản phẩm
+        }
+
+        return $cartItems;
+    }
+
+    // Hàm lấy thông tin chi tiết sản phẩm trong giỏ hàng (bao gồm ảnh)
+    private function getCartProductDetails($userId)
+    {
+        // Câu lệnh SQL để lấy sản phẩm và thông tin liên quan (bao gồm cả ảnh)
+        $query = "
+    SELECT 
+        c.cart_id, 
+        c.product_id, 
+        c.size, 
+        c.quantity, 
+        p.name AS product_name, 
+        p.price, 
+        p.product_view_at,
+        i.img AS image_path  -- Lấy đường dẫn ảnh từ trường img trong bảng images
+    FROM cart c
+    JOIN products p ON c.product_id = p.product_id
+    LEFT JOIN image i ON p.product_id = i.product_id
+    WHERE c.user_id = ?
+    group BY cart_id ASC  -- Sắp xếp để lấy ảnh đầu tiên theo image_id ";
+
+        $stmt = $this->connect->prepare($query);
+
+        // Kiểm tra xem câu lệnh chuẩn bị có thành công không
+        if ($stmt === false) {
+            die("MySQL prepare error: " . $this->connect->error);
+        }
+
+        $stmt->bind_param("i", $userId); // Đảm bảo tham số đúng kiểu
+
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $cartItems = [];
+
+        // Duyệt qua từng sản phẩm trong giỏ hàng và thêm thông tin vào mảng
+        while ($row = $result->fetch_assoc()) {
+            // Thêm sản phẩm vào mảng giỏ hàng
+            $cartItems[] = [
+                'cart_id' => $row['cart_id'],
+                'product_id' => $row['product_id'],
+                'product_name' => $row['product_name'],
+                'size' => $row['size'],
+                'quantity' => $row['quantity'],
+                'price' => $row['price'],
+                'image_path' => $row['image_path'],  // Đường dẫn ảnh sản phẩm
+                'product_view_at' => $row['product_view_at']
+            ];
+        }
+
+        return $cartItems;
+    }
+
+    public function deleteItem($productId)
+    {
+        // Đảm bảo rằng câu lệnh DELETE đang xóa đúng dữ liệu trong bảng `cart`
+        $sql = "DELETE FROM cart WHERE cart_id = ?";
+        $stmt = $this->connect->prepare($sql);
+
+        // Kiểm tra nếu câu lệnh chuẩn bị thành công
+        if ($stmt === false) {
+            error_log("Failed to prepare statement for deleting product ID: $productId");
+            return false;
+        }
+
+        // Bind the productId parameter to the prepared statement
+        $stmt->bind_param("i", $productId);  // "i" indicates an integer parameter
+
+        // Thực thi câu lệnh
+        if ($stmt->execute()) {
+            return true; // Thành công
+        } else {
+            // Log lỗi nếu không thành công
+            error_log("Failed to delete product ID: $productId");
+            return false;
+        }
+    }
+
+
 }

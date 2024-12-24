@@ -11,10 +11,10 @@
 </head>
 
 <body>
-                    <div id="loading" class="loading-overlay">
-                <div class="spinner"></div>
-                <p>Loading...</p>
-            </div>
+    <div id="loading" class="loading-overlay">
+        <div class="spinner"></div>
+        <p>Loading...</p>
+    </div>
     <div class="login_container">
         <img src="/LocalProduct/public/images//logo.jpg" alt="Logo Left" class="logo-top-left">
         <img src="/LocalProduct/public/images/sao.jpg" alt="Logo Right" class="logo-top-right">
@@ -31,19 +31,19 @@
                             <img src="/LocalProduct/public/images/R.jpg" class="slide" alt="Slide Clone First">
                         </div>
                     </div>
-               
+
                 </div>
                 <div class="divider"></div>
                 <form method="POST" action="index.php?controller=user&action=handleLogin">
                     <?php
-                        // Kiểm tra lỗi hoặc thông báo thành công từ URL
-                        if (isset($_GET['error'])) {
-                            echo '<p style="color: red;">' . htmlspecialchars($_GET['error']) . '</p>';
-                        }
-                        if (isset($_GET['success'])) {
-                            echo '<p style="color: green;">' . htmlspecialchars($_GET['success']) . '</p>';
-                            echo "<script>showAdditionalFields();</script>";
-                        }
+                    // Kiểm tra lỗi hoặc thông báo thành công từ URL
+                    if (isset($_GET['error'])) {
+                        echo '<p style="color: red;">' . htmlspecialchars($_GET['error']) . '</p>';
+                    }
+                    if (isset($_GET['success'])) {
+                        echo '<p style="color: green;">' . htmlspecialchars($_GET['success']) . '</p>';
+                        echo "<script>showAdditionalFields();</script>";
+                    }
                     ?>
                     <label for="username">Username</label>
                     <input type="text" id="username" name="username" placeholder="Username" required>
@@ -53,7 +53,8 @@
                     <a href="index.php?controller=user&action=forgot_password">Forgot Password?</a>
                 </form>
             </div>
-            <p class="register-link">Don't have an account? <a href="index.php?controller=user&action=register">Register</a></p>
+            <p class="register-link">Don't have an account? <a
+                    href="index.php?controller=user&action=register">Register</a></p>
         </div>
     </div>
 

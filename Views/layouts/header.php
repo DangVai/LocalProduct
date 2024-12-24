@@ -34,8 +34,7 @@
         </div>
         <div class="cart">
             <div class="box-cart">
-                <i class="fas fa-shopping-cart"></i>
-
+                <a href="index.php?controller=cart&action=viewcart"><i class="fas fa-shopping-cart"></i></a>
             </div>
         </div>
         <!-- User Account -->
