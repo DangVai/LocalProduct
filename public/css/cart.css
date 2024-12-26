@@ -152,7 +152,7 @@
         display: flex;
         align-items: center;
         border-bottom: 1px solid #ddd;
-        padding: 10px 0;
+        padding: 20px 0;
     }
 
     /* Image of the product */
@@ -196,4 +196,21 @@
 
     .cart-item-remove:hover {
         color: #000;
+    }
+    .cart-item-size{
+        width: 100px;
+    }
+    .quantity{
+        width: 30px;
+    }
+    .quantity-selector{
+        width: 100px;
+        margin-left: 100px;
+    }
+    .cart-item-text{
+        margin-left: 100px;
+        width: 200px;
+    }
+    .btn-delete-selected{
+        margin-left: 70px;
     }
