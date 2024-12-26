@@ -45,7 +45,8 @@ class BaseController extends db
         }
 
         // require file view mà không có layout
-        require($file);
+        require("Views/layouts/customlayout.php");
+
     }
 
 

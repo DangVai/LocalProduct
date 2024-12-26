@@ -14,7 +14,6 @@
 
 </head>
 
-<body>
     <div class=" footer ">
         <!-- Follow Us -->
         <div class="footer-follow ">
@@ -69,6 +68,6 @@
             </div>
         </div>
     </div>
-</body>
+
 
 </html>

@@ -185,4 +185,42 @@ public function checkLogin($username, $password) {
 }
 
 
+    // Lấy thông tin người dùng theo user_id
+    public function getUserById($user_id)
+    {
+        $stmt = $this->connect->prepare("SELECT * FROM users WHERE user_id = ?");
+        $stmt->bind_param("i", $user_id);
+        $stmt->execute();
+        return $stmt->get_result()->fetch_assoc();
+    }
+
+    // Cập nhật thông tin người dùng
+    public function updateUser($user_id, $name, $email, $phone, $address, $avata)
+    {
+        // Kiểm tra kết nối
+        if (!$this->connect) {
+            die("Database connection failed.");
+        }
+
+        // Chuẩn bị truy vấn SQL
+        $stmt = $this->connect->prepare(
+            "UPDATE users SET Name = ?, email = ?, phone = ?, user_address = ?, avata = ? WHERE user_id = ?"
+        );
+        if (!$stmt) {
+            die("Error preparing statement: " . $this->connect->error);
+        }
+
+        // Bind dữ liệu
+        $stmt->bind_param("sssssi", $name, $email, $phone, $address, $avata, $user_id);
+
+        // Thực thi truy vấn
+        if ($stmt->execute()) {
+            return true;
+        } else {
+            die("Error executing query: " . $stmt->error);
+        }
+    }
+
+
+
 }

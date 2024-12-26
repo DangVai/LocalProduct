@@ -1,0 +1,216 @@
+    body {
+        margin: 0;
+        /* Xóa margin mặc định */
+        height: 100vh;
+        /* Chiều cao toàn màn hình */
+        background-color: #f8f8f8;
+        position: relative;
+        top: -55px;
+        overflow: hidden;
+        /* Đảm bảo không có thanh cuộn ngoài ý muốn */
+    }
+
+    .containers {
+        display: flex;
+        /* Kích hoạt Flexbox */
+        max-width: 1300px;
+        margin: 20px auto;
+        padding: 20px;
+        height: 100%;
+        /* Đặt chiều cao tổng của container */
+        overflow-y: scroll;
+        /* Cho phép cuộn chỉ nội dung của containers */
+    }
+
+    .list_products {
+        position: relative;
+        top: 130px;
+        width: 67%;
+        padding: 10px;
+        background-color: rgb(232, 233, 233);
+        overflow-y: auto;
+        /* Chỉ phần list_products được cuộn */
+        height: 100%;
+    }
+
+    .address {
+        width: 30%;
+        background-color: green;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        position: sticky;
+        /* Giữ địa chỉ cố định */
+        top: 140px;
+        /* Cố định tại đầu container */
+        height: fit-content;
+        /* Đặt chiều cao vừa đủ nội dung */
+        margin-left: 20px;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        /* Sắp xếp các phần tử theo cột */
+        padding: 20px;
+        background-color: #fff;
+        /* Màu nền trắng */
+        border-radius: 8px;
+        /* Bo góc */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        /* Tạo hiệu ứng đổ bóng */
+        gap: 5px;
+    }
+
+    form label {
+        font-size: 14px;
+        font-weight: bold;
+        color: #333;
+    }
+
+    form input[type="text"],
+    form input[type="hidden"] {
+        width: 90%;
+        padding: 10px;
+        font-size: 14px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        outline: none;
+        transition: border-color 0.3s;
+    }
+
+    form input[type="text"]:focus {
+        border-color: #007bff;
+        /* Màu viền khi focus */
+    }
+
+    .payment-options {
+        display: flex;
+        gap: 10px;
+        /* Khoảng cách giữa các nút */
+    }
+
+    .payment-options button {
+        flex: 1;
+        /* Chia đều kích thước các nút */
+        padding: 10px 15px;
+        font-size: 14px;
+        background-color: #007bff;
+        /* Màu xanh cho nút */
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .payment-options button:hover {
+        background-color: #0056b3;
+        /* Màu tối hơn khi hover */
+    }
+
+    form .footers {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    form .footers p {
+        font-size: 14px;
+        color: #333;
+    }
+
+    form .footers .buy-now {
+        padding: 12px;
+        background-color: #28a745;
+        /* Màu xanh lá */
+        color: white;
+        font-size: 16px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    form .footers .buy-now:hover {
+        background-color: #218838;
+        /* Màu tối hơn khi hover */
+    }
+
+    #error-message {
+        font-size: 12px;
+        color: red;
+    }
+
+
+    /* Container for the list of cart items */
+    .cart-list {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    /* Individual cart item */
+    .cart-item {
+        display: flex;
+        align-items: center;
+        border-bottom: 1px solid #ddd;
+        padding: 20px 0;
+    }
+
+    /* Image of the product */
+    .cart-item-image {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        margin-right: 20px;
+    }
+
+    /* Container for item details */
+    .cart-item-details {
+        flex: 1;
+    }
+
+    /* Name of the product */
+    .cart-item-title {
+        font-size: 1.2em;
+        margin: 0;
+    }
+
+    /* General text for cart item details */
+    .cart-item-text {
+        margin: 5px 0;
+        color: #555;
+    }
+
+    /* Specific styles for price text */
+    .cart-item-price {
+        display: none;
+        /* Ẩn phần tử */
+    }
+
+    /* Trash bin icon for removing the item */
+    .cart-item-remove {
+        cursor: pointer;
+        color: #999;
+        font-size: 1.5em;
+        margin-left: 20px;
+    }
+
+    .cart-item-remove:hover {
+        color: #000;
+    }
+    .cart-item-size{
+        width: 100px;
+    }
+    .quantity{
+        width: 30px;
+    }
+    .quantity-selector{
+        width: 100px;
+        margin-left: 100px;
+    }
+    .cart-item-text{
+        margin-left: 100px;
+        width: 200px;
+    }
+    .btn-delete-selected{
+        margin-left: 70px;
+    }

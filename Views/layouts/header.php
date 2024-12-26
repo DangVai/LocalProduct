@@ -17,9 +17,7 @@
         <!-- Logo -->
         <div class="box_logo">
 
-            <img src="/LocalProduct/public/images/logo.jpg" alt="logo">
 
-            <img src="/public/images/logo.jpg" alt="logo">
 
         </div>
 
@@ -38,8 +36,7 @@
         </div>
         <div class="cart">
             <div class="box-cart">
-                <i class="fas fa-shopping-cart"></i>
-
+                <a href="index.php?controller=cart&action=viewcart"><i class="fas fa-shopping-cart"></i></a>
             </div>
         </div>
         <!-- User Account -->
@@ -57,7 +54,7 @@
                     <a href="#"><i class="fas fa-cogs fa-sm"></i> Settings</a>
 
 
-                    <a href="#"><i class="fas fa-sign-in-alt fa-sm"></i> Log in</a>
+                    <a href="index.php?controller=user&action=login"><i class="fas fa-sign-in-alt fa-sm"></i> Log in</a>
                     <a href="#"><i class="fas fa-sign-out-alt fa-sm"></i> Log out</a>
 
 
