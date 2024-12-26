@@ -90,7 +90,7 @@ use PHPMailer\PHPMailer\Exception;
              }
 
              // Chuyển hướng sau khi thành công
-             header("Location: index.php?controller=admin&action=index");
+             header("Location: index.php?controller=admin&action=home#");
              exit();
          }
      }
@@ -164,7 +164,7 @@ use PHPMailer\PHPMailer\Exception;
 
              if ($result) {
                  // Chuyển hướng nếu thành công
-                 header("Location: index.php?controller=admin&action=index");
+                 header("Location: index.php?controller=admin&action=home#");
              } else {
                  // Thông báo lỗi nếu thất bại
                  echo "Cập nhật không thành công. Vui lòng thử lại.";
@@ -181,7 +181,7 @@ use PHPMailer\PHPMailer\Exception;
          if ($this->AdminModel->delete($id)) {  // Gọi phương thức delete trong model
              $_SESSION['flash_message'] = "Xóa sản phẩm thành công!";
              // Chuyển hướng về trang danh sách sau khi xóa thành công
-             header("Location: index.php?controller=admin&action=index");
+             header("Location: index.php?controller=admin&action=home#");
              exit();
          } else {
              // Xử lý nếu có lỗi trong quá trình xóa sản phẩm
@@ -192,23 +192,30 @@ use PHPMailer\PHPMailer\Exception;
      //=====================================================End Product Management===========================================
  
      //===================================================Oder tracking==========================================================
-     public function showOrders()
-     {
-         $orders = $this->AdminModel->getOrders();
 
-         // Xử lý giá trị NULL và thay thế bằng "N/A"
-         foreach ($orders as &$order) {
-             foreach ($order as $key => &$value) {
-                 if (is_null($value)) {
-                     $value = "N/A";
-                 }
-             }
-         }
+    public function showOrders() {
+    // Kiểm tra nếu có danh sách đã lọc trong session
+    if (isset($_SESSION['filteredOrders'])) {
+        $orders = $_SESSION['filteredOrders'];
+        unset($_SESSION['filteredOrders']); // Xóa sau khi sử dụng để tránh dữ liệu cũ
+    } else {
+        // Lấy toàn bộ danh sách nếu không có bộ lọc
+        $orders = $this->AdminModel->getOrders();
+    }
 
-         // Trả về View với dữ liệu
-         $this->viewWithoutLayout("frontend.Admin.oderTracking", ["orders" => $orders]);
+    // Xử lý giá trị NULL và thay thế bằng "N/A"
+    foreach ($orders as &$order) {
+        foreach ($order as $key => &$value) {
+            if (is_null($value)) {
+                $value = "N/A";
+            }
+        }
+    }
 
-     }
+    // Trả về View với dữ liệu
+    $this->viewWithoutLayout("frontend.Admin.oderTracking", ["orders" => $orders]);
+}
+
 
      public function updateOrderStatus()
 {
@@ -220,9 +227,54 @@ use PHPMailer\PHPMailer\Exception;
         $this->AdminModel->updateOrderStatus($orderId, $status);
 
         // Chuyển hướng về trang orderTracking
-        header("Location: index.php?controller=admin&action=showOrders");
+        header("Location: index.php?controller=admin&action=home#");
     }
 }
+
+
+public function listOrders() {
+    $statusFilter = isset($_GET['status']) ? $_GET['status'] : null;
+
+    // Gọi model để lấy danh sách đơn hàng dựa trên bộ lọc
+    if ($statusFilter && $statusFilter !== 'all') {
+        $orders = $this->AdminModel->getOrdersByStatus($statusFilter);
+    } else {
+        $orders = $this->AdminModel->getOrders();
+    }
+
+    // Lưu danh sách đã lọc vào session
+    $_SESSION['filteredOrders'] = $orders;
+
+    // Chuyển hướng về trang home#
+    header("Location: index.php?controller=admin&action=home#");
+    exit();
+}
+
+
+
+public function orderDetail() {
+    if (!isset($_GET['order_id'])) {
+        // Nếu không có `order_id`, quay lại danh sách
+        header("Location: index.php?controller=admin&action=listOrders");
+        exit();
+    }
+
+    $orderId = $_GET['order_id'];
+
+    // Gọi model để lấy thông tin từ bảng `order_items`
+    $orderDetails = $this->AdminModel->getOrderDetails($orderId);
+
+    // Kiểm tra nếu không tìm thấy order
+    if (!$orderDetails) {
+        header("Location: index.php?controller=admin&action=listOrders&error=Order not found");
+        exit();
+    }
+
+    // Truyền dữ liệu vào view
+    $this->viewWithoutLayout("frontend.Admin.orderItem", ['orderDetails' => $orderDetails]);
+}
+
+
 
 //===================================================End Oder tracking==========================================================
 
@@ -376,7 +428,7 @@ use PHPMailer\PHPMailer\Exception;
         $this->AdminModel->updateUserById($userId, $userData);
 
         // Sau khi cập nhật thành công, chuyển hướng về danh sách người dùng
-        header("Location: index.php?controller=admin&action=listUsers&message=update_success");
+        header("Location: index.php?controller=admin&action=home#");
         exit();
     } else {
         $userId = $_GET['id'] ?? null;
@@ -408,7 +460,7 @@ use PHPMailer\PHPMailer\Exception;
             $this->AdminModel->lockUserById($userId);
 
             // Sau khi khóa thành công, chuyển hướng về danh sách người dùng kèm thông báo thành công
-            header("Location: index.php?controller=admin&action=listUsers&message=locked_success");
+            header("Location: index.php?controller=admin&action=home#");
             exit();
         }
     }

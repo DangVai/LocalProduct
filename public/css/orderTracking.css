@@ -18,6 +18,25 @@ p {
     font-weight: bold;
 }
 
+.filter-container {
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.filter-container button,
+.filter-container select {
+    padding: 5px 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.filter-container select {
+    width: 200px;
+}
+
 /* Table Styles */
 table {
     width: 100%;
@@ -73,17 +92,17 @@ table tbody td {
 }
 
 /* Links for Actions */
-a {
+.detail a {
     text-decoration: none;
     display: inline-block;
-    /* Đảm bảo nút nằm riêng biệt */
-    padding: 8px 12px;
-    margin: 5px;
-    /* Tạo khoảng cách giữa các nút */
-    border-radius: 6px;
-    color: #fff;
+    border-radius: 8px;
+    color: #141313;
     font-size: 14px;
     font-family: 'Arial', sans-serif;
+}
+
+.detail{
+    background-color: #d8ad56;
 }
 
 .btn-edit {

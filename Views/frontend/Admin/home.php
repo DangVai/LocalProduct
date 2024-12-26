@@ -43,41 +43,44 @@
         </div>
       </div>
       <script>
-    // Hàm thay đổi nội dung `div content` bằng AJAX
-    function loadPage(controllerAction) {
-      $.ajax({
-        url: `index.php?controller=admin&action=${controllerAction}`,
-        method: 'GET',
-        success: function(response) {
-          $('#content').html(response); // Load nội dung mới
-        },
-        error: function() {
-          alert('Không thể tải nội dung. Vui lòng thử lại!');
-        }
-      });
-    }
+  // Hàm thay đổi nội dung `div content` bằng AJAX
+  function loadPage(controllerAction) {
+    $.ajax({
+      url: `index.php?controller=admin&action=${controllerAction}`,
+      method: 'GET',
+      success: function (response) {
+        $('#content').html(response); // Load nội dung mới
+        // Lưu lại trang hiện tại vào sessionStorage
+        sessionStorage.setItem('currentPage', controllerAction);
+      },
+      error: function () {
+        alert('Không thể tải nội dung. Vui lòng thử lại!');
+      },
+    });
+  }
 
-    // Hàm hiển thị biểu đồ Home Chart
-    function renderHomeChart() {
-      $('#content').html(`
-        <div id="home-chart">
-          <div class="chart-container">
-            <div class="chart">
-              <canvas id="productChart"></canvas>
-            </div>
+  // Hàm hiển thị biểu đồ Home Chart
+  function renderHomeChart() {
+    $('#content').html(`
+      <div id="home-chart">
+        <div class="chart-container">
+          <div class="chart">
+            <canvas id="productChart"></canvas>
           </div>
         </div>
-      `);
+      </div>
+    `);
 
-      const categories = ["Dress", "Shirt", "Accessory", "Musical Instrument", "Food", "House items"];
-      const productCounts = [50, 70, 30, 20, 40, 30];
+    const categories = ['Dress', 'Shirt', 'Accessory', 'Musical Instrument', 'Food', 'House items'];
+    const productCounts = [50, 70, 30, 20, 40, 30];
 
-      const productCtx = document.getElementById('productChart').getContext('2d');
-      new Chart(productCtx, {
-        type: 'bar',
-        data: {
-          labels: categories,
-          datasets: [{
+    const productCtx = document.getElementById('productChart').getContext('2d');
+    new Chart(productCtx, {
+      type: 'bar',
+      data: {
+        labels: categories,
+        datasets: [
+          {
             label: 'Số lượng sản phẩm',
             data: productCounts,
             backgroundColor: [
@@ -94,67 +97,91 @@
               'rgba(75, 192, 192, 1)',
               'rgba(153, 102, 255, 1)',
             ],
-            borderWidth: 1
-          }]
-        },
-        options: {
-          scales: {
-            y: {
-              beginAtZero: true
-            }
+            borderWidth: 1,
           },
-          plugins: {
-            legend: {
-              display: true,
-              position: 'top',
-            }
-          }
-        }
-      });
-    }
+        ],
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+          },
+        },
+        plugins: {
+          legend: {
+            display: true,
+            position: 'top',
+          },
+        },
+      },
+    });
 
-    // Hàm làm nổi bật menu được chọn
-    function highlightActiveMenu(activeLinkId) {
-      $('.sidebar a').removeClass('active'); // Xóa class 'active' khỏi tất cả menu
-      $(`#${activeLinkId}`).addClass('active'); // Thêm class 'active' vào menu hiện tại
-    }
+    // Lưu trang Home vào sessionStorage
+    sessionStorage.setItem('currentPage', 'home'); 
+  }
 
-    // Gán sự kiện click cho từng liên kết
-    $(document).ready(function() {
-      // Hiển thị nội dung mặc định khi load trang
-      renderHomeChart();
-      highlightActiveMenu('home-link');
+  // Hàm làm nổi bật menu được chọn
+  function highlightActiveMenu(activeLinkId) {
+    $('.sidebar a').removeClass('active'); // Xóa class 'active' khỏi tất cả menu
+    $(`#${activeLinkId}`).addClass('active'); // Thêm class 'active' vào menu hiện tại
+  }
 
-      // Sự kiện khi click vào từng menu
-      $('#home-link').click(function(e) {
-        e.preventDefault();
+  // Khôi phục trạng thái trang khi load
+  $(document).ready(function () {
+    const currentPage = sessionStorage.getItem('currentPage');
+
+    if (currentPage) {
+      if (currentPage === 'home') {
         renderHomeChart();
         highlightActiveMenu('home-link');
-      });
+      } else {
+        loadPage(currentPage);
 
-      $('#product-management-link').click(function(e) {
-        e.preventDefault();
-        loadPage('index'); // action=index
-        highlightActiveMenu('product-management-link');
-      });
+        // Tìm và làm nổi bật menu
+        const menuMap = {
+          index: 'product-management-link',
+          showOrders: 'order-tracking-link',
+          listUsers: 'user-management-link',
+        };
+        highlightActiveMenu(menuMap[currentPage]);
+      }
+    } else {
+      // Hiển thị trang Home nếu chưa có trang lưu
+      renderHomeChart();
+      highlightActiveMenu('home-link');
+    }
 
-      $('#order-tracking-link').click(function(e) {
-        e.preventDefault();
-        loadPage('showOrders'); // action=showOrders
-        highlightActiveMenu('order-tracking-link');
-      });
-
-      $('#user-management-link').click(function(e) {
-        e.preventDefault();
-        loadPage('listUsers'); // action=userManagement
-        highlightActiveMenu('user-management-link');
-      });
-
-      $('#logout-link').click(function() {
-        window.location.href = 'index.php?controller=admin&action=logout'; // Đăng xuất
-      });
+    // Sự kiện khi click vào từng menu
+    $('#home-link').click(function (e) {
+      e.preventDefault();
+      renderHomeChart();
+      highlightActiveMenu('home-link');
     });
+
+    $('#product-management-link').click(function (e) {
+      e.preventDefault();
+      loadPage('index'); // action=index
+      highlightActiveMenu('product-management-link');
+    });
+
+    $('#order-tracking-link').click(function (e) {
+      e.preventDefault();
+      loadPage('showOrders'); // action=showOrders
+      highlightActiveMenu('order-tracking-link');
+    });
+
+    $('#user-management-link').click(function (e) {
+      e.preventDefault();
+      loadPage('listUsers'); // action=listUsers
+      highlightActiveMenu('user-management-link');
+    });
+
+    $('#logout-link').click(function () {
+      window.location.href = 'index.php?controller=admin&action=logout'; // Đăng xuất
+    });
+  });
 </script>
+
 
 
 </body>
