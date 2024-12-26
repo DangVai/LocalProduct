@@ -296,34 +296,39 @@ class UserController extends BaseController
         include "Views/frontend/users/login.php"; // Đường dẫn đến view
     }
 
-    // Xử lý đăng nhập
-    public function handleLogin() {
-        $username = $_POST['username'] ?? null;
-        $password = $_POST['password'] ?? null;
+    
+public function handleLogin() {
+    $username = $_POST['username'] ?? null;
+    $password = $_POST['password'] ?? null;
 
-        if (!$username || !$password) {
-            $error = "Not enough.";
-            header('Location: index.php?controller=user&action=login&error=' . urlencode('Please enter enough all fieldss!'));
-        exit;
-        }
-
-        $user = $this->userModel->checkLogin($username, $password); // Kiểm tra đăng nhập
-        if ($user) {
-            $_SESSION['user'] = $user; // Lưu thông tin người dùng vào session
-            $_SESSION['user_id'] = $user['user_id'];
-            $_SESSION['user_name'] = $user['Name'];
-            $_SESSION['user_email'] = $user['email'];
-            $_SESSION['user_phone'] = $user['phone'];
-            $_SESSION['user_avatar'] = $user['avata']; // Nếu có
-            header("Location: index.php?controller=product&action=showProduct");
-            exit; // Điều hướng tới home.
-        } 
-    else {
-           $error = "invalid your infomationinfomation";
-        header('Location: index.php?controller=user&action=login&error=' . urlencode('Please enter right your information!'));
+    if (!$username || !$password) {
+        header('Location: index.php?controller=user&action=login&error=' . urlencode('Please enter all fields!'));
         exit;
     }
+
+    $user = $this->userModel->checkLogin($username, $password); // Kiểm tra đăng nhập
+
+    if ($user) {
+        // Lưu thông tin người dùng vào session khi đăng nhập thành công
+        $_SESSION['user'] = $user;
+        $_SESSION['user_id'] = $user['user_id'];
+        $_SESSION['user_name'] = $user['Name'];
+        $_SESSION['user_email'] = $user['email'];
+        $_SESSION['user_phone'] = $user['phone'];
+        $_SESSION['user_avatar'] = $user['avata'];
+
+        // Chuyển hướng đến trang chính
+        header("Location: index.php?controller=product&action=showProduct");
+        exit;
+    } else {
+        // Xử lý lỗi đăng nhập
+        header('Location: index.php?controller=user&action=login&error=' . urlencode('Your account is locked. Can not access'));
+        exit;
     }
+}
+
+
+
 
     // Hiển thị trang đăng nhập (tuỳ chọn)
     public function showLoginPage() {

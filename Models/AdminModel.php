@@ -391,5 +391,101 @@ public function updateOrderStatus($orderId, $status)
 
         return false;
     }
+//===================================================End Admin login==========================================================
+
+//===================================================User Management==========================================================
+   // Lấy tất cả người dùng từ bảng users
+public function getAllUsers() {
+    $query = "SELECT user_id, Name, email, phone, avata, status FROM users";
+    $result = $this->connect->query($query);
+
+    if ($result) {
+        // Fetch dữ liệu từ truy vấn
+        $data = $result->fetch_all(MYSQLI_ASSOC);
+
+        if (!empty($data)) {
+            return $data;
+        } else {
+            echo "Không có dữ liệu trả về từ bảng users.";
+            return [];
+        }
+    } else {
+        // Nếu truy vấn thất bại, hiển thị lỗi chi tiết
+        die("Lỗi truy vấn: " . $this->connect->error);
+    }
+}
+
+// Cập nhật thông tin người dùng
+
+// Cập nhật thông tin người dùng
+public function updateUserById($userId, $userData) {
+    $avatarPath = $userData['avatar'] ? "public/images/User_Avata/" . $userData['avatar'] : null;
+
+    // Truy vấn CSDL để cập nhật thông tin người dùng
+    $query = "UPDATE users SET Name = ?, email = ?, phone = ?, avata = ?, status = ? WHERE user_id = ?";
+    $stmt = $this->connect->prepare($query);
+
+    if ($stmt === false) {
+        die("Lỗi khi chuẩn bị câu lệnh: " . $this->connect->error);
+    }
+
+    // Bind tham số cho câu lệnh
+    $stmt->bind_param("sssssi", $userData['Name'], $userData['email'], $userData['phone'], $avatarPath, $userData['status'], $userId);
+    $stmt->execute();
+
+    if ($stmt->error) {
+        die("Lỗi khi thực thi truy vấn: " . $stmt->error);
+    }
+
+    $stmt->close();
+}
+
+
+// Lấy thông tin người dùng theo userId
+    public function getUserById($userId) {
+        $query = "SELECT user_id, Name, email, phone, avata, status FROM users WHERE user_id = ?";
+        $stmt = $this->connect->prepare($query);
+
+        if ($stmt === false) {
+            die("Lỗi khi chuẩn bị câu lệnh: " . $this->connect->error);
+        }
+
+        // Ràng buộc tham số
+        $stmt->bind_param("i", $userId);
+        $stmt->execute();
+
+        // Lấy kết quả
+        $result = $stmt->get_result();
+
+        // Kiểm tra nếu có dữ liệu và trả về dữ liệu
+        if ($result->num_rows > 0) {
+            return $result->fetch_assoc(); // Trả về một mảng liên kết
+        } else {
+            return null; 
+        }
+
+    }
+
+
+// Phương thức khóa tài khoản
+public function lockUserById($userId) {
+    $query = "UPDATE users SET status = 'locked' WHERE user_id = ?";
+    $stmt = $this->connect->prepare($query);
+
+    if ($stmt === false) {
+        die("Lỗi khi chuẩn bị câu lệnh: " . $this->connect->error);
+    }
+
+    $stmt->bind_param("i", $userId);
+    $stmt->execute();
+
+    if ($stmt->error) {
+        die("Lỗi khi thực thi truy vấn: " . $stmt->error);
+    }
+    $stmt->close();
+}
+
+
+
 }
 ?>

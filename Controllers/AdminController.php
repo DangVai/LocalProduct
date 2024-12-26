@@ -315,5 +315,107 @@ use PHPMailer\PHPMailer\Exception;
     }
 //===================================================End Admin login==========================================================
 
+//===================================================User Management==========================================================
+   // Phương thức hiển thị danh sách người dùng
+    public function listUsers() {
+        $users = $this->AdminModel->getAllUsers();  
+        $this->viewWithoutLayout("frontend.Admin.userManagement", ['users' => $users]);
+    }
+
+
+    // Cập nhật thông tin người dùng
+ public function updateUser() {
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $userId = $_POST['user_id'];
+        // Xử lý file upload
+        $avatarFileName = null;
+        // Kiểm tra nếu người dùng chọn ảnh để tải lên
+        if (!empty($_FILES['avatar']['name'])) {
+            $targetDir = "public/images/User_Avata/"; 
+            if (!file_exists($targetDir)) {
+                mkdir($targetDir, 0777, true); 
+            }
+
+            $fileName = basename($_FILES['avatar']['name']);
+            $targetFile = $targetDir . time() . "_" . $fileName; // Đảm bảo tên file không trùng
+
+            // Kiểm tra loại file (chỉ chấp nhận các định dạng ảnh phổ biến)
+            $fileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
+            $allowedTypes = ['jpg', 'jpeg', 'png', 'gif'];
+            if (in_array($fileType, $allowedTypes)) {
+                // Nếu file hợp lệ, tiến hành upload
+                if (move_uploaded_file($_FILES['avatar']['tmp_name'], $targetFile)) {
+                    $avatarFileName = basename($targetFile); // Lưu tên file vào CSDL
+                } else {
+                    header("Location: index.php?controller=admin&action=updateUser&id=$userId&error=" . urlencode("Failed to upload avatar."));
+                    exit();
+                }
+            } else {
+                header("Location: index.php?controller=admin&action=updateUser&id=$userId&error=" . urlencode("Invalid avatar file type."));
+                exit();
+            }
+        }
+
+        // Dữ liệu từ form
+        $userData = [
+            'Name' => $_POST['name'] ?? '',
+            'email' => $_POST['email'] ?? '',
+            'phone' => $_POST['phone'] ?? '',
+            // Kiểm tra nếu người dùng chưa upload ảnh mới, giữ ảnh cũ
+            'avatar' => $avatarFileName ?: ($_POST['avatar'] ?? $this->AdminModel->getUserById($userId)['avata']),
+            'status' => $_POST['status'] ?? 'active'
+        ];
+
+        // Kiểm tra ràng buộc cơ bản
+        if (empty($userData['Name']) || empty($userData['email']) || empty($userId)) {
+            header("Location: index.php?controller=admin&action=updateUser&id=$userId&error=" . urlencode("Please fill in all required fields!"));
+            exit();
+        }
+
+        // Cập nhật thông tin người dùng
+        $this->AdminModel->updateUserById($userId, $userData);
+
+        // Sau khi cập nhật thành công, chuyển hướng về danh sách người dùng
+        header("Location: index.php?controller=admin&action=listUsers&message=update_success");
+        exit();
+    } else {
+        $userId = $_GET['id'] ?? null;
+        if (!$userId) {
+            header("Location: index.php?controller=admin&action=listUsers&error=" . urlencode("Invalid user ID."));
+            exit();
+        }
+
+        $user = $this->AdminModel->getUserById($userId);
+        if (!$user) {
+            header("Location: index.php?controller=admin&action=listUsers&error=" . urlencode("User not found."));
+            exit();
+        }
+
+        // Hiển thị form với thông tin người dùng hiện tại
+        $this->viewWithoutLayout("frontend.Admin.updateUser", ['user' => $user]);
+    }
+}
+
+
+
+
+    // Phương thức khóa tài khoản người dùng
+    public function lockUser() {
+        if (isset($_POST['confirm_lock']) && isset($_POST['user_id'])) {
+            $userId = $_POST['user_id'];
+
+            // Dùng đối tượng đã khởi tạo từ __construct()
+            $this->AdminModel->lockUserById($userId);
+
+            // Sau khi khóa thành công, chuyển hướng về danh sách người dùng kèm thông báo thành công
+            header("Location: index.php?controller=admin&action=listUsers&message=locked_success");
+            exit();
+        }
+    }
+
+
+    
+
+
  }
 ?>
