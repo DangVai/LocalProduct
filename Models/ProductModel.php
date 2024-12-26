@@ -153,7 +153,7 @@ class ProductModel extends BaseModel
 
     public function updateQuantity($productId, $quantity)
     {
-        // Câu lệnh SQL để cập nhật số lượng sản phẩm
+        // Câu lệnh SQL để cập nhật số lượng sản phẩm trong kho
         $query = "UPDATE products SET quantity = quantity - ? WHERE product_id = ?";
 
         // Chuẩn bị câu lệnh SQL
@@ -162,65 +162,65 @@ class ProductModel extends BaseModel
         // Liên kết các tham số
         $stmt->bind_param("ii", $quantity, $productId);
 
-        // Thực thi và kiểm tra kết quả
-        if ($stmt->execute()) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-
-
-    // Phương thức lưu đơn hàng vào CSDL
-    public function createOrder($orderData)
-    {
-        // Bắt đầu transaction để đảm bảo các thao tác đồng bộ
-        $this->connect->begin_transaction();
-
-        // Câu lệnh SQL để thêm đơn hàng vào bảng orders
-        $query = "INSERT INTO orders (size, quantity, product_name, product_id, product_price, full_name, phone, location, specific_address, payment_method, user_id, name, total_price) 
-              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
-        // Chuẩn bị câu lệnh SQL
-        $stmt = $this->connect->prepare($query);
-
-        // Liên kết các tham số
-        $stmt->bind_param(
-            "sisssssssissd",
-            $orderData['size'],
-            $orderData['quantity'],
-            $orderData['product_name'],
-            $orderData['product_id'],
-            $orderData['product_price'],
-            $orderData['full_name'],
-            $orderData['phone'],
-            $orderData['location'],
-            $orderData['specific_address'],
-            $orderData['payment_method'],
-            $orderData['user_id'],
-            $orderData['name'],
-            $orderData['total_price']
-        );
-
         // Thực thi câu lệnh và kiểm tra kết quả
         if ($stmt->execute()) {
-            // Cập nhật số lượng sản phẩm trong bảng products
-            if ($this->updateQuantity($orderData['product_id'], $orderData['quantity'])) {
-                // Commit transaction nếu cả hai câu lệnh đều thành công
-                $this->connect->commit();
-                return true;
-            } else {
-                // Rollback transaction nếu cập nhật số lượng sản phẩm không thành công
-                $this->connect->rollback();
-                return false;
-            }
+            return true;  // Cập nhật thành công
         } else {
-            // Rollback transaction nếu không thể thêm đơn hàng
-            $this->connect->rollback();
-            return false;
+            return false; // Cập nhật thất bại
         }
     }
+
+
+
+    public function saveOrder($userInfo, $products)
+    {
+        // Lấy thông tin người dùng từ dữ liệu gửi lên
+        $fullName = $this->connect->real_escape_string($userInfo['full_name']);
+        $phone = $this->connect->real_escape_string($userInfo['phone']);
+        $location = $this->connect->real_escape_string($userInfo['location']);
+        $specificAddress = $this->connect->real_escape_string($userInfo['specific_address']);
+        $userId = $this->connect->real_escape_string($userInfo['user_id']);
+
+        // Bắt đầu giao dịch (transaction)
+        $this->connect->begin_transaction();
+
+        try {
+            // Lưu thông tin đơn hàng vào bảng 'orderss'
+            $stmt = $this->connect->prepare("INSERT INTO orderss (user_id, full_name, phone, location, specific_address) VALUES (?, ?, ?, ?, ?)");
+            $stmt->bind_param('issss', $userId, $fullName, $phone, $location, $specificAddress);
+            $stmt->execute();
+            $orderId = $this->connect->insert_id; // Lấy ID của đơn hàng vừa tạo
+
+            // Lưu thông tin các sản phẩm vào bảng 'order_items'
+            foreach ($products as $product) {
+                $productId = $this->connect->real_escape_string($product['product_id']);
+                $productName = $this->connect->real_escape_string($product['product_name']);
+                $size = $this->connect->real_escape_string($product['size']);
+                $price = $this->connect->real_escape_string($product['price']);
+                $quantity = $this->connect->real_escape_string($product['quantity']);
+
+                // Lưu sản phẩm vào bảng 'order_items'
+                $stmt = $this->connect->prepare("INSERT INTO order_items (order_id, product_id, product_name, size, price, quantity) VALUES (?, ?, ?, ?, ?, ?)");
+                $stmt->bind_param('iissdi', $orderId, $productId, $productName, $size, $price, $quantity);
+                $stmt->execute();
+
+                // Gọi phương thức updateQuantity để cập nhật số lượng sản phẩm
+                $updateResult = $this->updateQuantity($productId, $quantity);
+                if (!$updateResult) {
+                    throw new Exception("Error updating product quantity");
+                }
+            }
+
+            // Commit giao dịch
+            $this->connect->commit();
+            return true; // Đơn hàng đã được lưu thành công
+        } catch (Exception $e) {
+            // Nếu có lỗi, rollback giao dịch
+            $this->connect->rollback();
+            return false; // Đơn hàng không được lưu
+        }
+    }
+
 
 
     public function addToCart($userId, $productId, $size, $quantity)
@@ -255,7 +255,7 @@ class ProductModel extends BaseModel
                   FROM products p
                   LEFT JOIN image i ON p.product_id = i.product_id
                   ORDER BY p.quantity DESC
-                  "; // Lấy 10 sản phẩm có số lượng lớn nhất
+                  ";
 
         $result = $this->connect->query($query);
         return $result->fetch_all(MYSQLI_ASSOC);

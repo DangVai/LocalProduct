@@ -100,22 +100,9 @@ function updateTotalPrice() {
         totalQuantity += itemQuantity;  // Cộng dồn vào tổng số lượng sản phẩm
     });
 
-    // Kiểm tra số lượng sản phẩm để tính phí vận chuyển
-    if (totalQuantity < 3) {
-        shippingPrice = totalQuantity * 5;  // Phí vận chuyển là 5$ nếu mua dưới 3 sản phẩm
-    } else if (totalQuantity >= 3 && totalQuantity <= 7) {
-        shippingPrice = totalQuantity * 3;  // Phí vận chuyển là 3$ cho mỗi sản phẩm nếu mua từ 3 đến 7 sản phẩm
-    } else {
-        shippingPrice = totalQuantity * 2;  // Phí vận chuyển là 2$ nếu mua hơn 7 sản phẩm
-    }
-
-
     // Hiển thị tổng giá và phí vận chuyển
     document.getElementById('total-price').textContent = (totalPrice + shippingPrice).toFixed(2);
     document.getElementById('hidden-total-price').value = (totalPrice + shippingPrice).toFixed(2);  // Lưu giá trị vào input ẩn
-
-    // Hiển thị giá vận chuyển
-    document.getElementById('shipping-price').textContent = `Shipping: ${shippingPrice.toFixed(2)}$`;
 }
 
 // Lắng nghe sự kiện thay đổi cho các checkbox
