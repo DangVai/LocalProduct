@@ -14,8 +14,10 @@
 
 </head>
 
+<body>
     <div class=" footer ">
         <!-- Follow Us -->
+
         <div class="footer-follow ">
             <!-- Logo -->
             <!-- <div class="box_logo ">
@@ -33,7 +35,6 @@
         <!-- About Us -->
         <div class="footer-aboutus ">
             <h3>About Us</h3>
-
 
             <p>The website selling traditional products of the Bru - Vân Kiều and Pa Cô people offers unique items, from
                 clothing to handicrafts. Each product reflects distinct cultural traits and contributes to the
@@ -68,6 +69,6 @@
             </div>
         </div>
     </div>
-
+</body>
 
 </html>

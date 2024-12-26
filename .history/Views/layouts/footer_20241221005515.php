@@ -10,12 +10,14 @@
         integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="/LocalProduct/public/css/footer.css ">
-
+    >>>>>>> 794774b0252bb8813b9fcf70eb66ffa6241b28b7
 
 </head>
 
+<body>
     <div class=" footer ">
         <!-- Follow Us -->
+
         <div class="footer-follow ">
             <!-- Logo -->
             <!-- <div class="box_logo ">
@@ -33,7 +35,6 @@
         <!-- About Us -->
         <div class="footer-aboutus ">
             <h3>About Us</h3>
-
 
             <p>The website selling traditional products of the Bru - Vân Kiều and Pa Cô people offers unique items, from
                 clothing to handicrafts. Each product reflects distinct cultural traits and contributes to the
@@ -68,6 +69,6 @@
             </div>
         </div>
     </div>
-
+</body>
 
 </html>

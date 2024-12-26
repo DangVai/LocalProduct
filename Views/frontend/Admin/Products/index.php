@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Danh sách sản phẩm</title>
-    <link rel="stylesheet" href="public/css/indexProduct.css">
+    <link rel="stylesheet" href="/LocalProduct/public/css/indexProduct.css">
 </head>
 <body>
     <div class="container">

@@ -142,10 +142,10 @@ class UserController extends BaseController
                 unset($_SESSION['reset_code'], $_SESSION['reset_email']);
 
                 // Chuyển hướng đến trang đăng nhập
-                header('Location: index.php?controller=user&action=login&success='.$sessionResetCode. urlencode('Password reset successful.'));
+                header('Location: index.php?controller=user&action=login&success=' . $sessionResetCode . urlencode('Password reset successful.'));
                 exit;
             } else {
-                header('Location: index.php?controller=user&action=login&error='. $sessionResetCode . $resetCode. urlencode('Failed to reset password.'));
+                header('Location: index.php?controller=user&action=login&error=' . $sessionResetCode . $resetCode . urlencode('Failed to reset password.'));
             }
         }
     }
@@ -186,7 +186,7 @@ class UserController extends BaseController
 
         if ($password !== $confirmPassword) {
             die("Passwords do not match!");
-            
+
         }
 
         $hashedPassword = md5($password);
@@ -194,7 +194,7 @@ class UserController extends BaseController
         // Kiểm tra xem email hoặc tên người dùng đã tồn tại hay chưa
         if ($this->userModel->findByUsername($fullName, $email)) {
             header('Location: index.php?controller=user&action=register&error=' . urlencode('User with this username or email already exists!Please choose another username or email!'));
-        exit;
+            exit;
         }
 
         // Lưu thông tin người dùng vào cơ sở dữ liệu
@@ -208,8 +208,8 @@ class UserController extends BaseController
                 header("Location: index.php?controller=user&action=register&success=ok");
                 exit;
             } else {
-                 header('Location: index.php?controller=user&action=register&error=' . urlencode('Failed to send OTP email.'));
-            exit;
+                header('Location: index.php?controller=user&action=register&error=' . urlencode('Failed to send OTP email.'));
+                exit;
             }
         } else {
             error_log("Failed to store user information into saveotp table.");
@@ -223,7 +223,7 @@ class UserController extends BaseController
         $email = $_SESSION['email_verification'] ?? null;
 
         if (!$email) {
-            header("Location: index.php?controller=user&action=register".urlencode('OTP have been send.'));
+            header("Location: index.php?controller=user&action=register" . urlencode('OTP have been send.'));
             exit;
         }
 
@@ -301,11 +301,10 @@ class UserController extends BaseController
         $username = $_POST['username'] ?? null;
         $password = $_POST['password'] ?? null;
 
-        if (!$username || !$password) {
-            $error = "Not enough.";
-            header('Location: index.php?controller=user&action=login&error=' . urlencode('Please enter enough all fieldss!'));
+    if (!$username || !$password) {
+        header('Location: index.php?controller=user&action=login&error=' . urlencode('Please enter all fields!'));
         exit;
-        }
+    }
 
         $user = $this->userModel->checkLogin($username, $password); // Kiểm tra đăng nhập
         if ($user) {
@@ -315,18 +314,24 @@ class UserController extends BaseController
             $_SESSION['user_email'] = $user['email'];
             $_SESSION['user_phone'] = $user['phone'];
             $_SESSION['user_avatar'] = $user['avata']; // Nếu có
+            $_SESSION['user_address'] = $user['user_address']; // Nếu có
+            
             header("Location: index.php?controller=cart&action=viewcart");
             exit; // Điều hướng tới home.
         } 
     else {
            $error = "invalid your infomationinfomation";
-        header('Location: index.php?controller=user&action=login&error=' . urlencode('Please enter right your information!'));
+           header('Location: index.php?controller=user&action=login&error=' . urlencode($error));
         exit;
     }
-    }
+}
+
+
+
 
     // Hiển thị trang đăng nhập (tuỳ chọn)
-    public function showLoginPage() {
+    public function showLoginPage()
+    {
         include "Views/frontend/users/login.php"; // Đường dẫn tới view
     }
 
@@ -334,4 +339,79 @@ class UserController extends BaseController
     {
         $this->view('frontend/home');
     }
+    public function profile()
+    {
+        // $this->view('frontend.users.register', ['noHeaderFooter' => true]);
+        $this->view('frontend/users/profile');
+
+    }
+    // Hiển thị trang chỉnh sửa hồ sơ
+    public function editProfile()
+    {
+        if (!isset($_SESSION['user'])) {
+            die("User session is not available. Please log in.");
+        }
+
+        $user_id = $_SESSION['user']['user_id'];
+        $user = $this->userModel->getUserById($user_id);
+
+        if (!$user) {
+            die("User not found.");
+        }
+
+        include "views/editProfile.php";
+    }
+
+    // Xử lý cập nhật hồ sơ
+    public function updateProfile()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // Lấy dữ liệu từ form
+            $user_id = $_POST['user_id'] ?? null;
+            $name = $_POST['Name'] ?? '';
+            $email = $_POST['email'] ?? '';
+            $phone = $_POST['phone'] ?? '';
+            $address = $_POST['user_address'] ?? '';
+            $avata = $_POST['current_avata'] ?? ''; // Avatar cũ mặc định
+
+            // Kiểm tra và xử lý file avatar mới
+            if (isset($_FILES['avata']) && $_FILES['avata']['error'] === UPLOAD_ERR_OK) {
+                $target_dir = "public/images/";
+                if (!is_dir($target_dir)) {
+                    mkdir($target_dir, 0777, true); // Tạo thư mục nếu chưa tồn tại
+                }
+
+                $target_file = $target_dir . basename($_FILES["avata"]["name"]);
+                if (move_uploaded_file($_FILES["avata"]["tmp_name"], $target_file)) {
+                    $avata = $target_file;
+                } else {
+                    die("Error uploading avatar file.");
+                }
+            }
+
+            // Kiểm tra user_id
+            if (!$user_id) {
+                die("User ID is missing.");
+            }
+
+            // Cập nhật thông tin trong cơ sở dữ liệu
+            $result = $this->userModel->updateUser($user_id, $name, $email, $phone, $address, $avata);
+            if ($result) {
+                // Cập nhật lại session
+                $_SESSION['user']['Name'] = $name;
+                $_SESSION['user']['email'] = $email;
+                $_SESSION['user']['phone'] = $phone;
+                $_SESSION['user']['user_address'] = $address;
+                $_SESSION['user']['avata'] = $avata;
+
+                // Chuyển hướng về trang profile
+                header("Location: index.php?controller=user&action=profile");
+                exit();
+            } else {
+                die("Error updating profile in the database.");
+            }
+        }
+    }
+
+
 }

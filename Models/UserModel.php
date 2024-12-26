@@ -160,22 +160,66 @@ class UserModel extends BaseModel
         return $result->num_rows > 0 ? $result->fetch_assoc() : false;
     }
 
-//Kiểm tra ng dùng khi đăng nhập
-      public function checkLogin($username, $password) {
-        $user = $this->findusername($username);
-        if ($user) {
-            // Mã hóa mật khẩu đầu vào bằng MD5 để so sánh
-            if ($user['password'] === md5($password)) {
-                return $user; // Mật khẩu khớp, trả về thông tin người dùng
-            } else {
-                echo "Mật khẩu không đúng.";
-            }
-        } else {
-            echo "Không tìm thấy người dùng.";
+
+    // Kiểm tra ng dùng khi đăng nhập
+public function checkLogin($username, $password) {
+    $user = $this->findusername($username);
+
+    if ($user) {
+        if ($user['status'] === 'locked') {
+            echo "Your account is locked. Cannot login.";
+            return false;
         }
-        return false;
+
+        // So sánh mật khẩu đã mã hóa
+        if ($user['password'] === md5($password)) {
+            return $user; // Đăng nhập thành công
+        } else {
+            echo "Password is incorrect.";
+        }
+    } else {
+        echo "User not found.";
     }
 
+    return false;
+}
+
+
+    // Lấy thông tin người dùng theo user_id
+    public function getUserById($user_id)
+    {
+        $stmt = $this->connect->prepare("SELECT * FROM users WHERE user_id = ?");
+        $stmt->bind_param("i", $user_id);
+        $stmt->execute();
+        return $stmt->get_result()->fetch_assoc();
+    }
+
+    // Cập nhật thông tin người dùng
+    public function updateUser($user_id, $name, $email, $phone, $address, $avata)
+    {
+        // Kiểm tra kết nối
+        if (!$this->connect) {
+            die("Database connection failed.");
+        }
+
+        // Chuẩn bị truy vấn SQL
+        $stmt = $this->connect->prepare(
+            "UPDATE users SET Name = ?, email = ?, phone = ?, user_address = ?, avata = ? WHERE user_id = ?"
+        );
+        if (!$stmt) {
+            die("Error preparing statement: " . $this->connect->error);
+        }
+
+        // Bind dữ liệu
+        $stmt->bind_param("sssssi", $name, $email, $phone, $address, $avata, $user_id);
+
+        // Thực thi truy vấn
+        if ($stmt->execute()) {
+            return true;
+        } else {
+            die("Error executing query: " . $stmt->error);
+        }
+    }
 
 
 

@@ -9,7 +9,7 @@ class AdminModel extends BaseModel
         parent::__construct('products');
     }
 
-
+//=====================================================Product Management===========================================
 public function getAllProducts() {
     $query = "
         SELECT p.*, 
@@ -311,7 +311,179 @@ public function delete($id)
         return false;
     }
 }
+//=====================================================End Product Management===========================================
 
+//===================================================Oder tracking==========================================================
+public function getOrders() {
+    $query = "SELECT id, user_id, product_id, phone, 
+                     CONCAT( specific_address, ', ', location) AS address,
+                     total_price, payment_method, status
+              FROM orders";
+
+    $result = $this->connect->query($query);
+
+    if (!$result) {
+        die("SQL Error: " . $this->connect->error); 
+    }
+    $orders = $result->fetch_all(MYSQLI_ASSOC);
+
+    return $orders;
+}
+
+public function updateOrderStatus($orderId, $status)
+{
+    $stmt = $this->connect->prepare("UPDATE orders SET status = ? WHERE id = ?");
+    $stmt->bind_param("si", $status, $orderId);
+
+    if (!$stmt->execute()) {
+        die("SQL Error: " . $this->connect->error);
+    }
+
+    $stmt->close();
+}
+
+//=====================================================End Order Tracking==============================================
+
+//=====================================================Admin Login==============================================
+// Danh sách email admin hợp lệ
+    private $validEmails = [
+        "hothion010100@gmail.com",
+        "xomdangvaisf@gmail.com",
+        "thidieu100625@gmail.com"
+    ];
+
+    // Kiểm tra email có hợp lệ không
+    public function isValidAdminEmail($email) {
+        return in_array($email, $this->validEmails);
+    }
+
+    // Tạo mã OTP và lưu vào database
+    public function generateOTP($email) {
+        $otp = rand(100000, 999999);
+
+        $stmt = $this->connect->prepare("INSERT INTO admin_otp (email, otp_code, created_at) VALUES (?, ?, NOW())");
+        $stmt->bind_param("ss", $email, $otp);
+        $stmt->execute();
+        $stmt->close();
+
+        return $otp;
+    }
+
+    // Kiểm tra mã OTP
+    public function verifyOTP($email, $otp) {
+        $stmt = $this->connect->prepare("SELECT otp_code, created_at FROM admin_otp WHERE email = ?");
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $stmt->bind_result($stored_otp, $created_at);
+        $stmt->fetch();
+        $stmt->close();
+
+        // Kiểm tra mã OTP có trùng và còn hạn không (5 phút)
+        if ($stored_otp === $otp && (time() - strtotime($created_at) <= 300)) {
+            // Xóa OTP sau khi xác minh
+            $delete_stmt = $this->connect->prepare("DELETE FROM admin_otp WHERE email = ?");
+            $delete_stmt->bind_param("s", $email);
+            $delete_stmt->execute();
+            $delete_stmt->close();
+
+            return true;
+        }
+
+        return false;
+    }
+//===================================================End Admin login==========================================================
+
+//===================================================User Management==========================================================
+   // Lấy tất cả người dùng từ bảng users
+public function getAllUsers() {
+    $query = "SELECT user_id, Name, email, phone, avata, status FROM users";
+    $result = $this->connect->query($query);
+
+    if ($result) {
+        // Fetch dữ liệu từ truy vấn
+        $data = $result->fetch_all(MYSQLI_ASSOC);
+
+        if (!empty($data)) {
+            return $data;
+        } else {
+            echo "Không có dữ liệu trả về từ bảng users.";
+            return [];
+        }
+    } else {
+        // Nếu truy vấn thất bại, hiển thị lỗi chi tiết
+        die("Lỗi truy vấn: " . $this->connect->error);
+    }
+}
+
+// Cập nhật thông tin người dùng
+
+// Cập nhật thông tin người dùng
+public function updateUserById($userId, $userData) {
+    $avatarPath = $userData['avatar'] ? "public/images/User_Avata/" . $userData['avatar'] : null;
+
+    // Truy vấn CSDL để cập nhật thông tin người dùng
+    $query = "UPDATE users SET Name = ?, email = ?, phone = ?, avata = ?, status = ? WHERE user_id = ?";
+    $stmt = $this->connect->prepare($query);
+
+    if ($stmt === false) {
+        die("Lỗi khi chuẩn bị câu lệnh: " . $this->connect->error);
+    }
+
+    // Bind tham số cho câu lệnh
+    $stmt->bind_param("sssssi", $userData['Name'], $userData['email'], $userData['phone'], $avatarPath, $userData['status'], $userId);
+    $stmt->execute();
+
+    if ($stmt->error) {
+        die("Lỗi khi thực thi truy vấn: " . $stmt->error);
+    }
+
+    $stmt->close();
+}
+
+
+// Lấy thông tin người dùng theo userId
+    public function getUserById($userId) {
+        $query = "SELECT user_id, Name, email, phone, avata, status FROM users WHERE user_id = ?";
+        $stmt = $this->connect->prepare($query);
+
+        if ($stmt === false) {
+            die("Lỗi khi chuẩn bị câu lệnh: " . $this->connect->error);
+        }
+
+        // Ràng buộc tham số
+        $stmt->bind_param("i", $userId);
+        $stmt->execute();
+
+        // Lấy kết quả
+        $result = $stmt->get_result();
+
+        // Kiểm tra nếu có dữ liệu và trả về dữ liệu
+        if ($result->num_rows > 0) {
+            return $result->fetch_assoc(); // Trả về một mảng liên kết
+        } else {
+            return null; 
+        }
+
+    }
+
+
+// Phương thức khóa tài khoản
+public function lockUserById($userId) {
+    $query = "UPDATE users SET status = 'locked' WHERE user_id = ?";
+    $stmt = $this->connect->prepare($query);
+
+    if ($stmt === false) {
+        die("Lỗi khi chuẩn bị câu lệnh: " . $this->connect->error);
+    }
+
+    $stmt->bind_param("i", $userId);
+    $stmt->execute();
+
+    if ($stmt->error) {
+        die("Lỗi khi thực thi truy vấn: " . $stmt->error);
+    }
+    $stmt->close();
+}
 
 
 
