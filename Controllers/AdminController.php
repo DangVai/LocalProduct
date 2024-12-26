@@ -465,8 +465,18 @@ public function orderDetail() {
         }
     }
 
+//===========================Logout==================================
+public function logout() {
+    // Hủy session
+    session_start();
+    session_unset(); // Xóa tất cả biến session
+    session_destroy(); // Hủy session
 
-    
+    // Chuyển hướng về trang đăng nhập hoặc trang chủ
+    header("Location: index.php?controller=admin&action=login"); 
+    exit();
+}
+
 
 
  }

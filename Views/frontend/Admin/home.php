@@ -176,9 +176,13 @@
       highlightActiveMenu('user-management-link');
     });
 
-    $('#logout-link').click(function () {
-      window.location.href = 'index.php?controller=admin&action=logout'; // Đăng xuất
+    $('#logout-link').click(function (e) {
+        e.preventDefault(); // Ngăn hành vi mặc định
+        if (confirm('Are you sure to logout?')) {
+            window.location.href = 'index.php?controller=admin&action=logout'; // Gọi action logout
+        }
     });
+
   });
 </script>
 
