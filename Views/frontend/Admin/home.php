@@ -146,7 +146,7 @@
 
       $('#user-management-link').click(function(e) {
         e.preventDefault();
-        loadPage('userManagement'); // action=userManagement
+        loadPage('listUsers'); // action=userManagement
         highlightActiveMenu('user-management-link');
       });
 
