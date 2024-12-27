@@ -9,7 +9,7 @@
 
 <body>
     <h1>Oops! Page not found.</h1>
-    <p>We couldn't find the page you're looking for. <a href="index.php?controller=home&action=home">Go back to Home</a>.</p>
+    <p>We couldn't find the page you're looking for. <a href="index.php?controller=product&action=showProduct">Go back to Home</a>.</p>
 </body>
 
 </html>
