@@ -66,7 +66,6 @@
 
         <div class="address">
             <form method="POST" action="index.php?controller=checkout&action=storeOrder">
-                <!-- Các trường ẩn để gửi thông tin sản phẩm -->
                 <input type="hidden" name="product_name" value="<?php echo $product['name']; ?>">
                 <input type="hidden" name="product_id" value="<?php echo $product['product_id']; ?>">
                 <input type="hidden" name="product_price" value="<?php echo $product['price']; ?>">

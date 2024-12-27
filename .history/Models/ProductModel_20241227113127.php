@@ -527,4 +527,38 @@ class ProductModel extends BaseModel
 
         return $products;
     }
+    public function getFilteredProducts($category, $type, $minPrice, $maxPrice)
+    {
+        $query = "SELECT * FROM products WHERE category = ?";
+        $params = [$category];
+        $types = "s";
+
+        // Thêm điều kiện lọc theo `type`
+        if ($type) {
+            $query .= " AND type = ?";
+            $params[] = $type;
+            $types .= "s";
+        }
+
+        // Thêm điều kiện lọc theo `price`
+        if ($minPrice !== null) {
+            $query .= " AND price >= ?";
+            $params[] = $minPrice;
+            $types .= "d";
+        }
+        if ($maxPrice !== null) {
+            $query .= " AND price <= ?";
+            $params[] = $maxPrice;
+            $types .= "d";
+        }
+
+        $stmt = $this->connect->prepare($query);
+        $stmt->bind_param($types, ...$params);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $products = $result->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+
+        return $products;
+    }
 }
