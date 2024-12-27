@@ -148,7 +148,7 @@ class ProductModel extends BaseModel
     }
 
 
-    public function updateQuantity($productId, $quantity)
+public function updateQuantity($productId, $quantity)
     {
         // Câu lệnh SQL để cập nhật số lượng sản phẩm trong kho
         $query = "UPDATE products SET quantity = quantity - ? WHERE product_id = ?";
@@ -207,8 +207,7 @@ class ProductModel extends BaseModel
                     throw new Exception("Error updating product quantity");
                 }
             }
-
-            // Commit giao dịch
+// Commit giao dịch
             $this->connect->commit();
             return true; // Đơn hàng đã được lưu thành công
         } catch (Exception $e) {
@@ -217,6 +216,7 @@ class ProductModel extends BaseModel
             return false; // Đơn hàng không được lưu
         }
     }
+
 
 
 
@@ -245,9 +245,21 @@ class ProductModel extends BaseModel
     }
 
 
+    //Home featured productsproducts
+    //Home featured productsproducts
+   //Home featured productsproducts
+    public function getFeaturedProductsByQuantity()
+    {
+        $query = "SELECT p.product_id, p.name, p.category, p.price, p.quantity, i.img AS image_url
+                  FROM products p
+                  LEFT JOIN image i ON p.product_id = i.product_id
+                  ORDER BY p.quantity DESC
+                  ";
 
-    //Home featured productsproducts
-    //Home featured productsproducts
+        $result = $this->connect->query($query);
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
     public function getTopProductsByQuantity()
     {
         $query = "SELECT 
@@ -288,6 +300,20 @@ class ProductModel extends BaseModel
         return $data;
     }
 
+    public function getCartItems($userId)
+    {
+        // Lấy danh sách sản phẩm trong giỏ hàng của người dùng
+        $cartItems = $this->getCartProductDetails($userId);
+
+        // Tính toán giá theo số lượng cho mỗi sản phẩm trong giỏ hàng
+        foreach ($cartItems as &$item) {
+            $item['total_price'] = $item['price'] * $item['quantity'];  // Tính tổng giá của sản phẩm
+        }
+
+        return $cartItems;
+    }
+
+    // Hàm lấy thông tin chi tiết sản phẩm trong giỏ hàng (bao gồm ảnh)
     // Hàm lấy thông tin chi tiết sản phẩm trong giỏ hàng (bao gồm ảnh)
     private function getCartProductDetails($userId)
     {
@@ -299,8 +325,8 @@ class ProductModel extends BaseModel
         c.size, 
         c.quantity, 
         p.name AS product_name, 
-        p.price, 
-        p.product_view_at,
+        p.price,
+    p.product_view_at,
         i.img AS image_path  -- Lấy đường dẫn ảnh từ trường img trong bảng images
     FROM cart c
     JOIN products p ON c.product_id = p.product_id

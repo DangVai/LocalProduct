@@ -12,10 +12,11 @@
 
     <div class="filter-container">
         <!-- Nút "Tất cả" -->
-        <button onclick="filterOrders('all')">Tất cả</button>
+        <button onclick="filterOrders('all')">All Products</button>
         
         <!-- Dropdown để chọn trạng thái cần lọc -->
         <select id="filter-status" onchange="filterOrders(this.value)">
+            <option>Filter</option>
             <option value="Chờ duyệt">Pending Approval</option>
             <option value="Đang chuẩn bị">Preparing</option>
             <option value="Đang giao">In Transit</option>

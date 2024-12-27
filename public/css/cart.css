@@ -14,7 +14,7 @@
         display: flex;
         /* Kích hoạt Flexbox */
         max-width: 1300px;
-        margin: 20px auto;
+        margin: 110px auto;
         padding: 20px;
         height: 100%;
         /* Đặt chiều cao tổng của container */
@@ -58,6 +58,7 @@
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         /* Tạo hiệu ứng đổ bóng */
         gap: 5px;
+        margin: 110px auto;
     }
 
     form label {

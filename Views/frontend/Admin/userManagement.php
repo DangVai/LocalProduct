@@ -29,9 +29,9 @@
                     <td><?= $user['email'] ?></td>
                     <td><?= $user['phone'] ?></td>
                     <td> <?php if ($user['avata']): ?>
-                        <img src="<?= $user['avata'] ?>" alt="Avatar" width="50" height="50" />
+                        <img src="/LocalProduct/<?= $user['avata'] ?>" alt="Avatar" width="50" height="50" />
                     <?php else: ?>
-                        <img src="uploads/User_Avata/default.png" alt="No Avatar" width="50" height="50" />
+                        <img src="/public/images/User_Avata/" alt="No Avatar" width="50" height="50" />
                     <?php endif; ?></td>
                     <td><?= $user['status'] ?></td>
                     <td>

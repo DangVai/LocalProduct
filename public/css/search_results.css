@@ -1,13 +1,13 @@
  body {
      font-family: Arial, sans-serif;
      background-color: #f4f4f4;
-     margin-top: 80px;
+    margin-top: 150px;
      padding: 0;
  }
  /* Container chính của danh sách sản phẩm */
  
  .product-container {
-     width: 80%;
+     width: 100%;
      margin: 0 auto;
      padding: 20px;
      background-color: #fff;

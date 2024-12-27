@@ -68,42 +68,6 @@
 
             </div>
         </div>
-        <div class=" text-run ">
-            <span>Chào mừng bạn đến với cửa hàng thời trang Vân Kiều và Pa Cô! Khám phá các sản phẩm đặc sắc ngay hôm nay!</span>
-        </div>
-
-        <!-- Banner -->
-        <div class="banner ">
-            <img src="/LocalProduct/public/images/Vân Kiều - Pa Cô.png " alt="Banner ">
-        </div>
-        <div class="img-sliders ">
-            <div class="slider-container ">
-                <div class="slides " id="slider1 ">
-                    <img src="/LocalProduct/public/imgaes/Product_image/tui1.jpg" class="slide " alt="Slide 1 ">
-                    <img src="/LocalProduct/public/images/slide2.jpg " class="slide " alt="Slide 2 ">
-                    <img src="/LocalProduct/public/images/slide3.jpg " class="slide " alt="Slide 3 ">
-                </div>
-            </div>
-            <div class="slider-container ">
-                <div class="slides " id="slider2 ">
-                    <img src="/LocalProduct/public/images/slide3.jpg " class="slide " alt="Slide 1 ">
-                    <img src="/LocalProduct/public/images/R.jpg " class="slide " alt="Slide 2 ">
-                    <img src="/LocalProduct/public/images/slide2.jpg " class="slide " alt="Slide 3 ">
-                </div>
-            </div>
-            <div class="slider-container ">
-                <div class="slides " id="slider3 ">
-                    <img src="/LocalProduct/public/images/slide2.jpg " class="slide " alt="Slide 1 ">
-                    <img src="/LocalProduct/public/images/slide3.jpg " class="slide " alt="Slide 2 ">
-                    <img src="/LocalProduct/public/images/R.jpg " class="slide " alt="Slide 3 ">
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-
-    <script src="/LocalProduct/public/js/home.js"></script>
 </body>
 
 </html>

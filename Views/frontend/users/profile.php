@@ -18,7 +18,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    margin: 100px auto;
+    margin: 110px auto;
     width: 80%;
     background-color: #fff;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);

@@ -7,7 +7,7 @@
     <title>Document</title>
     <link rel="stylesheet" href="/LocalProduct/public/css/cart.css">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 </head>
 
 <body>
@@ -51,8 +51,7 @@
                             </p>
 
                             <div class="cart-actions">
-                                <button type="button" class="btn-delete-selected" data-id="<?= $item['cart_id'] ?>"><i
-                                        class="glyphicon glyphicon-trash"></i></button>
+                                <button type="button" class="btn-delete-selected" data-id="<?= $item['cart_id'] ?>"><i class="fa-solid fa-trash"></i></button>
                             </div>
                         </li>
                     <?php endforeach; ?>
