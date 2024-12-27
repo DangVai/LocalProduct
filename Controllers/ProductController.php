@@ -140,6 +140,7 @@ class ProductController extends BaseController
             $products = $this->productModel->searchProducts($keyword);
             // Truyền dữ liệu sang view
             $this->viewWithoutLayout('frontend.products.search_results', ['products' => $products]);
+   
         } else {
             // Nếu không có từ khóa, quay lại trang home
             header('Location: home.php');

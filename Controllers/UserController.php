@@ -316,7 +316,7 @@ class UserController extends BaseController
             $_SESSION['user_avatar'] = $user['avata']; // Nếu có
             $_SESSION['user_address'] = $user['user_address']; // Nếu có
             
-            header("Location: index.php?controller=cart&action=viewcart");
+            header("Location: index.php?controller=home&action=home");
             exit; // Điều hướng tới home.
         } 
     else {
