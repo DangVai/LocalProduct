@@ -21,6 +21,8 @@ use PHPMailer\PHPMailer\Exception;
      public function index()
      {
          $products = $this->AdminModel->getAllProducts();
+
+         $this->viewNoLayt('frontend.Admin.products.index', ['products' => $products]);
          $this->viewWithoutLayout('frontend.Admin.products.index', ['products' => $products]);
         //  require_once('frontend.Admin.products.index', ['products' => $products]);
      }
@@ -29,7 +31,7 @@ use PHPMailer\PHPMailer\Exception;
      // Hiển thị form thêm sản phẩm
      public function create()
      {
-         $this->viewWithoutLayout("frontend.Admin.products.create");
+         $this->viewNoLayt("frontend.Admin.products.create");
 
      }
 
@@ -104,7 +106,7 @@ use PHPMailer\PHPMailer\Exception;
          $id = $_GET['id'] ?? null;
          if ($id) {
              $product = $this->AdminModel->getProductById($id);
-             $this->viewWithoutLayout("frontend.Admin.products.edit", ["product" => $product]);
+             $this->viewNoLayt("frontend.Admin.products.edit", ["product" => $product]);
          } else {
              echo "Invalid product ID.";
          }
@@ -214,7 +216,7 @@ use PHPMailer\PHPMailer\Exception;
     }
 
     // Trả về View với dữ liệu
-    $this->viewWithoutLayout("frontend.Admin.oderTracking", ["orders" => $orders]);
+    $this->viewNoLayt("frontend.Admin.oderTracking", ["orders" => $orders]);
 }
 
 
@@ -272,7 +274,7 @@ public function orderDetail() {
     }
 
     // Truyền dữ liệu vào view
-    $this->viewWithoutLayout("frontend.Admin.orderItem", ['orderDetails' => $orderDetails]);
+    $this->viewNoLayt("frontend.Admin.orderItem", ['orderDetails' => $orderDetails]);
 }
 
 
@@ -285,7 +287,7 @@ public function orderDetail() {
     
 // Hiển thị trang đăng nhập admin
     public function login() {
-        $this->viewWithoutLayout("frontend.Admin.login");
+        $this->viewNoLayt("frontend.Admin.login");
     }
 
     // Xử lý gửi OTP qua email
@@ -335,7 +337,7 @@ public function orderDetail() {
             exit();
         }
 
-        $this->viewWithoutLayout("frontend.Admin.home");
+        $this->viewNoLayt("frontend.Admin.home");
     }
 
 
@@ -372,7 +374,7 @@ public function orderDetail() {
    // Phương thức hiển thị danh sách người dùng
     public function listUsers() {
         $users = $this->AdminModel->getAllUsers();  
-        $this->viewWithoutLayout("frontend.Admin.userManagement", ['users' => $users]);
+        $this->viewNoLayt("frontend.Admin.userManagement", ['users' => $users]);
     }
 
 
@@ -450,7 +452,7 @@ public function orderDetail() {
         }
 
         // Hiển thị form với thông tin người dùng hiện tại
-        $this->viewWithoutLayout("frontend.Admin.updateUser", ['user' => $user]);
+        $this->viewNoLayt("frontend.Admin.updateUser", ['user' => $user]);
     }
 }
 

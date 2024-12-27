@@ -346,7 +346,7 @@ public function home()
 
 public function profile()
 {
-    $this->view('frontend.users.profile');
+    $this->viewWithoutLayout('frontend.users.profile');
 }
 
 // Hiển thị trang chỉnh sửa hồ sơ

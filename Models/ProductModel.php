@@ -207,7 +207,7 @@ public function saveOrder($userInfo, $products)
                     throw new Exception("Error updating product quantity");
                 }
             }
-            // Commit giao dịch
+
             $this->connect->commit();
             return true; // Đơn hàng đã được lưu thành công
         } catch (Exception $e) {
@@ -218,7 +218,10 @@ public function saveOrder($userInfo, $products)
     }
 
 
-public function addToCart($userId, $productId, $size, $quantity)
+
+
+    public function addToCart($userId, $productId, $size, $quantity)
+
     {
         // Kiểm tra xem sản phẩm đã có trong giỏ hàng chưa
         $checkQuery = "SELECT * FROM cart WHERE user_id = ? AND product_id = ? AND size = ?";
@@ -243,8 +246,22 @@ public function addToCart($userId, $productId, $size, $quantity)
     }
 
 
-//Home featured productsproducts
-  public function getTopProductsByQuantity()
+
+   //Home featured productsproducts
+    public function getFeaturedProductsByQuantity()
+    {
+        $query = "SELECT p.product_id, p.name, p.category, p.price, p.quantity, i.img AS image_url
+                  FROM products p
+                  LEFT JOIN image i ON p.product_id = i.product_id
+                  ORDER BY p.quantity DESC
+                  ";
+
+        $result = $this->connect->query($query);
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
+    public function getTopProductsByQuantity()
+
     {
         $query = "SELECT 
         p.product_id AS product_id,
@@ -297,6 +314,7 @@ public function addToCart($userId, $productId, $size, $quantity)
         return $cartItems;
     }
 
+
     // Hàm lấy thông tin chi tiết sản phẩm trong giỏ hàng (bao gồm ảnh)
     private function getCartProductDetails($userId)
     {
@@ -309,7 +327,10 @@ public function addToCart($userId, $productId, $size, $quantity)
         c.quantity, 
         p.name AS product_name, 
         p.price,
-        p.product_view_at,
+
+    p.product_view_at,
+     
+
         i.img AS image_path  -- Lấy đường dẫn ảnh từ trường img trong bảng images
     FROM cart c
     JOIN products p ON c.product_id = p.product_id

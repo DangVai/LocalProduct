@@ -118,18 +118,18 @@ class ProductController extends BaseController
         $fa = $this->productModel->getFashionProducts($priceFilter, $typeFilter, $keywordFilter);
         error_log(print_r($fa, true));
 
-        $this->view('frontend.products.fashion', ['products' => $fa]);
+        $this->viewWithoutLayout('frontend.products.fashion', ['products' => $fa]);
     }
     public function food()
     {
         $fo = $this->productModel->getFoodProducts();
 
-        $this->view('frontend.products.food', ['products' => $fo]);
+        $this->viewWithoutLayout('frontend.products.food', ['products' => $fo]);
     }
     public function another()
     {
         $an = $this->productModel->getAnotherProducts();
-        $this->view('frontend.products.another', ['products' => $an]);
+        $this->viewWithoutLayout('frontend.products.another', ['products' => $an]);
     }
     //LỌC SẢN PHẨM
     //search home
@@ -139,7 +139,8 @@ class ProductController extends BaseController
             $keyword = $_GET['keyword'];
             $products = $this->productModel->searchProducts($keyword);
             // Truyền dữ liệu sang view
-            $this->view('frontend.products.search_results', ['products' => $products]);
+            $this->viewWithoutLayout('frontend.products.search_results', ['products' => $products]);
+   
         } else {
             // Nếu không có từ khóa, quay lại trang home
             header('Location: home.php');

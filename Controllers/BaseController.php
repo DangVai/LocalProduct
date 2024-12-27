@@ -49,6 +49,23 @@ class BaseController extends db
 
     }
 
+     public function viewNoLayt($viewPath, array $data = [])
+    {
+        extract($data);  // Biến mảng $data thành các biến động
+
+        // Gọi file view từ thư mục Views/frontend
+        $file = self::VERSION . '/' . str_replace('.', '/', $viewPath) . '.php';
+
+        // Kiểm tra file tồn tại trước khi require
+        if (!file_exists($file)) {
+            die("File view '{$file}' không tồn tại.");
+        }
+
+        // require file view mà không có layout
+        require("Views/layouts/noLayout.php");
+
+    }
+
 
     /**
      * Lấy danh sách các tham số của phương thức.

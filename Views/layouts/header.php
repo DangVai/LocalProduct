@@ -50,7 +50,10 @@
                     <a href="index.php?controller=user&action=profile">
                         <i class="fa-regular fa-user"></i>
                     </a>
+
                 </div>
+            </div>
+
 
 
                 <!-- User Name and Dropdown Menu -->
