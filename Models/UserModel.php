@@ -185,6 +185,8 @@ public function checkLogin($username, $password) {
 }
 
 
+//===============User Profile=========================
+
     // Lấy thông tin người dùng theo user_id
     public function getUserById($user_id)
     {

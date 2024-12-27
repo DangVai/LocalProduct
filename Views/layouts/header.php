@@ -50,7 +50,7 @@
             <div class="name-user">
                 <p>John Doe</p>
                 <div class="dropdown-menu" id="account-menu">
-                    <a href="#"><i class="fas fa-user fa-sm"></i> Profile</a>
+                    <a href="index.php?controller=user&action=profile"><i class="fas fa-user fa-sm"></i> Profile</a>
                     <a href="#"><i class="fas fa-cogs fa-sm"></i> Settings</a>
 
 

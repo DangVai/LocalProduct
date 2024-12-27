@@ -118,37 +118,35 @@ form button:hover {
 <body>
 <?php
 if (!isset($_SESSION['user'])) {
-    die("User session is not available. Please log in.");
+    header("Location: index.php?controller=auth&action=login");
+    exit();
 }
 
 $user = $_SESSION['user'];
 ?>
-
+<body>
 <div class="container">
     <!-- User Avatar -->
     <div class="container-right">
         <ul class="list">
-            <img src="<?= htmlspecialchars($user['avata']) ?>" alt="User Avatar"><h1>User Profile</h1>
+            <img src="<?= htmlspecialchars($user['avata']) ?>" alt="User Avatar">
+            <h1>User Profile</h1>
             <p><span>Name:</span> <?= htmlspecialchars($user['Name']) ?></p>
             <p><span>Email:</span> <?= htmlspecialchars($user['email']) ?></p>
             <p><span>Phone:</span> <?= htmlspecialchars($user['phone']) ?></p>
             <p><span>Address:</span> <?= htmlspecialchars($user['user_address']) ?></p>
         </ul>
-        
     </div>
     <!-- User Profile Information -->
     <div class="container-left">
         <div class="profile-info">
-            <h1>User Profile</h1>
+            <h1>Update Profile</h1>
             <form action="index.php?controller=user&action=updateProfile" method="POST" enctype="multipart/form-data">
-                <input type="hidden" name="user_id" value="<?php echo $_SESSION['user']['user_id']; ?>">
+                <input type="hidden" name="user_id" value="<?= htmlspecialchars($user['user_id']) ?>">
                 <p><span>Name:</span> <input type="text" name="Name" value="<?= htmlspecialchars($user['Name']) ?>"></p>
-                <p><span>Email:</span> <input type="email" name="email" value="<?= htmlspecialchars($user['email']) ?>">
-                </p>
-                <p><span>Phone:</span> <input type="text" name="phone" value="<?= htmlspecialchars($user['phone']) ?>">
-                </p>
-                <p><span>Address:</span> <input type="text" name="user_address"
-                        value="<?= htmlspecialchars($user['user_address']) ?>"></p>
+                <p><span>Email:</span> <input type="email" name="email" value="<?= htmlspecialchars($user['email']) ?>"></p>
+                <p><span>Phone:</span> <input type="text" name="phone" value="<?= htmlspecialchars($user['phone']) ?>"></p>
+                <p><span>Address:</span> <input type="text" name="user_address" value="<?= htmlspecialchars($user['user_address']) ?>"></p>
                 <p><span>Avatar:</span> <input type="file" name="avata"></p>
                 <button type="submit">Update Profile</button>
             </form>
@@ -156,5 +154,6 @@ $user = $_SESSION['user'];
     </div>
 </div>
 </body>
+
 
 </html>

@@ -335,83 +335,94 @@ class UserController extends BaseController
         include "Views/frontend/users/login.php"; // Đường dẫn tới view
     }
 
-    public function home()
-    {
-        $this->view('frontend/home');
-    }
-    public function profile()
-    {
-        // $this->view('frontend.users.register', ['noHeaderFooter' => true]);
-        $this->view('frontend/users/profile');
 
-    }
-    // Hiển thị trang chỉnh sửa hồ sơ
-    public function editProfile()
-    {
-        if (!isset($_SESSION['user'])) {
-            die("User session is not available. Please log in.");
-        }
 
-        $user_id = $_SESSION['user']['user_id'];
-        $user = $this->userModel->getUserById($user_id);
 
-        if (!$user) {
-            die("User not found.");
-        }
+//===================User Profile====================
+public function home()
+{
+    $this->view('frontend/home');
+}
 
-        include "views/editProfile.php";
+public function profile()
+{
+    $this->view('frontend.users.profile');
+}
+
+// Hiển thị trang chỉnh sửa hồ sơ
+public function editProfile()
+{
+    if (!isset($_SESSION['user'])) {
+        header("Location: index.php?controller=auth&action=login");
+        exit();
     }
 
-    // Xử lý cập nhật hồ sơ
-    public function updateProfile()
-    {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Lấy dữ liệu từ form
-            $user_id = $_POST['user_id'] ?? null;
-            $name = $_POST['Name'] ?? '';
-            $email = $_POST['email'] ?? '';
-            $phone = $_POST['phone'] ?? '';
-            $address = $_POST['user_address'] ?? '';
-            $avata = $_POST['current_avata'] ?? ''; // Avatar cũ mặc định
+    $user_id = $_SESSION['user']['user_id'];
+    $user = $this->userModel->getUserById($user_id);
 
-            // Kiểm tra và xử lý file avatar mới
-            if (isset($_FILES['avata']) && $_FILES['avata']['error'] === UPLOAD_ERR_OK) {
-                $target_dir = "public/images/";
-                if (!is_dir($target_dir)) {
-                    mkdir($target_dir, 0777, true); // Tạo thư mục nếu chưa tồn tại
-                }
+    if (!$user) {
+        die("User not found.");
+    }
 
-                $target_file = $target_dir . basename($_FILES["avata"]["name"]);
-                if (move_uploaded_file($_FILES["avata"]["tmp_name"], $target_file)) {
-                    $avata = $target_file;
-                } else {
-                    die("Error uploading avatar file.");
-                }
+    $this->view('frontend.users.editProfile', ['user' => $user]);
+}
+
+// Xử lý cập nhật hồ sơ
+public function updateProfile()
+{
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $user_id = $_POST['user_id'] ?? null;
+        $name = filter_var($_POST['Name'], FILTER_SANITIZE_STRING);
+        $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
+        $phone = filter_var($_POST['phone'], FILTER_SANITIZE_STRING);
+        $address = filter_var($_POST['user_address'], FILTER_SANITIZE_STRING);
+
+        // Avatar ban đầu
+        $avata = $_POST['current_avata'] ?? '';
+
+        // Kiểm tra file avatar mới
+        if (isset($_FILES['avata']) && $_FILES['avata']['error'] === UPLOAD_ERR_OK) {
+            $allowed_extensions = ['jpg', 'jpeg', 'png', 'gif'];
+            $file_extension = strtolower(pathinfo($_FILES['avata']['name'], PATHINFO_EXTENSION));
+
+            if (!in_array($file_extension, $allowed_extensions)) {
+                die("Unsupported file type.");
             }
 
-            // Kiểm tra user_id
-            if (!$user_id) {
-                die("User ID is missing.");
+            $target_dir = "public/images/User_Avata/";
+            if (!is_dir($target_dir)) {
+                mkdir($target_dir, 0777, true);
             }
 
-            // Cập nhật thông tin trong cơ sở dữ liệu
-            $result = $this->userModel->updateUser($user_id, $name, $email, $phone, $address, $avata);
-            if ($result) {
-                // Cập nhật lại session
-                $_SESSION['user']['Name'] = $name;
-                $_SESSION['user']['email'] = $email;
-                $_SESSION['user']['phone'] = $phone;
-                $_SESSION['user']['user_address'] = $address;
-                $_SESSION['user']['avata'] = $avata;
-
-                // Chuyển hướng về trang profile
-                header("Location: index.php?controller=user&action=profile");
-                exit();
+            $target_file = $target_dir . uniqid() . '.' . $file_extension;
+            if (move_uploaded_file($_FILES['avata']['tmp_name'], $target_file)) {
+                $avata = $target_file;
             } else {
-                die("Error updating profile in the database.");
+                die("Error uploading avatar file.");
             }
         }
+
+        // Kiểm tra user_id
+        if (!$user_id) {
+            die("Invalid User ID.");
+        }
+
+        $result = $this->userModel->updateUser($user_id, $name, $email, $phone, $address, $avata);
+        if ($result) {
+            // Cập nhật session
+            $_SESSION['user']['Name'] = $name;
+            $_SESSION['user']['email'] = $email;
+            $_SESSION['user']['phone'] = $phone;
+            $_SESSION['user']['user_address'] = $address;
+            $_SESSION['user']['avata'] = $avata;
+
+            header("Location: index.php?controller=user&action=profile");
+            exit();
+        } else {
+            die("Error updating profile.");
+        }
     }
+}
 
 
 }
