@@ -12,6 +12,8 @@
 
 <body>
     <div class="container">
+
+        <!-- Phần lọc sản phẩm -->
         <div class="filter-container">
             <h3>Filer sản phẩm</h3>
             <form id="filter-form">

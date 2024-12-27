@@ -6,12 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product Details</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-    <link rel="stylesheet" href="/LocalProduct/public/css/food.css"> <!-- Liên kết với file CSS -->
+    <link rel="stylesheet" href="/LocalProduct/public/css/another.css"> <!-- Liên kết với file CSS -->
 
 </head>
 
+
 <body>
     <div class="container">
+
+        <!-- Phần lọc sản phẩm -->
         <div class="filter-container">
             <h3>Filer sản phẩm</h3>
             <form id="filter-form">
@@ -41,7 +44,7 @@
         <!-- Phần danh sách sản phẩm -->
         <div class="product-list">
             <?php if (!empty($products)): ?>
-                <h1>ẨM THỰC</h1>
+                <h1>SẢN PHẨM THỦ CÔNG</h1>
                 <?php foreach ($products as $product): ?>
                     <div class="product-item" data-price="<?= $product['price'] ?>" data-type="<?= htmlspecialchars($product['type']) ?>" data-name="<?= htmlspecialchars($product['product_name']) ?>">
                         <button class="favourite-btn">

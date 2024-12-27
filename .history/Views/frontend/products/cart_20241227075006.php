@@ -119,7 +119,7 @@
 <script src="/LocalProduct/public/js/check.js">
 </script>
 <script>
-    document.querySelector('.buy-now').addEventListener('click', function(event) {
+    document.querySelector('.buy-now').addEventListener('click', function (event) {
         event.preventDefault(); // Ngăn chặn hành vi submit mặc định
 
         // Lấy danh sách các sản phẩm được chọn
@@ -158,15 +158,12 @@
 
         // Gửi dữ liệu qua AJAX (fetch)
         fetch('index.php?controller=checkout&action=storeOrders', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    userInfo,
-                    products
-                })
-            })
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ userInfo, products })
+        })
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
@@ -181,6 +178,7 @@
                 alert('There was an error processing your request.');
             });
     });
+
 </script>
 
 
