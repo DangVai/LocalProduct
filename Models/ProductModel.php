@@ -148,7 +148,7 @@ class ProductModel extends BaseModel
     }
 
 
-    public function updateQuantity($productId, $quantity)
+public function updateQuantity($productId, $quantity)
     {
         // Câu lệnh SQL để cập nhật số lượng sản phẩm trong kho
         $query = "UPDATE products SET quantity = quantity - ? WHERE product_id = ?";
@@ -169,7 +169,7 @@ class ProductModel extends BaseModel
 
 
 
-    public function saveOrder($userInfo, $products)
+public function saveOrder($userInfo, $products)
     {
         // Lấy thông tin người dùng từ dữ liệu gửi lên
         $fullName = $this->connect->real_escape_string($userInfo['full_name']);
@@ -207,7 +207,6 @@ class ProductModel extends BaseModel
                     throw new Exception("Error updating product quantity");
                 }
             }
-
             // Commit giao dịch
             $this->connect->commit();
             return true; // Đơn hàng đã được lưu thành công
@@ -219,8 +218,7 @@ class ProductModel extends BaseModel
     }
 
 
-
-    public function addToCart($userId, $productId, $size, $quantity)
+public function addToCart($userId, $productId, $size, $quantity)
     {
         // Kiểm tra xem sản phẩm đã có trong giỏ hàng chưa
         $checkQuery = "SELECT * FROM cart WHERE user_id = ? AND product_id = ? AND size = ?";
@@ -245,10 +243,8 @@ class ProductModel extends BaseModel
     }
 
 
-
-    //Home featured productsproducts
-    //Home featured productsproducts
-    public function getTopProductsByQuantity()
+//Home featured productsproducts
+  public function getTopProductsByQuantity()
     {
         $query = "SELECT 
         p.product_id AS product_id,
@@ -288,6 +284,19 @@ class ProductModel extends BaseModel
         return $data;
     }
 
+    public function getCartItems($userId)
+    {
+        // Lấy danh sách sản phẩm trong giỏ hàng của người dùng
+        $cartItems = $this->getCartProductDetails($userId);
+
+        // Tính toán giá theo số lượng cho mỗi sản phẩm trong giỏ hàng
+        foreach ($cartItems as &$item) {
+            $item['total_price'] = $item['price'] * $item['quantity'];  // Tính tổng giá của sản phẩm
+        }
+
+        return $cartItems;
+    }
+
     // Hàm lấy thông tin chi tiết sản phẩm trong giỏ hàng (bao gồm ảnh)
     private function getCartProductDetails($userId)
     {
@@ -299,7 +308,7 @@ class ProductModel extends BaseModel
         c.size, 
         c.quantity, 
         p.name AS product_name, 
-        p.price, 
+        p.price,
         p.product_view_at,
         i.img AS image_path  -- Lấy đường dẫn ảnh từ trường img trong bảng images
     FROM cart c
@@ -338,8 +347,7 @@ class ProductModel extends BaseModel
 
         return $cartItems;
     }
-
-    public function deleteItem($productId)
+        public function deleteItem($productId)
     {
         // Đảm bảo rằng câu lệnh DELETE đang xóa đúng dữ liệu trong bảng `cart`
         $sql = "DELETE FROM cart WHERE cart_id = ?";

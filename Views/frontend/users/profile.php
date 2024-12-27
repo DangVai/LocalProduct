@@ -129,7 +129,7 @@ $user = $_SESSION['user'];
     <!-- User Avatar -->
     <div class="container-right">
         <ul class="list">
-            <img src="<?= htmlspecialchars($user['avata']) ?>" alt="User Avatar">
+            <img src="/LocalProduct/<?= htmlspecialchars($user['avata']) ?>" alt="User Avatar">
             <h1>User Profile</h1>
             <p><span>Name:</span> <?= htmlspecialchars($user['Name']) ?></p>
             <p><span>Email:</span> <?= htmlspecialchars($user['email']) ?></p>

@@ -139,7 +139,7 @@ class ProductController extends BaseController
             $keyword = $_GET['keyword'];
             $products = $this->productModel->searchProducts($keyword);
             // Truyền dữ liệu sang view
-            $this->view('frontend.search_results', ['products' => $products]);
+            $this->view('frontend.products.search_results', ['products' => $products]);
         } else {
             // Nếu không có từ khóa, quay lại trang home
             header('Location: home.php');
