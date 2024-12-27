@@ -28,6 +28,8 @@
                             <img src="/LocalProduct/<?php echo htmlspecialchars($product['product_image']); ?>"
                                 alt="Hình sản phẩm" class="product-image" width="150">
                         </a>
+
+                        <!-- Thông tin chi tiết -->
                         <div class="detail">
                             <!-- Tên sản phẩm -->
                             <a href="index.php?controller=product&action=detail&id=<?php echo $product['product_id']; ?>" class="product-link">
