@@ -315,10 +315,8 @@ public function delete($id)
 
 //===================================================Oder tracking==========================================================
 public function getOrders() {
-    $query = "SELECT id, user_id, product_id, phone, 
-                     CONCAT( specific_address, ', ', location) AS address,
-                     total_price, payment_method, status
-              FROM orders";
+    $query = "SELECT order_id, user_id, phone, specific_address, status
+              FROM orderss";
 
     $result = $this->connect->query($query);
 
@@ -332,7 +330,7 @@ public function getOrders() {
 
 public function updateOrderStatus($orderId, $status)
 {
-    $stmt = $this->connect->prepare("UPDATE orders SET status = ? WHERE id = ?");
+    $stmt = $this->connect->prepare("UPDATE orderss SET status = ? WHERE order_id = ?");
     $stmt->bind_param("si", $status, $orderId);
 
     if (!$stmt->execute()) {
@@ -341,6 +339,45 @@ public function updateOrderStatus($orderId, $status)
 
     $stmt->close();
 }
+
+public function getOrdersByStatus($status) {
+    $query = "SELECT * FROM orderss WHERE status = ?";
+    $stmt = $this->connect->prepare($query);
+    $stmt->bind_param("s", $status);
+    $stmt->execute();
+
+    $result = $stmt->get_result();
+    $orders = [];
+    while ($row = $result->fetch_assoc()) {
+        $orders[] = $row;
+    }
+
+    $stmt->close();
+    return $orders;
+}
+
+
+public function getOrderDetails($orderId) {
+    $query = "SELECT order_item_id, order_id, product_id, product_name, size, price, quantity 
+              FROM order_items 
+              WHERE order_id = ?";
+    $stmt = $this->connect->prepare($query);
+    $stmt->bind_param("i", $orderId);
+    $stmt->execute();
+    
+    $result = $stmt->get_result();
+    $orderDetails = [];
+    while ($row = $result->fetch_assoc()) {
+        $orderDetails[] = $row;
+    }
+
+    $stmt->close();
+    return $orderDetails;
+}
+
+
+
+
 
 //=====================================================End Order Tracking==============================================
 
