@@ -49,6 +49,7 @@
                 <div class="box-account">
                     <a href="index.php?controller=user&action=profile">
                         <i class="fa-regular fa-user"></i>
+                    </a>
                 </div>
 
 

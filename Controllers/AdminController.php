@@ -22,6 +22,7 @@ use PHPMailer\PHPMailer\Exception;
      {
          $products = $this->AdminModel->getAllProducts();
          $this->viewWithoutLayout('frontend.Admin.products.index', ['products' => $products]);
+        //  require_once('frontend.Admin.products.index', ['products' => $products]);
      }
 
 
@@ -66,7 +67,7 @@ use PHPMailer\PHPMailer\Exception;
 
                  foreach ($images['name'] as $key => $image_name) {
                      $image_tmp_name = $images['tmp_name'][$key];
-                     $image_path = "public/images/Product_image/" . basename($image_name);
+                     $image_path = "/LocalProduct/public/images/Product_image/" . basename($image_name);
                      move_uploaded_file($image_tmp_name, $image_path);  // Di chuyển ảnh vào thư mục uploads
  
                      // Lưu vào bảng image
@@ -132,7 +133,7 @@ use PHPMailer\PHPMailer\Exception;
              if (!empty($_FILES['replace_images']['name'])) {
                  foreach ($_FILES['replace_images']['name'] as $key => $filename) {
                      if (!empty($filename)) {
-                         $uploadDir = 'public/images/Product_image/';
+                         $uploadDir = '/LocalProduct/public/images/Product_image/';
                          $newFileName = uniqid() . "_" . $filename; // Tạo tên file mới
                          $newFilePath = $uploadDir . $newFileName;
 
@@ -148,7 +149,7 @@ use PHPMailer\PHPMailer\Exception;
              if (!empty($_FILES['new_images']['name'][0])) {
                  foreach ($_FILES['new_images']['name'] as $key => $filename) {
                      if (!empty($filename)) {
-                         $uploadDir = 'public/images/Product_image/';
+                         $uploadDir = '/LocalProduct/public/images/Product_image/';
                          $newFileName = uniqid() . "_" . $filename; // Tạo tên file mới
                          $newFilePath = $uploadDir . $newFileName;
 
@@ -383,13 +384,18 @@ public function orderDetail() {
         $avatarFileName = null;
         // Kiểm tra nếu người dùng chọn ảnh để tải lên
         if (!empty($_FILES['avatar']['name'])) {
-            $targetDir = "public/images/User_Avata/"; 
+            $targetDir = $_SERVER['DOCUMENT_ROOT'] . "/LocalProduct/public/images/User_Avata/";
             if (!file_exists($targetDir)) {
                 mkdir($targetDir, 0777, true); 
             }
 
-            $fileName = basename($_FILES['avatar']['name']);
-            $targetFile = $targetDir . time() . "_" . $fileName; // Đảm bảo tên file không trùng
+            $avatarFileName = time() . "_" . basename($_FILES['avatar']['name']);
+            $targetFile = $targetDir . $avatarFileName;
+            move_uploaded_file($_FILES['avatar']['tmp_name'], $targetFile);
+
+            // Lưu tên tệp avatar vào CSDL:
+            $avatarToDB = $avatarFileName;
+
 
             // Kiểm tra loại file (chỉ chấp nhận các định dạng ảnh phổ biến)
             $fileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));

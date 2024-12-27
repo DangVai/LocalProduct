@@ -54,23 +54,7 @@
             <?php endif; ?>
         </div>
 
-        <h2>Related Products</h2>
-        <ul>
-            <?php
-            $relatedProducts = $this->productModel->getRelatedProducts(0); // Adjust logic as needed
-            foreach ($relatedProducts as $related) { ?>
-                <li class="product-item">
-                    <h3 class="product-name"><?php echo htmlspecialchars($product['product_name']); ?></h3>
-                    <p class="product-price">Giá: <?php echo number_format($product['price'], 0, ',', '.'); ?> VNĐ</p>
-                    <p class="product-type">Loại: <?php echo htmlspecialchars($product['category']); ?></p>
-                    <img src="/LocalProduct/<?php echo htmlspecialchars($product['product_image']); ?>" alt="Hình sản phẩm"
-                        class="product-image" width="150">
-                    <br>
-                    <a href="index.php?controller=product&action=detail&id=<?php echo $product['product_id']; ?>"
-                        class="product-detail-link">Xem chi tiết</a>
-                </li>
-            <?php } ?>
-        </ul>
+       
 </body>
 
 </html>
