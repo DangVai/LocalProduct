@@ -132,7 +132,7 @@ class UserController extends BaseController
             }
 
             // Mã hóa mật khẩu mới bằng md5
-            $hashedPassword = md5($newPassword);
+            $hashedPassword = ($newPassword);
 
             // Cập nhật mật khẩu
             $result = $this->userModel->updatePassword($email, $hashedPassword);
@@ -423,6 +423,46 @@ public function updateProfile()
         }
     }
 }
+
+    public function changePassword()
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $userId = $_SESSION['user_id']; // Lấy ID người dùng từ session
+            $currentPassword = $_POST['current_password'];
+            $newPassword = $_POST['new_password'];
+            $confirmPassword = $_POST['confirm_password'];
+
+            $user = new UserModel();
+
+            // Kiểm tra mật khẩu xác nhận có khớp không
+            if ($newPassword !== $confirmPassword) {
+                $_SESSION['error'] = "Mật khẩu mới và xác nhận không khớp.";
+                header("Location: index.php?controller=user&action=profile");
+                exit();
+            }
+
+            // Kiểm tra mật khẩu hiện tại
+            if (!$user->checkCurrentPassword($userId, $currentPassword)) {
+                $_SESSION['error'] = "Mật khẩu hiện tại không đúng.";
+                header("Location: index.php?controller=user&action=profile");
+                exit();
+            }
+
+            // Thực hiện thay đổi mật khẩu
+            if ($user->changePassword($userId, $newPassword)) {
+                $_SESSION['success'] = "Mật khẩu đã được thay đổi thành công.";
+                header("Location: index.php?controller=user&action=profile");
+                exit(); // Chắc chắn dừng script sau khi điều hướng
+            } else {
+                $_SESSION['error'] = "Đã xảy ra lỗi, vui lòng thử lại.";
+                header("Location: index.php?controller=user&action=profile");
+                exit(); // Chắc chắn dừng script sau khi điều hướng
+            }
+        } else {
+            // Nếu không phải POST, chuyển về trang thay đổi mật khẩu
+            require_once 'view/change-password.php';
+        }
+    }
 
 
 }

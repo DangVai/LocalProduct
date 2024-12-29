@@ -45,29 +45,22 @@
                 </div>
             </div>
             <!-- User Account -->
-            <div class="account">
-                <div class="box-account">
-                    <a href="index.php?controller=user&action=profile">
-                        <i class="fa-regular fa-user"></i>
-                    </a>
-
+            <div class="name-user">
+                <div class="account">
+                    <div class="box-account">
+                        <a href="#" onclick="toggleDropdown(event)">
+                            <i class="fa-regular fa-user"></i>
+                        </a>
+                    </div>
+                    <div class="dropdown-menu" id="account-menu">
+                        <a href="index.php?controller=user&action=profile"><i class="fas fa-user fa-sm"></i> Profile</a>
+                        <a href="#"><i class="fas fa-cogs fa-sm"></i> Settings</a>
+                        <a href="index.php?controller=user&action=login"><i class="fas fa-sign-in-alt fa-sm"></i> Log
+                            in</a>
+                        <a href="index.php?controller=user&action=logout"><i class="fas fa-sign-out-alt fa-sm"></i> Log out</a>
+                    </div>
                 </div>
             </div>
-
-
-
-                <!-- User Name and Dropdown Menu -->
-                <div class="header-user">
-                    <!-- Hiển thị khi người dùng đã đăng nhập -->
-                    <div class="name-user" id="user-info"
-                        <?php if (isset($_SESSION['isLoggedIn']) && $_SESSION['isLoggedIn']) echo 'style="display: block;"'; ?>>
-                        <p class="username"><?php echo isset($_SESSION['username']) ? $_SESSION['username'] : ''; ?></p>
-                    </div>
-
-                    <!-- Hiển thị khi người dùng chưa đăng nhập -->
-
-                </div>
-
             </div>
         </div>
         <div class=" text-run ">
@@ -107,5 +100,22 @@
 
     <script src="/LocalProduct/public/js/home.js"></script>
 </body>
+<script>
+    function toggleDropdown(event) {
+        event.preventDefault(); // Ngăn chặn hành vi mặc định của thẻ <a>
+        const dropdownMenu = document.getElementById('account-menu');
+        // Thêm hoặc bỏ lớp 'show' để bật/tắt menu
+        dropdownMenu.classList.toggle('show');
+    }
 
+    // Đóng menu khi click bên ngoài
+    document.addEventListener('click', function(event) {
+        const dropdownMenu = document.getElementById('account-menu');
+        const accountBox = document.querySelector('.box-account');
+
+        if (!accountBox.contains(event.target)) {
+            dropdownMenu.classList.remove('show');
+        }
+    });
+</script>
 </html>

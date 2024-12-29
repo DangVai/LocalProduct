@@ -48,12 +48,12 @@ document.addEventListener("DOMContentLoaded", function () {
         let quantity = parseInt(quantityInput.value, 10);
         quantity = checkAndUpdateQuantity(quantity);  // Kiểm tra số lượng
 
-        const shippingPrice = 5;
+        // const shippingPrice = 0;
         const adjustedBasePrice = basePrice * quantity;
-        const totalPrice = adjustedBasePrice + shippingPrice;
+        const totalPrice = adjustedBasePrice;
 
         priceElement.textContent = `${adjustedBasePrice.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")} $`;
-        shippingPriceElement.textContent = `Phí ship: ${shippingPrice.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")} $`;
+        // shippingPriceElement.textContent = `Phí ship: ${shippingPrice.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")} $`;
         totalPriceElement.textContent = `${totalPrice.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")} $`;
         hiddenTotalPrice.value = totalPrice.toFixed(2);
     }
@@ -125,43 +125,43 @@ function addToCart() {
 }
 
 
-// document.querySelector("form").addEventListener("submit", function (event) {
-//     const fullName = document.getElementById("fullName").value.trim();
-//     const phone = document.getElementById("phone").value.trim();
-//     const location = document.getElementById("location").value.trim();
-//     const specificAddress = document.getElementById("specificAddress").value.trim();
+document.querySelector("form").addEventListener("submit", function (event) {
+    const fullName = document.getElementById("fullName").value.trim();
+    const phone = document.getElementById("phone").value.trim();
+    const location = document.getElementById("location").value.trim();
+    const specificAddress = document.getElementById("specificAddress").value.trim();
 
-//     const errorMessage = document.getElementById("error-message"); // Phần tử hiển thị thông báo lỗi
+    const errorMessage = document.getElementById("error-message"); // Phần tử hiển thị thông báo lỗi
 
-//     // Xóa thông báo lỗi cũ (nếu có)
-//     errorMessage.textContent = "";
+    // Xóa thông báo lỗi cũ (nếu có)
+    errorMessage.textContent = "";
 
-//     // Kiểm tra nếu tên đầy đủ rỗng
-//     if (fullName === "") {
-//         errorMessage.textContent = "Full Name is required.";
-//         event.preventDefault(); // Ngăn chặn form gửi
-//         return;
-//     }
+    // Kiểm tra nếu tên đầy đủ rỗng
+    if (fullName === "") {
+        errorMessage.textContent = "Full Name is required.";
+        event.preventDefault(); // Ngăn chặn form gửi
+        return;
+    }
 
-//     // Kiểm tra nếu số điện thoại không hợp lệ
-//     const phoneRegex = /^\d{10}$/;
-//     if (!phoneRegex.test(phone)) {
-//         errorMessage.textContent = "Please enter a valid 10-digit phone number.";
-//         event.preventDefault();
-//         return;
-//     }
+    // Kiểm tra nếu số điện thoại không hợp lệ
+    const phoneRegex = /^\d{10}$/;
+    if (!phoneRegex.test(phone)) {
+        errorMessage.textContent = "Please enter a valid 10-digit phone number.";
+        event.preventDefault();
+        return;
+    }
 
-//     // Kiểm tra nếu location quá ngắn
-//     if (location.length < 40) {
-//         errorMessage.textContent = "Location must be at least 40 characters long.";
-//         event.preventDefault();
-//         return;
-//     }
+    // Kiểm tra nếu location quá ngắn
+    if (location.length < 40) {
+        errorMessage.textContent = "Location must be at least 40 characters long.";
+        event.preventDefault();
+        return;
+    }
 
-//     // Kiểm tra nếu địa chỉ cụ thể quá ngắn
-//     if (specificAddress.length < 40) {
-//         errorMessage.textContent = "Specific Address must be at least 40 characters long.";
-//         event.preventDefault();
-//         return;
-//     }
-// });
+    // Kiểm tra nếu địa chỉ cụ thể quá ngắn
+    if (specificAddress.length < 40) {
+        errorMessage.textContent = "Specific Address must be at least 40 characters long.";
+        event.preventDefault();
+        return;
+    }
+});

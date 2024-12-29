@@ -75,6 +75,46 @@ class ProductModel extends BaseModel
         return $product;
     }
 
+    public function getProductPreview($product_id)
+    {
+        // Truy vấn để lấy thông tin preview của sản phẩm
+        $sql = "SELECT pp.content, pp.stars, pp.preview_view_at, u.Name 
+            FROM preview pp
+            JOIN users u ON pp.user_id = u.user_id
+            WHERE pp.product_id = ?
+            ORDER BY pp.preview_view_at DESC";
+
+        $stmt = $this->connect->prepare($sql);
+
+        if ($stmt === false) {
+            die('Prepare failed: ' . $this->connect->error);  // Hiển thị lỗi nếu câu lệnh prepare bị lỗi
+        }
+
+        $stmt->bind_param('i', $product_id);  // Gắn tham số vào câu lệnh SQL
+        $stmt->execute();  // Thực thi câu lệnh SQL
+        $result = $stmt->get_result();  // Lấy kết quả truy vấn
+
+        $previews = [];
+        while ($row = $result->fetch_assoc()) {
+            $previews[] = $row;  // Lưu kết quả vào mảng $previews
+        }
+
+        return $previews;
+    }
+
+    // Hàm lưu đánh giá vào cơ sở dữ liệu
+    public function saveReview($user_id, $product_id, $content, $stars)
+    {
+        $sql = "INSERT INTO preview (user_id, product_id, content, stars, preview_view_at)
+            VALUES (?, ?, ?, ?, NOW())";
+        $stmt = $this->connect->prepare($sql);
+        $stmt->bind_param("iisi", $user_id, $product_id, $content, $stars);
+        if ($stmt->execute()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     public function getByCategory($category, $excludeId)
     {

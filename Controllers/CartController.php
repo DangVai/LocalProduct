@@ -55,7 +55,7 @@ class CartController extends BaseController
         $cartItems = $this->productModel->getCartItems($userId);
 
         // Hien thi giao dien cart.php
-        $this->viewWithoutLayout('frontend.products.cart', ['cartItems' => $cartItems]);
+        $this->withThoutFooter('frontend.products.cart', ['cartItems' => $cartItems]);
     }
 
     public function handleRequest()

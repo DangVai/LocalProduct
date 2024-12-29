@@ -139,9 +139,9 @@
                 <div class="product-details">
                     <h4 class="product-name">
                         <?php echo htmlspecialchars($relatedProduct['product_name'] ?? 'Tên sản phẩm không có'); ?></h4>
-                    <p class="product-price">Giá: <?php echo number_format($relatedProduct['price'] ?? 0, 0, ',', '.'); ?> VNĐ
+                    <p class="product-price">Price: <?php echo number_format($relatedProduct['price'] ?? 0, 0, ',', '.'); ?>$
                     </p>
-                    <p class="product-type">Loại: <?php echo htmlspecialchars($relatedProduct['type'] ?? 'Không có loại'); ?>
+                    <p class="product-type">Type: <?php echo htmlspecialchars($relatedProduct['type'] ?? 'Không có loại'); ?>
                     </p>
                     <p class="product-description">Mô tả:
                         <?php echo htmlspecialchars($relatedProduct['description'] ?? 'Không có mô tả'); ?></p>

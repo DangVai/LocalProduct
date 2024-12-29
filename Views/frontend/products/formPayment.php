@@ -48,10 +48,13 @@
         placeholder="" required>
 
     <label>Province/City, District/County, Ward/Commune</label>
-    <input type="text" name="location" placeholder="Province/City, District/County, Ward/Commune" required>
+    <input type="text" name="location"
+        value="<?php echo isset($_SESSION['user']['user_address']) ? htmlspecialchars($_SESSION['user']['user_address']) : ''; ?>"
+        placeholder="Enter your location" required>
 
-    <label>Specific Address</label>
-    <input type="text" name="specific_address" placeholder="" required>
+    <label>Note for Shop</label>
+    <textarea style="width: 100%;" name="specific_address"
+        placeholder="Enter your notes for the shop (e.g., delivery instructions, preferred time)" rows="2"></textarea>
 
     <div class="payment-options" style="display: none;">
         <label>
@@ -63,10 +66,10 @@
     </div>
 
     <p>Select payment method</p>
-<div class="payment-options">
-    <button type="button" class="cod-btn" onclick="selectPaymentMethod('cod')">Cash on Delivery</button>
-    <button type="button" class="momo-btn" onclick="selectPaymentMethod('momo')">Pay via Momo</button>
-</div>
+    <div class="payment-options">
+        <button type="button" class="cod-btn" onclick="selectPaymentMethod('cod')">Cash on Delivery</button>
+        <button type="button" class="momo-btn" onclick="selectPaymentMethod('momo')">Pay via Momo</button>
+    </div>
 
     <input type="hidden" name="user_id"
         value="<?php echo isset($_SESSION['user_id']) ? htmlspecialchars($_SESSION['user_id']) : ''; ?>">
