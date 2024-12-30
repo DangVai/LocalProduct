@@ -16,22 +16,13 @@ class ProductController extends BaseController
         $products = $this->productModel->getAll();
         $this->view('frontend.products.index', ['products' => $products]);
     }
-
-
-    public function show($id)
-    {
-        // echo "Chi tiết sản phẩm id: $description ";
-        $products = $this->productModel->find($id);
-        $this->view('frontend.products.index', ['products' => $products]);
-    }
-
-
-
     public function detail($id)
     {
         // Kiểm tra xem id có hợp lệ không
         if (empty($id) || !is_numeric($id)) {
-            die('ID không hợp lệ');
+            $_SESSION['success'] = "Mật khẩu đã được thay đổi thành công.";
+            header("Location: index.php?controller=user&action=profile");
+            exit(); 
         }
 
         // Lấy sản phẩm theo ID từ mô hình
@@ -65,6 +56,7 @@ class ProductController extends BaseController
             $product_id = $_POST['product_id'];
             $user_id = $_SESSION['user_id'];
             $this->productModel->saveReview($user_id, $product_id, $content, $stars);
+            $_SESSION['success'] = "Bạn phải đăng nhập để bình luận.";
             header("Location: index.php?controller=product&action=detail&id=$product_id");
             exit();
         }

@@ -290,4 +290,23 @@ public function checkLogin($username, $password) {
             return null;
         }
     }
+    public function getOrders($userId)
+    {
+        $query = "SELECT order_id, user_id, phone,location, specific_address, status
+              FROM orderss
+              WHERE user_id = ?";
+
+        $stmt = $this->connect->prepare($query);
+        $stmt->bind_param("i", $userId); // Gán tham số vào câu truy vấn
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if (!$result) {
+            die("SQL Error: " . $this->connect->error);
+        }
+
+        $orders = $result->fetch_all(MYSQLI_ASSOC);
+        return $orders;
+    }
+
 }

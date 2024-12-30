@@ -151,6 +151,27 @@
             <?php include_once 'listProductbycatelogy.php'; ?>
         </div>
     </body>
+<?php
+if (isset($_SESSION['success'])) {
+    echo '<div class="notification success">
+            <div class="icon">
+                <i class="fa fa-check-circle"></i>
+            </div>
+            <div class="message">' . $_SESSION['success'] . '</div>
+          </div>';
+    unset($_SESSION['success']);
+}
+
+if (isset($_SESSION['error'])) {
+    echo '<div class="notification error">
+            <div class="icon">
+                <i class="fa fa-times-circle"></i>
+            </div>
+            <div class="message">' . $_SESSION['error'] . '</div>
+          </div>';
+    unset($_SESSION['error']);
+}
+?>
 
 </html>
 <script src="/LocalProduct/public/js/payment.js"></script>

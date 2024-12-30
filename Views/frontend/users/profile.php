@@ -7,6 +7,7 @@
     <title>User Profile</title>
     <link rel="stylesheet" href="/LocalProduct/public/css/profile.css">
 </head>
+
 <body>
     <?php
     if (!isset($_SESSION['user'])) {
@@ -34,7 +35,27 @@
         <div class="profile-content" id="profile-content">
         </div>
     </div>
+
+    <h1>Order Tracking</h1>
+    <div class="order_list">
+        <?php if (!empty($orders)): ?>
+            <?php foreach ($orders as $order): ?>
+                <div class="order_item">
+                    <p>Order ID: <?= htmlspecialchars($order['order_id']) ?></p>
+                    <p>Phone: <?= htmlspecialchars($order['phone']) ?></p>
+                    <p>Address: <?= htmlspecialchars($order['location']) ?></p>
+                    <p>Note: <?= htmlspecialchars($order['specific_address']) ?></p>
+                    <p>Status: <?= htmlspecialchars($order['status']) ?></p>
+                </div>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <p>No orders found.</p>
+        <?php endif; ?>
+    </div>
+    </div>
+    <div class="update-profile-form" id="update-profile-form"></div>
 </body>
 
 <script src="/LocalProduct/public/js/profile.js"></script>
+
 </html>

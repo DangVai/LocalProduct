@@ -23,69 +23,85 @@ if (isset($_SESSION['error'])) {
 ?>
 
 <style>
-    /* CSS cho thông báo */
-    .notification {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 300px;
-        padding: 20px;
-        border-radius: 12px;
-        display: flex;
-        align-items: center;
-        gap: 15px;
-        text-align: left;
-        font-size: 16px;
-        color: white;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-        z-index: 9999;
+/* CSS cho thông báo */
+.notification {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    padding: 20px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    text-align: left;
+    font-size: 16px;
+    color: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    z-index: 9999;
+    opacity: 0;
+    animation: fadeIn 0.5s forwards, fadeOut 0.5s 2.5s forwards;
+}
+
+/* Hiệu ứng cho biểu tượng */
+.notification .icon {
+    font-size: 24px;
+    animation: iconBounce 0.6s infinite; /* Hiệu ứng nhảy cho icon */
+}
+
+/* Hiệu ứng phóng to icon khi xuất hiện */
+@keyframes iconBounce {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.notification.success {
+    background: linear-gradient(135deg, #28a745, #218838);
+}
+
+.notification.error {
+    background: linear-gradient(135deg, #dc3545, #c82333);
+}
+
+.notification.success .icon {
+    color: #d4edda;
+}
+
+.notification.error .icon {
+    color: #f8d7da;
+}
+
+/* Hiệu ứng fade-in và fade-out */
+@keyframes fadeIn {
+    0% {
         opacity: 0;
-        animation: fadeIn 0.5s forwards, fadeOut 0.5s 2.5s forwards;
+        transform: translate(-50%, -60%);
     }
 
-    .notification .icon {
-        font-size: 24px;
+    100% {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
     }
 
-    .notification.success {
-        background: linear-gradient(135deg, #28a745, #218838);
+    100% {
+        opacity: 0;
     }
+}
 
-    .notification.error {
-        background: linear-gradient(135deg, #dc3545, #c82333);
-    }
-
-    .notification.success .icon {
-        color: #d4edda;
-    }
-
-    .notification.error .icon {
-        color: #f8d7da;
-    }
-
-    /* Hiệu ứng fade-in và fade-out */
-    @keyframes fadeIn {
-        0% {
-            opacity: 0;
-            transform: translate(-50%, -60%);
-        }
-
-        100% {
-            opacity: 1;
-            transform: translate(-50%, -50%);
-        }
-    }
-
-    @keyframes fadeOut {
-        0% {
-            opacity: 1;
-        }
-
-        100% {
-            opacity: 0;
-        }
-    }
 </style>
 
 <script>

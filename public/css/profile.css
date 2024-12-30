@@ -190,3 +190,87 @@
     .btn-submit:hover {
         background-color: #45a049;
     }
+/* Container của danh sách đơn hàng */
+.order_list {
+    margin: 30px auto;
+    padding: 20px;
+    max-width: 100%;
+    background-color: #f3f4f6;
+    border-radius: 12px;
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Các mục đơn hàng */
+.order_item {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    margin-bottom: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.order_item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* Căn chỉnh các thẻ p bên trong mục đơn hàng */
+.order_item p {
+    margin: 8px 0;
+    font-size: 16px;
+    color: #333;
+}
+
+.order_item p strong {
+    font-weight: 600;
+    color: #555;
+}
+
+/* Mã đơn hàng nổi bật */
+.order_item p:nth-child(1) {
+    font-size: 18px;
+    font-weight: 700;
+    color: #007bff; /* Xanh lam cho Order ID */
+}
+
+/* Tạo sự phân biệt cho trạng thái đơn hàng */
+.order_item p:nth-child(5) {
+    font-weight: bold;
+    color: #28a745; /* Màu xanh cho trạng thái thành công */
+}
+
+.order_item p.status {
+    color: #dc3545; /* Màu đỏ cho trạng thái lỗi */
+}
+
+/* Nếu không có đơn hàng */
+.no_orders {
+    text-align: center;
+    font-size: 18px;
+    color: #888;
+    margin-top: 40px;
+}
+
+/* Responsive cho màn hình nhỏ */
+@media (max-width: 768px) {
+    .order_list {
+        padding: 15px;
+    }
+
+    .order_item {
+        padding: 15px;
+    }
+
+    .order_item p {
+        font-size: 14px;
+    }
+
+    .order_item p:nth-child(1) {
+        font-size: 16px;
+    }
+}

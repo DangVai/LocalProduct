@@ -308,6 +308,7 @@ class UserController extends BaseController
 
         $user = $this->userModel->checkLogin($username, $password); // Kiểm tra đăng nhập
         if ($user) {
+            $_SESSION['user_logged_in'] = true; // Đánh dấu đã đăng nhập
             $_SESSION['user'] = $user; // Lưu thông tin người dùng vào session
             $_SESSION['user_id'] = $user['user_id'];
             $_SESSION['user_name'] = $user['Name'];
@@ -344,12 +345,24 @@ public function home()
     $this->view('frontend/home');
 }
 
-public function profile()
-{
-    $this->viewWithoutLayout('frontend.users.profile');
-}
+    public function profile()
+    {
+        $userId = $_SESSION['user_id'] ?? null;
 
-// Hiển thị trang chỉnh sửa hồ sơ
+        if (!$userId) {
+            // Nếu chưa đăng nhập, chuyển hướng về trang đăng nhập
+            header('Location: index.php?controller=user&action=login');
+            exit;
+        }
+
+        // Lấy danh sách đơn hàng của người dùng
+        $orders = $this->userModel->getOrders($userId);
+        // Gửi dữ liệu qua view
+        $this->viewWithoutLayout('frontend.users.profile', ['orders' => $orders]);
+    }
+
+
+    // Hiển thị trang chỉnh sửa hồ sơ
 public function editProfile()
 {
     if (!isset($_SESSION['user'])) {
@@ -464,5 +477,27 @@ public function updateProfile()
         }
     }
 
+    public function showOrders()
+    {
+        // Kiểm tra nếu có danh sách đã lọc trong session
+        if (isset($_SESSION['filteredOrders'])) {
+            $orders = $_SESSION['filteredOrders'];
+            unset($_SESSION['filteredOrders']); // Xóa sau khi sử dụng để tránh dữ liệu cũ
+        } else {
+            // Lấy toàn bộ danh sách nếu không có bộ lọc
+            $orders = $this->userModel->getOrders();
+        }
 
+        // Xử lý giá trị NULL và thay thế bằng "N/A"
+        foreach ($orders as &$order) {
+            foreach ($order as $key => &$value) {
+                if (is_null($value)) {
+                    $value = "N/A";
+                }
+            }
+        }
+
+        // Trả về View với dữ liệu
+        $this->viewNoLayt("frontend.Admin.oderTracking", ["orders" => $orders]);
+    }
 }

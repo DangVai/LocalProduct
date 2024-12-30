@@ -209,7 +209,7 @@ public function updateQuantity($productId, $quantity)
 
 
 
-public function saveOrder($userInfo, $products)
+    public function saveOrder($userInfo, $products)
     {
         // Lấy thông tin người dùng từ dữ liệu gửi lên
         $fullName = $this->connect->real_escape_string($userInfo['full_name']);
@@ -218,13 +218,16 @@ public function saveOrder($userInfo, $products)
         $specificAddress = $this->connect->real_escape_string($userInfo['specific_address']);
         $userId = $this->connect->real_escape_string($userInfo['user_id']);
 
+        // Trạng thái mặc định của đơn hàng
+        $status = 'pending'; // Bạn có thể thay đổi trạng thái nếu cần
+
         // Bắt đầu giao dịch (transaction)
         $this->connect->begin_transaction();
 
         try {
             // Lưu thông tin đơn hàng vào bảng 'orderss'
-            $stmt = $this->connect->prepare("INSERT INTO orderss (user_id, full_name, phone, location, specific_address) VALUES (?, ?, ?, ?, ?)");
-            $stmt->bind_param('issss', $userId, $fullName, $phone, $location, $specificAddress);
+            $stmt = $this->connect->prepare("INSERT INTO orderss (user_id, full_name, phone, location, specific_address, status) VALUES (?, ?, ?, ?, ?, ?)");
+            $stmt->bind_param('isssss', $userId, $fullName, $phone, $location, $specificAddress, $status);
             $stmt->execute();
             $orderId = $this->connect->insert_id; // Lấy ID của đơn hàng vừa tạo
 
@@ -256,6 +259,7 @@ public function saveOrder($userInfo, $products)
             return false; // Đơn hàng không được lưu
         }
     }
+
 
 
 

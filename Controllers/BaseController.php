@@ -80,8 +80,6 @@ class BaseController extends db
         require("Views/layouts/noLayout.php");
 
     }
-
-
     /**
      * Lấy danh sách các tham số của phương thức.
      *
@@ -97,6 +95,4 @@ class BaseController extends db
         }
         return $result;
     }
-
 }
-
