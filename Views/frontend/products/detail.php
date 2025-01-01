@@ -111,7 +111,7 @@
                                     <textarea name="content" id="content" class="form-control" rows="2" required></textarea>
                                 </div>
                                 <!-- Trường ẩn để gửi product_id cùng với form -->
-                                <input type="hidden" name="product_id" value="<?= isset($_GET['product_id']) ? $_GET['product_id'] : '' ?>">
+                                <input type="hidden" name="product_id" value="<?php echo $product['product_id']; ?>">
                                 <button type="submit" class="btn-submit">Submit Review</button>
                             </form>
                         </div>

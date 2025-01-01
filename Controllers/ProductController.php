@@ -55,12 +55,22 @@ class ProductController extends BaseController
             $content = $_POST['content'];
             $product_id = $_POST['product_id'];
             $user_id = $_SESSION['user_id'];
+
+            // Kiểm tra xem người dùng đã mua và đơn hàng đã giao thành công chưa
+            if (!$this->productModel->hasPurchasedProduct($user_id, $product_id)) {
+                $_SESSION['error'] = "You can only review products that have been delivered successfully.";
+                header("Location: index.php?controller=product&action=detail&id=$product_id");
+                exit();
+            }
+
+            // Lưu bình luận nếu điều kiện thỏa mãn
             $this->productModel->saveReview($user_id, $product_id, $content, $stars);
-            $_SESSION['success'] = "Bạn phải đăng nhập để bình luận.";
+            $_SESSION['success'] = "Review sent.";
             header("Location: index.php?controller=product&action=detail&id=$product_id");
             exit();
         }
     }
+
 
 
 

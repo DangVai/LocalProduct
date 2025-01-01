@@ -116,6 +116,20 @@ class ProductModel extends BaseModel
         }
     }
 
+    public function hasPurchasedProduct($user_id, $product_id)
+    {
+        $sql = "SELECT COUNT(*) as count 
+            FROM orderss o 
+            INNER JOIN order_items od ON o.order_id = od.order_id 
+            WHERE o.user_id = ? AND od.product_id = ? AND o.status = 'delivered'";
+        $stmt = $this->connect->prepare($sql);
+        $stmt->bind_param("ii", $user_id, $product_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+        return $row['count'] > 0; // Trả về true nếu đã mua và đơn hàng đã giao thành công
+    }
+
     public function getByCategory($category, $excludeId)
     {
         $sql = "SELECT 
