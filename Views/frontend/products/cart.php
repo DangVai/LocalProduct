@@ -51,7 +51,8 @@
                             </p>
 
                             <div class="cart-actions">
-                                <button type="button" class="btn-delete-selected" data-id="<?= $item['cart_id'] ?>"><i class="fa-solid fa-trash"></i></button>
+                                <button type="button" class="btn-delete-selected" data-id="<?= $item['cart_id'] ?>"><i
+                                        class="fa-solid fa-trash"></i></button>
                             </div>
                         </li>
                     <?php endforeach; ?>
@@ -64,7 +65,7 @@
 
 
         <div class="address">
-            <form method="POST" action="index.php?controller=checkout&action=storeOrder">
+            <form class="address-form" method="POST" action="index.php?controller=checkout&action=storeOrder">
                 <!-- Các trường ẩn để gửi thông tin sản phẩm -->
                 <input type="hidden" name="product_name" value="<?php echo $product['name']; ?>">
                 <input type="hidden" name="product_id" value="<?php echo $product['product_id']; ?>">
@@ -82,11 +83,12 @@
                     placeholder="" required>
 
                 <label>Province/City, District/County, Ward/Commune</label>
-                <input type="text" name="location" placeholder="Province/City, District/County, Ward/Commune" required>
+                <input type="text" name="location"
+                    value="<?php echo isset($_SESSION['user']['user_address']) ? htmlspecialchars($_SESSION['user']['user_address']) : ''; ?>"
+                    placeholder="Enter your location" required>
 
-                <label>Specific Address</label>
-                <input type="text" name="specific_address" placeholder="" required>
-
+                    <label>Note for Shop</label>
+                    <textarea name="specific_address" placeholder="Enter your notes for the shop (e.g., delivery instructions, preferred time)" rows="2"></textarea>
                 <div class="payment-options" style="display: none;">
                     <label>
                         <input type="radio" name="payment_method" class="cod" value="cod" checked> Cash on delivery
@@ -105,7 +107,7 @@
                     value="<?php echo isset($_SESSION['user_id']) ? htmlspecialchars($_SESSION['user_id']) : ''; ?>">
                 <div id="error-message" style="color: red;"></div>
                 <div class="footers">
-                    <p style="color: red;"><span id="shipping-price"></span></p>
+                    <!-- <p style="color: red;"><span id="shipping-price"></span></p> -->
                     <p style="color: red;">Total Price: <span id="total-price">0</span>$</p>
                     <input type="hidden" id="hidden-total-price" name="total_price" value="">
                     <button type="submit" class="buy-now">Buy Now</button>
@@ -118,65 +120,6 @@
 <script src="/LocalProduct/public/js/check.js">
 </script>
 <script>
-    document.querySelector('.buy-now').addEventListener('click', function (event) {
-        event.preventDefault(); // Ngăn chặn hành vi submit mặc định
-
-        // Lấy danh sách các sản phẩm được chọn
-        const selectedItems = document.querySelectorAll('.select-item:checked');
-        if (selectedItems.length === 0) {
-            alert('Please select at least one product!');
-            return;
-        }
-
-        // Thu thập thông tin người dùng
-        const userInfo = {
-            full_name: document.querySelector('[name="full_name"]').value,
-            phone: document.querySelector('[name="phone"]').value,
-            location: document.querySelector('[name="location"]').value,
-            specific_address: document.querySelector('[name="specific_address"]').value,
-            user_id: document.querySelector('[name="user_id"]').value,
-        };
-
-        // Thu thập thông tin các sản phẩm được chọn
-        const products = [];
-        selectedItems.forEach((item) => {
-            const cartItem = item.closest('.cart-item');
-            const quantityInput = cartItem.querySelector('.quantity');
-
-            const product = {
-                product_id: item.value,
-                product_name: cartItem.dataset.name,
-                size: cartItem.dataset.size,
-                price: parseFloat(cartItem.dataset.price), // Giá đơn vị
-                quantity: parseInt(quantityInput.value), // Lấy số lượng người dùng đã thay đổi
-                price: parseFloat(cartItem.dataset.price) * parseInt(quantityInput.value) // Tính tổng giá
-            };
-            products.push(product);
-        });
-
-
-        // Gửi dữ liệu qua AJAX (fetch)
-        fetch('index.php?controller=checkout&action=storeOrders', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ userInfo, products })
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert('Order placed successfully!');
-                    // Bạn có thể thêm hành động như chuyển hướng trang hoặc xóa giỏ hàng sau khi đặt hàng thành công
-                } else {
-                    alert('Error placing the order.');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('There was an error processing your request.');
-            });
-    });
 
 </script>
 

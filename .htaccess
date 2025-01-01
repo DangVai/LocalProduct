@@ -18,3 +18,5 @@ RewriteRule ^product/([^/]+)/?$ index.php?controller=product&action=detail&slug=
 
 # Chuyển hướng tất cả các yêu cầu còn lại về index.php
 RewriteRule ^ index.php [L,QSA]
+RewriteEngine On
+RewriteRule ^user/profile$ index.php?controller=user&action=profile [L]

@@ -75,6 +75,60 @@ class ProductModel extends BaseModel
         return $product;
     }
 
+    public function getProductPreview($product_id)
+    {
+        // Truy vấn để lấy thông tin preview của sản phẩm
+        $sql = "SELECT pp.content, pp.stars, pp.preview_view_at, u.Name 
+            FROM preview pp
+            JOIN users u ON pp.user_id = u.user_id
+            WHERE pp.product_id = ?
+            ORDER BY pp.preview_view_at DESC";
+
+        $stmt = $this->connect->prepare($sql);
+
+        if ($stmt === false) {
+            die('Prepare failed: ' . $this->connect->error);  // Hiển thị lỗi nếu câu lệnh prepare bị lỗi
+        }
+
+        $stmt->bind_param('i', $product_id);  // Gắn tham số vào câu lệnh SQL
+        $stmt->execute();  // Thực thi câu lệnh SQL
+        $result = $stmt->get_result();  // Lấy kết quả truy vấn
+
+        $previews = [];
+        while ($row = $result->fetch_assoc()) {
+            $previews[] = $row;  // Lưu kết quả vào mảng $previews
+        }
+
+        return $previews;
+    }
+
+    // Hàm lưu đánh giá vào cơ sở dữ liệu
+    public function saveReview($user_id, $product_id, $content, $stars)
+    {
+        $sql = "INSERT INTO preview (user_id, product_id, content, stars, preview_view_at)
+            VALUES (?, ?, ?, ?, NOW())";
+        $stmt = $this->connect->prepare($sql);
+        $stmt->bind_param("iisi", $user_id, $product_id, $content, $stars);
+        if ($stmt->execute()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function hasPurchasedProduct($user_id, $product_id)
+    {
+        $sql = "SELECT COUNT(*) as count 
+            FROM orderss o 
+            INNER JOIN order_items od ON o.order_id = od.order_id 
+            WHERE o.user_id = ? AND od.product_id = ? AND o.status = 'delivered'";
+        $stmt = $this->connect->prepare($sql);
+        $stmt->bind_param("ii", $user_id, $product_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+        return $row['count'] > 0; // Trả về true nếu đã mua và đơn hàng đã giao thành công
+    }
 
     public function getByCategory($category, $excludeId)
     {
@@ -169,7 +223,7 @@ public function updateQuantity($productId, $quantity)
 
 
 
-public function saveOrder($userInfo, $products)
+    public function saveOrder($userInfo, $products)
     {
         // Lấy thông tin người dùng từ dữ liệu gửi lên
         $fullName = $this->connect->real_escape_string($userInfo['full_name']);
@@ -178,13 +232,16 @@ public function saveOrder($userInfo, $products)
         $specificAddress = $this->connect->real_escape_string($userInfo['specific_address']);
         $userId = $this->connect->real_escape_string($userInfo['user_id']);
 
+        // Trạng thái mặc định của đơn hàng
+        $status = 'pending'; // Bạn có thể thay đổi trạng thái nếu cần
+
         // Bắt đầu giao dịch (transaction)
         $this->connect->begin_transaction();
 
         try {
             // Lưu thông tin đơn hàng vào bảng 'orderss'
-            $stmt = $this->connect->prepare("INSERT INTO orderss (user_id, full_name, phone, location, specific_address) VALUES (?, ?, ?, ?, ?)");
-            $stmt->bind_param('issss', $userId, $fullName, $phone, $location, $specificAddress);
+            $stmt = $this->connect->prepare("INSERT INTO orderss (user_id, full_name, phone, location, specific_address, status) VALUES (?, ?, ?, ?, ?, ?)");
+            $stmt->bind_param('isssss', $userId, $fullName, $phone, $location, $specificAddress, $status);
             $stmt->execute();
             $orderId = $this->connect->insert_id; // Lấy ID của đơn hàng vừa tạo
 
@@ -216,6 +273,7 @@ public function saveOrder($userInfo, $products)
             return false; // Đơn hàng không được lưu
         }
     }
+
 
 
 

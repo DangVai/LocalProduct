@@ -12,6 +12,7 @@
 
 <body>
     <div id="loading" class="loading-overlay">
+        <img src="/LocalProduct/public/images/logo.jpg" alt="">
         <div class="spinner"></div>
         <p>Loading...</p>
     </div>
