@@ -9,6 +9,8 @@
 </head>
 
 <body>
+
+
     <div class="container-U">
         <div class="banner">
             <img src="/LocalProduct/public/images/Paco.jpg" alt="Banner ">
@@ -62,8 +64,8 @@
 
             <p>Hãy cùng chúng tôi quảng bá và bảo tồn những giá trị tâm hồn đẹp đẽ của truyền thống. Cùng nhau, chúng ta sẽ giúp những giá trị này sống mãi với thời gian.</p>
         </div>
-        <div class="footer">&copy; 2024 Cửa Hàng Truyền Thống Vân Kiều & Pa Cô. All rights reserved.</div>
     </div>
+
 </body>
 
 </html>

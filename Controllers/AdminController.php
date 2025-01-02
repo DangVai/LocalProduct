@@ -23,7 +23,7 @@ use PHPMailer\PHPMailer\Exception;
          $products = $this->AdminModel->getAllProducts();
 
          $this->viewNoLayt('frontend.Admin.products.index', ['products' => $products]);
-         $this->viewWithoutLayout('frontend.Admin.products.index', ['products' => $products]);
+         $this->viewNoLayt('frontend.Admin.products.index', ['products' => $products]);
         //  require_once('frontend.Admin.products.index', ['products' => $products]);
      }
 

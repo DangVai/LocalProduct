@@ -1,4 +1,5 @@
 <?php
+
 class FavoriteController extends BaseController
 {
     private $productModel;
@@ -8,23 +9,47 @@ class FavoriteController extends BaseController
         $this->loadModel('ProductModel');
         $this->productModel = new ProductModel();
     }
+
     public function addFavorite()
     {
-        session_start();
-        if (!isset($_SESSION['user_id'])) {
-            echo json_encode(['status' => 'error', 'message' => 'Vui lòng đăng nhập để thêm yêu thích.']);
-            return;
+        header('Content-Type: application/json');
+
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
         }
 
-        $productId = $_POST['product_id'];
+        // Kiểm tra xem người dùng đã đăng nhập chưa
+        if (!isset($_SESSION['user_id'])) {
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'Vui lòng đăng nhập để thêm yêu thích.'
+            ]);
+            exit(); // Dừng chương trình nếu chưa đăng nhập
+        }
+
+        $data = json_decode(file_get_contents('php://input'), true); // Nhận dữ liệu JSON
+        if (!$data) {
+            error_log("Invalid JSON: " . file_get_contents('php://input')); // Ghi log nếu JSON không hợp lệ
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'Dữ liệu không hợp lệ!'
+            ]);
+            exit();
+        }
+
+        if (!isset($data['product_id'])) {
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'ID sản phẩm không hợp lệ.'
+            ]);
+            exit();
+        }
+
+        $productId = $data['product_id'];
         $userId = $_SESSION['user_id'];
 
-        // Sử dụng ProductModel thay vì FavoriteModel
-        $model = $this->loadModel('ProductModel');
-
-        // Kiểm tra xem sản phẩm đã có trong yêu thích chưa
-        if ($model->isFavorite($userId, $productId)) {
-            // Nếu đã có, xóa khỏi danh sách yêu thích
+        // Kiểm tra xem sản phẩm đã yêu thích chưa
+        if ($this->productModel->isFavorite($userId, $productId)) {
             $this->productModel->removeFromFavorites($userId, $productId);
             echo json_encode([
                 'status' => 'success',
@@ -32,8 +57,7 @@ class FavoriteController extends BaseController
                 'is_favorite' => false
             ]);
         } else {
-            // Nếu chưa có, thêm vào danh sách yêu thích
-            $model->addToFavorites($userId, $productId);
+            $this->productModel->addToFavorites($userId, $productId);
             echo json_encode([
                 'status' => 'success',
                 'message' => 'Đã thêm vào yêu thích.',
@@ -44,17 +68,14 @@ class FavoriteController extends BaseController
 
     public function showFavorites()
     {
-        session_start();
         if (!isset($_SESSION['user_id'])) {
             header('Location: login.php');
             exit();
         }
 
         $userId = $_SESSION['user_id'];
-        // Sử dụng ProductModel thay vì FavoriteModel
-        $model = $this->loadModel('ProductModel');
-        $favorites = $model->getFavorites($userId);
+        $favorites = $this->productModel->getFavorites($userId);
 
-        $this->view('favorites.index', ['favorites' => $favorites]);
+        $this->view('frontend.products.favorite', ['favorites' => $favorites]);
     }
 }
