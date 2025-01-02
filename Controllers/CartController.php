@@ -87,6 +87,4 @@ class CartController extends BaseController
         echo json_encode(['status' => 'error', 'message' => 'Invalid request']);
         exit;
     }
-
-} 
-
+}

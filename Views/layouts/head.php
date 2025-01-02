@@ -41,7 +41,7 @@
             <div class="nav">
                 <a href="index.php?controller=home&action=home"><b>Home</b></a>
                 <a href="index.php?controller=product&action=fashion"><b>Thời Trang</b></a>
-                <a href="index.php?controller=product&action=food"><b>Ẩm thực</b></a>
+                <a href="index.php?controller=favorite&action=viewFavorite"><b>Ẩm thực</b></a>
                 <a href="index.php?controller=product&action=another"><b>Khác</b></a>
             </div>
 
@@ -64,7 +64,15 @@
                 </div>
             </div>
 
-            <!-- User Account -->
+
+            <div class="account">
+                <div class="box-account">
+                    <a href="index.php?controller=user&action=profile">
+                        <i class="fa-regular fa-user"></i>
+                    </a>
+                    </di>
+                </div>
+
             <div class="name-user">
                 <div class="account">
                     <div class="box-account">
@@ -83,6 +91,7 @@
                     </div>
                 </div>
             </div>
+
 
         </div>
     </div>
