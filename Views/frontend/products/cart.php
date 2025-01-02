@@ -117,11 +117,6 @@
     </div>
 </body>
 <script src="/LocalProduct/public/js/payment.js"></script>
-<script src="/LocalProduct/public/js/check.js">
-</script>
-<script>
-
-</script>
-
-
+<script src="/LocalProduct/public/js/check.js"></script>
+<script src="/LocalProduct/public/js/checkcart.js"></script>
 </html>
