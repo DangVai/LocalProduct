@@ -41,7 +41,7 @@
             <div class="nav">
                 <a href="index.php?controller=home&action=home"><b>Home</b></a>
                 <a href="index.php?controller=product&action=fashion"><b>Thời Trang</b></a>
-                <a href="index.php?controller=favorite&action=viewFavorite"><b>Ẩm thực</b></a>
+                <a href="index.php?controller=product&action=food"><b>Ẩm thực</b></a>
                 <a href="index.php?controller=product&action=another"><b>Khác</b></a>
             </div>
 
@@ -64,15 +64,7 @@
                 </div>
             </div>
 
-
-            <div class="account">
-                <div class="box-account">
-                    <a href="index.php?controller=user&action=profile">
-                        <i class="fa-regular fa-user"></i>
-                    </a>
-                    </di>
-                </div>
-
+            <!-- User Account -->
             <div class="name-user">
                 <div class="account">
                     <div class="box-account">
@@ -92,45 +84,47 @@
                 </div>
             </div>
 
-
         </div>
     </div>
-<a href="https://zalo.me/0346243031" target="_blank" class="zalo-chat-btn">
-    <img src="\LocalProduct\public\images\logozalo.jpg" alt="Chat Zalo">
-</a>
+    <a href="https://zalo.me/0346243031" target="_blank" class="zalo-chat-btn">
+        <img src="\LocalProduct\public\images\logozalo.jpg" alt="Chat Zalo">
+    </a>
 
-<style>
-.zalo-chat-btn {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: 60px;
-    height: 60px;
-    z-index: 1000;
-    animation: float 2s infinite ease-in-out;
-}
+    <style>
+        .zalo-chat-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            z-index: 1000;
+            animation: float 2s infinite ease-in-out;
+        }
 
-.zalo-chat-btn img {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    transition: transform 0.3s ease;
-}
+        .zalo-chat-btn img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+        }
 
-.zalo-chat-btn img:hover {
-    transform: scale(1.1);
-}
+        .zalo-chat-btn img:hover {
+            transform: scale(1.1);
+        }
 
-@keyframes float {
-    0%, 100% {
-        transform: translateY(0);
-    }
-    50% {
-        transform: translateY(-10px);
-    }
-}
-</style>
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+    </style>
 
 
 </body>
