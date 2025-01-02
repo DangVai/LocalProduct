@@ -1,0 +1,143 @@
+  body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      margin-top: 150px;
+      padding: 0;
+      background-color: #f9f9f9;
+      color: #333;
+  }
+  
+  .container-U {
+      width: 100%;
+      margin: 0 auto;
+      min-height: 100vh;
+      background: #fff;
+      box-shadow: 2px 2px 2px 4px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+  }
+  
+  .banner {
+      position: relative;
+      width: 100%;
+      height: 600px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+  }
+  
+  .banner img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.5);
+  }
+  
+  .body-U {
+      margin: 0px 50px 0px 50px;
+  }
+  /* Giới thiệu : */
+  
+  .introduce {
+      margin-top: 50px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 50px;
+      margin-bottom: 50px;
+  }
+  /* Phần chung cho vk và pc */
+  
+  .vk,
+  .pc {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: 50px;
+      width: 100%;
+  }
+  /* Hình ảnh */
+  
+  .pc img {
+      width: 400px;
+      height: 400px;
+      border-radius: 10px;
+      border: 2px solid #3e3f40;
+      object-fit: cover;
+      /* Đảm bảo hình ảnh không bị méo */
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      margin-right: 50px
+  }
+  
+  .vk img {
+      width: 400px;
+      height: 300px;
+      border-radius: 10px;
+      border: 2px solid #3e3f40;
+      object-fit: cover;
+      /* Đảm bảo hình ảnh không bị méo */
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      margin-left: 50px;
+  }
+  /* Gạch dọc */
+  
+  .vk .gach,
+  .pc .gach {
+      width: 3px;
+      height: 300px;
+      background-color: #070707;
+  }
+  
+  .vk-text {
+      flex: 1;
+      /* padding: 0 10px; */
+      text-align: left;
+      margin-right: 30px
+  }
+  
+  .pc-text {
+      flex: 1;
+      /* padding: 0 10px; */
+      text-align: right;
+      margin-left: 30px;
+  }
+  
+  .vk-text h3,
+  .pc-text h3 {
+      font-size: 20px;
+      color: #2c3e50;
+      margin: 0 0 10px;
+  }
+  
+  .vk-text p,
+  .pc-text p {
+      font-size: 20px;
+      color: #555;
+      line-height: 1.8;
+  }
+  /* Đảm bảo phần giới thiệu không bị lỗi chiều cao */
+  
+  .vk,
+  .pc {
+      min-height: 400px;
+  }
+  
+  h1,
+  h2 {
+      color: #0056b3;
+  }
+  
+  ul {
+      padding-left: 20px;
+  }
+  
+  li {
+      margin-bottom: 10px;
+  }
+  
+  .footer {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 0.9em;
+      color: #777;
+  }

@@ -31,7 +31,8 @@
                 <div class="searchHome">
                     <input type="hidden" name="controller" value="product">
                     <input type="hidden" name="action" value="search">
-                    <input type="text" name="keyword" id="search-keyword" placeholder="Tìm kiếm..." class="searchInput" required>
+                    <input type="text" name="keyword" id="search-keyword" placeholder="Tìm kiếm..." class="searchInput"
+                        required>
                     <button type="submit" class="searchButton">🔍</button>
                 </div>
                 <!-- <input type="hidden" name="action" value="search"> -->
@@ -57,43 +58,45 @@
                         <a href="#"><i class="fas fa-cogs fa-sm"></i> Settings</a>
                         <a href="index.php?controller=user&action=login"><i class="fas fa-sign-in-alt fa-sm"></i> Log
                             in</a>
-                        <a href="index.php?controller=user&action=logout"><i class="fas fa-sign-out-alt fa-sm"></i> Log out</a>
+                        <a href="index.php?controller=user&action=logout"><i class="fas fa-sign-out-alt fa-sm"></i> Log
+                            out</a>
                     </div>
                 </div>
             </div>
-            </div>
         </div>
-        <div class=" text-run ">
-            <span>Chào mừng bạn đến với cửa hàng thời trang Vân Kiều và Pa Cô! Khám phá các sản phẩm đặc sắc ngay hôm nay!</span>
-        </div>
+    </div>
+    <div class=" text-run ">
+        <span>Chào mừng bạn đến với cửa hàng thời trang Vân Kiều và Pa Cô! Khám phá các sản phẩm đặc sắc ngay hôm
+            nay!</span>
+    </div>
 
-        <!-- Banner -->
-        <div class="banner ">
-            <img src="/LocalProduct/public/images/Vân Kiều - Pa Cô.png " alt="Banner ">
-        </div>
-        <div class="img-sliders ">
-            <div class="slider-container ">
-                <div class="slides " id="slider1 ">
-                    <img src="/LocalProduct/public/imgaes/Product_image/tui1.jpg" class="slide " alt="Slide 1 ">
-                    <img src="/LocalProduct/public/images/slide2.jpg " class="slide " alt="Slide 2 ">
-                    <img src="/LocalProduct/public/images/slide3.jpg " class="slide " alt="Slide 3 ">
-                </div>
-            </div>
-            <div class="slider-container ">
-                <div class="slides " id="slider2 ">
-                    <img src="/LocalProduct/public/images/slide3.jpg " class="slide " alt="Slide 1 ">
-                    <img src="/LocalProduct/public/images/R.jpg " class="slide " alt="Slide 2 ">
-                    <img src="/LocalProduct/public/images/slide2.jpg " class="slide " alt="Slide 3 ">
-                </div>
-            </div>
-            <div class="slider-container ">
-                <div class="slides " id="slider3 ">
-                    <img src="/LocalProduct/public/images/slide2.jpg " class="slide " alt="Slide 1 ">
-                    <img src="/LocalProduct/public/images/slide3.jpg " class="slide " alt="Slide 2 ">
-                    <img src="/LocalProduct/public/images/R.jpg " class="slide " alt="Slide 3 ">
-                </div>
+    <!-- Banner -->
+    <div class="banner ">
+        <img src="/LocalProduct/public/images/Vân Kiều - Pa Cô.png " alt="Banner ">
+    </div>
+    <div class="img-sliders ">
+        <div class="slider-container ">
+            <div class="slides " id="slider1 ">
+                <img src="/LocalProduct/public/imgaes/Product_image/tui1.jpg" class="slide " alt="Slide 1 ">
+                <img src="/LocalProduct/public/images/slide2.jpg " class="slide " alt="Slide 2 ">
+                <img src="/LocalProduct/public/images/slide3.jpg " class="slide " alt="Slide 3 ">
             </div>
         </div>
+        <div class="slider-container ">
+            <div class="slides " id="slider2 ">
+                <img src="/LocalProduct/public/images/slide3.jpg " class="slide " alt="Slide 1 ">
+                <img src="/LocalProduct/public/images/R.jpg " class="slide " alt="Slide 2 ">
+                <img src="/LocalProduct/public/images/slide2.jpg " class="slide " alt="Slide 3 ">
+            </div>
+        </div>
+        <div class="slider-container ">
+            <div class="slides " id="slider3 ">
+                <img src="/LocalProduct/public/images/slide2.jpg " class="slide " alt="Slide 1 ">
+                <img src="/LocalProduct/public/images/slide3.jpg " class="slide " alt="Slide 2 ">
+                <img src="/LocalProduct/public/images/R.jpg " class="slide " alt="Slide 3 ">
+            </div>
+        </div>
+    </div>
     </div>
 
 
@@ -109,7 +112,7 @@
     }
 
     // Đóng menu khi click bên ngoài
-    document.addEventListener('click', function(event) {
+    document.addEventListener('click', function (event) {
         const dropdownMenu = document.getElementById('account-menu');
         const accountBox = document.querySelector('.box-account');
 
@@ -118,4 +121,5 @@
         }
     });
 </script>
+
 </html>

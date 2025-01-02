@@ -202,7 +202,7 @@ class ProductModel extends BaseModel
     }
 
 
-public function updateQuantity($productId, $quantity)
+    public function updateQuantity($productId, $quantity)
     {
         // Câu lệnh SQL để cập nhật số lượng sản phẩm trong kho
         $query = "UPDATE products SET quantity = quantity - ? WHERE product_id = ?";
@@ -305,7 +305,7 @@ public function updateQuantity($productId, $quantity)
 
 
 
-   //Home featured productsproducts
+    //Home featured productsproducts
     public function getFeaturedProductsByQuantity()
     {
         $query = "SELECT p.product_id, p.name, p.category, p.price, p.quantity, i.img AS image_url
@@ -426,7 +426,7 @@ public function updateQuantity($productId, $quantity)
 
         return $cartItems;
     }
-        public function deleteItem($productId)
+    public function deleteItem($productId)
     {
         // Đảm bảo rằng câu lệnh DELETE đang xóa đúng dữ liệu trong bảng `cart`
         $sql = "DELETE FROM cart WHERE cart_id = ?";
@@ -613,5 +613,70 @@ public function updateQuantity($productId, $quantity)
         }
 
         return $products;
+    }
+    //Thêm vào mục yêu thích
+    public function addToFavorites($userId, $productId)
+    {
+        $sql = "INSERT INTO favorites (user_id, product_id) VALUES (?, ?)";
+        $stmt = $this->connect->prepare($sql);
+        $stmt->bind_param("ii", $userId, $productId);
+
+        if ($stmt->execute()) {
+            return true; // Thêm thành công
+        } else {
+            error_log("Error adding to favorites: " . $this->connect->error);
+            return false; // Thêm thất bại
+        }
+    }
+    public function removeFromFavorites($userId, $productId)
+    {
+        $sql = "DELETE FROM favorites WHERE user_id = ? AND product_id = ?";
+        $stmt = $this->connect->prepare($sql);
+        $stmt->bind_param("ii", $userId, $productId);
+
+        if ($stmt->execute()) {
+            return true; // Xóa thành công
+        } else {
+            error_log("Error removing from favorites: " . $this->connect->error);
+            return false; // Xóa thất bại
+        }
+    }
+    public function getFavorites($userId)
+    {
+        $sql = "SELECT 
+                p.product_id, 
+                p.name AS product_name, 
+                p.price, 
+                p.category, 
+                p.type, 
+                i.img AS product_image
+            FROM 
+                favorites f
+            JOIN 
+                products p 
+            ON 
+                f.product_id = p.product_id
+            LEFT JOIN 
+                image i 
+            ON 
+                p.product_id = i.product_id
+            WHERE 
+                f.user_id = ?";
+        $stmt = $this->connect->prepare($sql);
+        $stmt->bind_param("i", $userId);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+    public function isFavorite($userId, $productId)
+    {
+        $sql = "SELECT * FROM favorites WHERE user_id = ? AND product_id = ?";
+        $stmt = $this->connect->prepare($sql);
+        $stmt->bind_param("ii", $userId, $productId);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+        return $result->num_rows > 0; // Trả về `true` nếu tồn tại, `false` nếu không
     }
 }

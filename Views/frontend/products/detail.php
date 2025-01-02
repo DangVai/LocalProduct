@@ -150,6 +150,8 @@
         <div>
             <?php include_once 'listProductbycatelogy.php'; ?>
         </div>
+
+        </body>
     </body>
 <?php
 if (isset($_SESSION['success'])) {
@@ -173,12 +175,13 @@ if (isset($_SESSION['error'])) {
 }
 ?>
 
+
 </html>
 <script src="/LocalProduct/public/js/payment.js"></script>
 <script src="/LocalProduct/public/js/detail.js"></script>
 <script src="/LocalProduct/public/js/check.js"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
         const totalPriceElement = document.getElementById('total-price'); // Phần tử hiển thị tổng giá
         const hiddenTotalPrice = document.getElementById('hidden-total-price'); // Trường ẩn để gửi tổng giá
         const quantityInput = document.querySelector('.quantity'); // Trường nhập số lượng
@@ -190,12 +193,13 @@ if (isset($_SESSION['error'])) {
         };
 
         // Khi số lượng thay đổi, cập nhật giá hiển thị và trường ẩn
-        quantityInput.addEventListener('input', function () {
+        quantityInput.addEventListener('input', function() {
             updateHiddenTotalPrice();
         });
     });
     const userId = <?php echo isset($_SESSION['user_id']) ? json_encode($_SESSION['user_id']) : 'null'; ?>;
     const productId = <?php echo json_encode($product['product_id']); ?>;
+
 
 
     document.addEventListener('DOMContentLoaded', function () {

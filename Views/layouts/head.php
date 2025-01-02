@@ -86,42 +86,45 @@
 
         </div>
     </div>
-<a href="https://zalo.me/0346243031" target="_blank" class="zalo-chat-btn">
-    <img src="\LocalProduct\public\images\logozalo.jpg" alt="Chat Zalo">
-</a>
+    <a href="https://zalo.me/0346243031" target="_blank" class="zalo-chat-btn">
+        <img src="\LocalProduct\public\images\logozalo.jpg" alt="Chat Zalo">
+    </a>
 
-<style>
-.zalo-chat-btn {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: 60px;
-    height: 60px;
-    z-index: 1000;
-    animation: float 2s infinite ease-in-out;
-}
+    <style>
+        .zalo-chat-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            z-index: 1000;
+            animation: float 2s infinite ease-in-out;
+        }
 
-.zalo-chat-btn img {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    transition: transform 0.3s ease;
-}
+        .zalo-chat-btn img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+        }
 
-.zalo-chat-btn img:hover {
-    transform: scale(1.1);
-}
+        .zalo-chat-btn img:hover {
+            transform: scale(1.1);
+        }
 
-@keyframes float {
-    0%, 100% {
-        transform: translateY(0);
-    }
-    50% {
-        transform: translateY(-10px);
-    }
-}
-</style>
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+    </style>
 
 
 </body>
