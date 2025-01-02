@@ -152,7 +152,6 @@
         </div>
 
         </body>
-=======
     </body>
 <?php
 if (isset($_SESSION['success'])) {
