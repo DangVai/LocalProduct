@@ -23,7 +23,7 @@ $isLoggedIn = isset($_SESSION['user']);
         <!-- Phần danh sách sản phẩm -->
         <div class="product-list">
             <?php if (!empty($favorites)): ?>
-                <h1>THỜI TRANG</h1>
+                <h1>Danh sách sản phẩm yêu thích</h1>
                 <?php foreach ($favorites as $product): ?>
                     <div class="product-item" data-price="<?= $product['price'] ?>" data-type="<?= htmlspecialchars($product['type']) ?>" data-name="<?= htmlspecialchars($product['product_name']) ?>">
 
@@ -43,13 +43,12 @@ $isLoggedIn = isset($_SESSION['user']);
                             <button class="remove-favorite" data-product-id="<?= $product['product_id'] ?>">Xóa</button>
                         </div>
                     </div>
-        </div>
 
-    <?php endforeach; ?>
-<?php else : ?>
-    <p>Không có sản phẩm nào để hiển thị.</p>
-<?php endif; ?>
-    </div>
+                <?php endforeach; ?>
+            <?php else : ?>
+                <p>Bạn chưa thêm sản phẩm yêu thích nào!.</p>
+            <?php endif; ?>
+        </div>
     </div>
     <script>
         document.querySelectorAll('.remove-favorite').forEach(btn => {
@@ -67,21 +66,20 @@ $isLoggedIn = isset($_SESSION['user']);
                     .then(response => response.json())
                     .then(data => {
                         if (data.status === 'success') {
-                            alert(data.message);
-                            location.reload();
+                            Swal.fire({
+                                icon: 'success',
+                                title: data.message
+                            });
+                            this.closest('.product-item').remove();
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: data.message
+                            });
                         }
                     });
             });
         });
-
-
-        function showPopup(message) {
-            Swal.fire({
-                title: message,
-                icon: 'success',
-                confirmButtonText: 'OK'
-            });
-        }
     </script>
 </body>
 
