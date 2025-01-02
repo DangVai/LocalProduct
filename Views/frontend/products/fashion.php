@@ -46,7 +46,7 @@
                 <h1>THỜI TRANG</h1>
                 <?php foreach ($products as $product): ?>
                     <div class="product-item" data-price="<?= $product['price'] ?>" data-type="<?= htmlspecialchars($product['type']) ?>" data-name="<?= htmlspecialchars($product['product_name']) ?>">
-                        <button class="favourite-btn <?= $product['is_favorite'] ? 'active' : '' ?>" data-product-id="<?= $product['product_id'] ?>">
+                        <button class="favourite-btn" data-product-id="<?= $product['product_id']; ?>">
                             <i class="fas fa-heart"></i>
                         </button>
                         <a href="index.php?controller=product&action=detail&id=<?php echo $product['product_id']; ?>" class="product-link">
@@ -73,25 +73,69 @@
     </div>
     <!-- <script src="/LocalProduct/public/js/fashion.js"></script> -->
     <script>
-        document.querySelectorAll('.favourite-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
+        const buttons = document.querySelectorAll('.favourite-btn');
+        buttons.forEach(btn => {
+            btn.addEventListener('click', async function() {
                 const productId = this.dataset.productId;
-                fetch('/index.php?controller=favorite&action=addFavorite', {
+                console.log("Product ID:", productId);
+
+                try {
+                    const response = await fetch('index.php?controller=favorite&action=addFavorite', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
                         },
                         body: JSON.stringify({
                             product_id: productId
-                        })
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.status === 'success') {
-                            this.classList.toggle('active', data.is_favorite);
-                            alert(data.message);
-                        }
+                        }),
                     });
+
+                    // Đảm bảo rằng phản hồi không phải HTML
+                    if (response.ok) {
+                        const responseText = await response.text(); // Chuyển đổi phản hồi thành văn bản
+                        console.log("Response Text:", responseText); // In nội dung phản hồi ra console
+
+                        // Kiểm tra nếu phản hồi trả về JSON
+                        let data;
+                        try {
+                            data = JSON.parse(responseText);
+                            console.log("Response Data:", data);
+                        } catch (error) {
+                            console.error("Error parsing JSON:", error);
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Đã xảy ra lỗi, vui lòng thử lại!',
+                            });
+                            return;
+                        }
+
+                        // Cập nhật giao diện
+                        const heartIcon = this.querySelector('i');
+                        if (data.is_favorite) {
+                            heartIcon.classList.add('text-danger'); // Thêm màu đỏ nếu đã yêu thích
+                        } else {
+                            heartIcon.classList.remove('text-danger'); // Xóa màu đỏ nếu không còn yêu thích
+                        }
+
+                        // Hiển thị thông báo với SweetAlert
+                        Swal.fire({
+                            icon: 'success',
+                            title: data.message,
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+
+                    } else {
+                        throw new Error('Error: ' + response.status);
+                    }
+
+                } catch (error) {
+                    console.error("Fetch error:", error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Đã xảy ra lỗi, vui lòng thử lại!',
+                    });
+                }
             });
         });
     </script>

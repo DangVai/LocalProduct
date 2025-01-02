@@ -614,69 +614,80 @@ class ProductModel extends BaseModel
 
         return $products;
     }
-    //Thêm vào mục yêu thích
+ // Thêm sản phẩm vào danh sách yêu thích
     public function addToFavorites($userId, $productId)
     {
-        $sql = "INSERT INTO favorites (user_id, product_id) VALUES (?, ?)";
+        $sql = "INSERT INTO favorite (user_id, product_id) VALUES (?, ?)";
         $stmt = $this->connect->prepare($sql);
         $stmt->bind_param("ii", $userId, $productId);
 
-        if ($stmt->execute()) {
-            return true; // Thêm thành công
-        } else {
-            error_log("Error adding to favorites: " . $this->connect->error);
-            return false; // Thêm thất bại
+        if (!$stmt->execute()) {
+            // Log lỗi chi tiết hơn để debug
+            error_log("SQL Error: " . $stmt->error);
+            return false; // Trả về false nếu có lỗi
         }
+
+        return true; // Trả về true nếu thành công
     }
+
+    // Xóa sản phẩm khỏi danh sách yêu thích
     public function removeFromFavorites($userId, $productId)
     {
-        $sql = "DELETE FROM favorites WHERE user_id = ? AND product_id = ?";
+        $sql = "DELETE FROM favorite WHERE user_id = ? AND product_id = ?";
         $stmt = $this->connect->prepare($sql);
         $stmt->bind_param("ii", $userId, $productId);
 
-        if ($stmt->execute()) {
-            return true; // Xóa thành công
-        } else {
-            error_log("Error removing from favorites: " . $this->connect->error);
-            return false; // Xóa thất bại
+        if (!$stmt->execute()) {
+            error_log("SQL Error: " . $stmt->error);
+            return false; // Nếu có lỗi trong việc thực thi SQL
         }
+
+        return true; // Trả về true nếu thành công
     }
+
+    // Lấy danh sách sản phẩm yêu thích của người dùng
     public function getFavorites($userId)
     {
         $sql = "SELECT 
-                p.product_id, 
-                p.name AS product_name, 
-                p.price, 
-                p.category, 
-                p.type, 
-                i.img AS product_image
-            FROM 
-                favorites f
-            JOIN 
-                products p 
-            ON 
-                f.product_id = p.product_id
-            LEFT JOIN 
-                image i 
-            ON 
-                p.product_id = i.product_id
-            WHERE 
-                f.user_id = ?";
+                    p.product_id, 
+                    p.name AS product_name, 
+                    p.price, 
+                    p.type, 
+                    i.img AS product_image
+                FROM 
+                    favorite f
+                JOIN 
+                    products p ON f.product_id = p.product_id
+                LEFT JOIN 
+                    image i ON p.product_id = i.product_id
+                WHERE 
+                    f.user_id = ?";
         $stmt = $this->connect->prepare($sql);
         $stmt->bind_param("i", $userId);
-        $stmt->execute();
+
+        if (!$stmt->execute()) {
+            error_log("SQL Error: " . $stmt->error); // Log lỗi nếu có
+            return []; // Trả về mảng rỗng nếu có lỗi
+        }
 
         $result = $stmt->get_result();
         return $result->fetch_all(MYSQLI_ASSOC);
     }
+
+    // Kiểm tra sản phẩm đã có trong danh sách yêu thích chưa
     public function isFavorite($userId, $productId)
     {
-        $sql = "SELECT * FROM favorites WHERE user_id = ? AND product_id = ?";
+        $sql = "SELECT * FROM favorite WHERE user_id = ? AND product_id = ?";
         $stmt = $this->connect->prepare($sql);
         $stmt->bind_param("ii", $userId, $productId);
-        $stmt->execute();
+
+        if (!$stmt->execute()) {
+            error_log("SQL Error: " . $stmt->error); // Log lỗi nếu có
+            return false; // Nếu có lỗi, trả về false
+        }
 
         $result = $stmt->get_result();
-        return $result->num_rows > 0; // Trả về `true` nếu tồn tại, `false` nếu không
+        return $result->num_rows > 0; // Trả về true nếu sản phẩm đã yêu thích
     }
+
 }
