@@ -42,7 +42,7 @@
                 <a href="index.php?controller=home&action=home"><b>Home</b></a>
                 <a href="index.php?controller=product&action=fashion"><b>Thời Trang</b></a>
                 <a href="index.php?controller=favorite&action=viewFavorite"><b>Ẩm thực</b></a>
-                <a href="index.php?controller=product&action=another"><b>Khác</b></a>
+                <a href="index.php?controller=home&action=aboutus"><b>Khác</b></a>
             </div>
 
             <!-- Search -->

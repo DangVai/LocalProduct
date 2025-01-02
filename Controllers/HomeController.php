@@ -25,4 +25,10 @@ class HomeController extends BaseController
         // Không cần exit tại đây, hãy trả dữ liệu về view
         $this->view('frontend.home', ['featuredProducts' => $featuredProducts]);
     }
+
+    public function aboutus(){
+        $this->view('frontend.aboutus');
+    }
+
+    
 }
