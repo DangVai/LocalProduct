@@ -7,6 +7,7 @@
     <title>Product Details</title>
     <link rel="stylesheet" href="/LocalProduct/public/css/detail.css">
     <link rel="stylesheet" href="/LocalProduct/public/css/load.css">
+    <link rel="stylesheet" href="/LocalProduct/public/css/priview.css">
     <script src="/LocalProduct/public/js/load.js"></script>
 </head>
 <style>
@@ -71,35 +72,48 @@
                                     </ul>
                                 </div>
                             </div>
-                            <div class="comment-section">
-
-                                <div class="comment">
-                                    <div class="comment-header">
-                                        <strong>tranquoc204</strong>
-                                        <span class="comment-date">2024-10-29 20:05</span>
-                                        <span class="category"> Loại sản phẩm: BROWN SOC, TO, 39 nam/nữ</span>
-                                    </div>
-                                    <div class="rating">
-                                        ★★★★★
-                                    </div>
-                                    <div class="comment-content">
-                                        <p><strong>Màu sắc:</strong> Nhạt</p>
-                                        <p><strong>Chất liệu:</strong> Mềm</p>
-                                        <p><strong>Đúng với mô tả:</strong> Đẹp</p>
-                                        <p>Tôi mang size 37, nhưng tôi đã chọn size 40</p>
-                                    </div>
-                                    <div class="comment-images">
-                                        <img src="image1.jpg" alt="Review Image">
-                                        <img src="image2.jpg" alt="Review Image">
-                                    </div>
-                                </div>
-
-                                <div class="comment-input">
-                                    <input type="text" placeholder="Write your review">
-                                    <button type="button">Submit</button>
-                                </div>
+                            <div class="reviews-container">
+                                <?php if (!empty($previews)): ?>
+                                    <?php foreach ($previews as $review): ?>
+                                        <div class="review-item">
+                                            <div class="review-header">
+                                                <strong class="reviewer-name"><?= htmlspecialchars($review['Name']) ?></strong>
+                                                <?php for ($i = 0; $i < $review['stars']; $i++): ?>
+                                                    <span class="star-ratings">★</span>
+                                                <?php endfor; ?>
+                                            </div>
+                                            <span
+                                                class="review-date"><?= date('d/m/Y H:i', strtotime($review['preview_view_at'])) ?></span>
+                                            <div class="review-content">
+                                                <p><strong></strong> <?= htmlspecialchars($review['content']) ?></p>
+                                            </div>
+                                        </div>
+                                    <?php endforeach; ?>
+                                <?php else: ?>
+                                    <p class="no-reviews">No reviews yet for this product.</p>
+                                <?php endif; ?>
                             </div>
 
+                            <form class="review-form" method="POST" action="index.php?controller=product&action=submitReview">
+                                <div class="form-group">
+                                    <label for="stars">Select Stars:</label>
+                                    <div class="star-rating" id="star-rating">
+                                        <span class="star" data-value="1">★</span>
+                                        <span class="star" data-value="2">★</span>
+                                        <span class="star" data-value="3">★</span>
+                                        <span class="star" data-value="4">★</span>
+                                        <span class="star" data-value="5">★</span>
+                                    </div>
+                                    <input type="hidden" name="stars" id="stars" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="content">Review Content:</label>
+                                    <textarea name="content" id="content" class="form-control" rows="2" required></textarea>
+                                </div>
+                                <!-- Trường ẩn để gửi product_id cùng với form -->
+                                <input type="hidden" name="product_id" value="<?php echo $product['product_id']; ?>">
+                                <button type="submit" class="btn-submit">Submit Review</button>
+                            </form>
                         </div>
                     </div>
                     <div class="detail">
@@ -136,7 +150,32 @@
         <div>
             <?php include_once 'listProductbycatelogy.php'; ?>
         </div>
+
         </body>
+=======
+    </body>
+<?php
+if (isset($_SESSION['success'])) {
+    echo '<div class="notification success">
+            <div class="icon">
+                <i class="fa fa-check-circle"></i>
+            </div>
+            <div class="message">' . $_SESSION['success'] . '</div>
+          </div>';
+    unset($_SESSION['success']);
+}
+
+if (isset($_SESSION['error'])) {
+    echo '<div class="notification error">
+            <div class="icon">
+                <i class="fa fa-times-circle"></i>
+            </div>
+            <div class="message">' . $_SESSION['error'] . '</div>
+          </div>';
+    unset($_SESSION['error']);
+}
+?>
+
 
 </html>
 <script src="/LocalProduct/public/js/payment.js"></script>
@@ -161,4 +200,29 @@
     });
     const userId = <?php echo isset($_SESSION['user_id']) ? json_encode($_SESSION['user_id']) : 'null'; ?>;
     const productId = <?php echo json_encode($product['product_id']); ?>;
+
+
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const stars = document.querySelectorAll('.star');
+        const starInput = document.getElementById('stars');
+
+        stars.forEach(star => {
+            star.addEventListener('click', function () {
+                const value = this.getAttribute('data-value');
+
+                // Cập nhật màu cho các ngôi sao
+                stars.forEach(s => {
+                    s.classList.remove('selected');
+                    if (s.getAttribute('data-value') <= value) {
+                        s.classList.add('selected');
+                    }
+                });
+
+                // Cập nhật giá trị trong input hidden
+                starInput.value = value;
+            });
+        });
+    });
+
 </script>

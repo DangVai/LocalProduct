@@ -114,9 +114,12 @@ public function onlinePayment()
                 ]
             ];
 
+            // Thêm status mặc định cho đơn hàng
+            $status = 'pending'; // Trạng thái mặc định là "pending"
+
             // Tạo đối tượng model và gọi phương thức để lưu dữ liệu
             $orderModel = new ProductModel();
-            $result = $orderModel->saveOrder($userInfo, $products);
+            $result = $orderModel->saveOrder($userInfo, $products, $status);
 
             if ($result) {
                 $_SESSION['order_success'] = 'Đơn hàng của bạn đã được đặt thành công!';
@@ -133,6 +136,7 @@ public function onlinePayment()
             echo json_encode(['success' => false, 'error' => 'Invalid request method']);
         }
     }
+
 
 
 

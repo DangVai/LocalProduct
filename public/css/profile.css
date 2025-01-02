@@ -1,0 +1,276 @@
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f0f0f0;
+    }
+
+    .wrapper {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin: 110px auto;
+        width: 80%;
+        background-color: #fff;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        padding: 20px;
+        margin-top: 160px;
+    }
+
+    .profile-sidebar {
+        width: 30%;
+        background-color: #e3f2fd;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        border-radius: 10px;
+        padding: 20px;
+    }
+
+    .profile-content {
+        width: 65%;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        padding: 20px;
+    }
+
+    .avatar img {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        border: 3px solid #4caf50;
+        margin-bottom: 20px;
+        margin-left: 55px;
+    }
+
+    .user-details {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        width: 100%;
+    }
+
+    .user-details h1 {
+        font-size: 28px;
+        color: #333;
+        margin-bottom: 20px;
+    }
+
+    .user-details p {
+        font-size: 16px;
+        color: #555;
+        margin: 5px 0;
+    }
+
+    .user-details span {
+        font-weight: bold;
+        color: #333;
+    }
+
+    .profile-form {
+        width: 100%;
+    }
+
+    .profile-form p {
+        margin: 10px 0;
+    }
+
+    .profile-form input[type="text"],
+    .profile-form input[type="email"],
+    .profile-form input[type="file"] {
+        width: 100%;
+        padding: 10px;
+        margin-top: 5px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+
+    .profile-form button {
+        width: 100%;
+        padding: 12px;
+        background-color: #4caf50;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        margin-top: 20px;
+        transition: background-color 0.3s ease;
+    }
+
+    .profile-form button:hover {
+        background-color: #45a049;
+    }
+
+    .update-profile {
+        display: inline-block;
+        margin-top: 20px;
+        width: 100%;
+        padding: 12px 20px;
+        background-color: #4caf50;
+        color: #fff;
+        text-align: center;
+        font-size: 16px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        text-decoration: none;
+        /* Loại bỏ gạch chân */
+    }
+
+    .update-profile a {
+        color: inherit;
+        /* Giữ nguyên màu chữ của nút */
+        text-decoration: none;
+        /* Loại bỏ gạch chân của liên kết */
+    }
+
+    .update-profile:hover {
+        background-color: #45a049;
+        /* Hiệu ứng hover */
+    }
+
+
+    /* Form change password */
+    .change-password-heading {
+        font-size: 2rem;
+        color: #333;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .change-password-form {
+        width: 100%;
+        max-width: 100%;
+        margin: 0 auto;
+        padding: 20px;
+        border-radius: 8px;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .form-label {
+        display: block;
+        font-size: 1rem;
+        color: #555;
+        margin-bottom: 5px;
+    }
+
+    .form-input {
+        width: 100%;
+        padding: 10px;
+        font-size: 1rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+
+    .form-input:focus {
+        outline-color: #66afe9;
+        border-color: #66afe9;
+    }
+
+    .btn-submit {
+        width: 100%;
+        padding: 10px;
+        font-size: 1.2rem;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .btn-submit:hover {
+        background-color: #45a049;
+    }
+/* Container của danh sách đơn hàng */
+.order_list {
+    margin: 30px auto;
+    padding: 20px;
+    max-width: 100%;
+    background-color: #f3f4f6;
+    border-radius: 12px;
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Các mục đơn hàng */
+.order_item {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    margin-bottom: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.order_item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* Căn chỉnh các thẻ p bên trong mục đơn hàng */
+.order_item p {
+    margin: 8px 0;
+    font-size: 16px;
+    color: #333;
+}
+
+.order_item p strong {
+    font-weight: 600;
+    color: #555;
+}
+
+/* Mã đơn hàng nổi bật */
+.order_item p:nth-child(1) {
+    font-size: 18px;
+    font-weight: 700;
+    color: #007bff; /* Xanh lam cho Order ID */
+}
+
+/* Tạo sự phân biệt cho trạng thái đơn hàng */
+.order_item p:nth-child(5) {
+    font-weight: bold;
+    color: #28a745; /* Màu xanh cho trạng thái thành công */
+}
+
+.order_item p.status {
+    color: #dc3545; /* Màu đỏ cho trạng thái lỗi */
+}
+
+/* Nếu không có đơn hàng */
+.no_orders {
+    text-align: center;
+    font-size: 18px;
+    color: #888;
+    margin-top: 40px;
+}
+
+/* Responsive cho màn hình nhỏ */
+@media (max-width: 768px) {
+    .order_list {
+        padding: 15px;
+    }
+
+    .order_item {
+        padding: 15px;
+    }
+
+    .order_item p {
+        font-size: 14px;
+    }
+
+    .order_item p:nth-child(1) {
+        font-size: 16px;
+    }
+}

@@ -134,7 +134,7 @@ class UserModel extends BaseModel
 
     public function updatePassword($email, $password)
 {
-    $hashedPassword =md5($password); // Mã hóa mật khẩu bằng md5
+    $hashedPassword = md5($password); // Mã hóa mật khẩu bằng md5
     $query = "UPDATE {$this->table_name} SET password = ? WHERE email = ?";
     $stmt = $this->connect->prepare($query);
     $stmt->bind_param('ss', $hashedPassword, $email);
@@ -223,6 +223,90 @@ public function checkLogin($username, $password) {
         }
     }
 
+    // Hàm kiểm tra mật khẩu cũ
+    // Hàm kiểm tra mật khẩu cũ
+    public function checkCurrentPassword($userId, $currentPassword)
+    {
+        $sql = "SELECT password FROM users WHERE user_id = ?";
+        $stmt = $this->connect->prepare($sql);
 
+        // Kiểm tra nếu câu lệnh prepare không thành công
+        if (!$stmt) {
+            die('Lỗi câu lệnh SQL: ' . $this->connect->error);
+        }
+
+        $stmt->bind_param('i', $userId);
+        $stmt->execute();
+        $stmt->store_result();
+        $stmt->bind_result($password);
+
+        if ($stmt->num_rows > 0) {
+            $stmt->fetch();
+
+            // So sánh mật khẩu người dùng nhập vào (đã mã hóa bằng md5) với mật khẩu trong cơ sở dữ liệu
+            return md5($currentPassword) === $password; // Kiểm tra mật khẩu cũ đã mã hóa bằng md5
+        }
+        return false;
+    }
+
+    // Hàm thay đổi mật khẩu
+    public function changePassword($userId, $newPassword)
+    {
+        // Mã hóa mật khẩu mới bằng md5
+        $hashedPassword = md5($newPassword); // Sử dụng md5 để mã hóa mật khẩu mới
+
+        $sql = "UPDATE users SET password = ? WHERE user_id = ?";
+        $stmt = $this->connect->prepare($sql);
+
+        if (!$stmt) {
+            die('Lỗi câu lệnh SQL: ' . $this->connect->error);
+        }
+
+        $stmt->bind_param('si', $hashedPassword, $userId);
+        return $stmt->execute();
+    }
+
+    public function getReviewsByProduct($product_id)
+    {
+        $sql = "SELECT u.user_name, r.content, r.stars, r.review_date 
+                FROM reviews r
+                JOIN users u ON r.user_id = u.user_id
+                WHERE r.product_id = ?
+                ORDER BY r.review_date DESC";
+
+        // Chuẩn bị câu lệnh
+        if ($stmt = $this->connect->prepare($sql)) {
+            $stmt->bind_param("i", $product_id); // Liên kết tham số product_id
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            $reviews = [];
+            while ($row = $result->fetch_assoc()) {
+                $reviews[] = $row;
+            }
+            $stmt->close();
+            return $reviews;
+        } else {
+            return null;
+        }
+    }
+    public function getOrders($userId)
+    {
+        $query = "SELECT order_id, user_id, phone,location, specific_address, status
+              FROM orderss
+              WHERE user_id = ?";
+
+        $stmt = $this->connect->prepare($query);
+        $stmt->bind_param("i", $userId); // Gán tham số vào câu truy vấn
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if (!$result) {
+            die("SQL Error: " . $this->connect->error);
+        }
+
+        $orders = $result->fetch_all(MYSQLI_ASSOC);
+        return $orders;
+    }
 
 }

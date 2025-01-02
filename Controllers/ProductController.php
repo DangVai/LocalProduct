@@ -16,40 +16,62 @@ class ProductController extends BaseController
         $products = $this->productModel->getAll();
         $this->view('frontend.products.index', ['products' => $products]);
     }
-
-
-    public function show($id)
-    {
-        // echo "Chi tiết sản phẩm id: $description ";
-        $products = $this->productModel->find($id);
-        $this->view('frontend.products.index', ['products' => $products]);
-    }
-
-
-
     public function detail($id)
     {
-        // Kiểm tra xem id có hợp lệ không trước khi gọi getById
+        // Kiểm tra xem id có hợp lệ không
         if (empty($id) || !is_numeric($id)) {
-            die('ID không hợp lệ');
+            $_SESSION['success'] = "Mật khẩu đã được thay đổi thành công.";
+            header("Location: index.php?controller=user&action=profile");
+            exit(); 
         }
 
         // Lấy sản phẩm theo ID từ mô hình
         $product = $this->productModel->getById($id);
 
-        // Nếu không tìm thấy sản phẩm, có thể thông báo lỗi
+        // Nếu không tìm thấy sản phẩm
         if (!$product) {
             die('Sản phẩm không tồn tại');
         }
 
         // Lấy các sản phẩm cùng category với sản phẩm hiện tại
         $relatedProducts = $this->productModel->getByCategory($product['category'], $id);
+
+        // Lấy preview của sản phẩm
+        $previews = $this->productModel->getProductPreview($id);
+
         // Truyền dữ liệu vào view 'frontend.products.detail'
-        $this->view('frontend.products.detail', [
+        $this->viewWithoutLayout('frontend.products.detail', [
             'product' => $product,
-            'relatedProducts' => $relatedProducts
+            'relatedProducts' => $relatedProducts,
+            'previews' => $previews  // Truyền dữ liệu preview vào view
         ]);
     }
+
+    // Xử lý việc gửi đánh giá
+    public function submitReview()
+    {
+        if (isset($_POST['stars'], $_POST['content'], $_POST['product_id'])) {
+            $stars = $_POST['stars'];
+            $content = $_POST['content'];
+            $product_id = $_POST['product_id'];
+            $user_id = $_SESSION['user_id'];
+
+            // Kiểm tra xem người dùng đã mua và đơn hàng đã giao thành công chưa
+            if (!$this->productModel->hasPurchasedProduct($user_id, $product_id)) {
+                $_SESSION['error'] = "You can only review products that have been delivered successfully.";
+                header("Location: index.php?controller=product&action=detail&id=$product_id");
+                exit();
+            }
+
+            // Lưu bình luận nếu điều kiện thỏa mãn
+            $this->productModel->saveReview($user_id, $product_id, $content, $stars);
+            $_SESSION['success'] = "Review sent.";
+            header("Location: index.php?controller=product&action=detail&id=$product_id");
+            exit();
+        }
+    }
+
+
 
 
     public function checkout()

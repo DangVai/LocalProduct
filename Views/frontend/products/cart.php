@@ -51,7 +51,8 @@
                             </p>
 
                             <div class="cart-actions">
-                                <button type="button" class="btn-delete-selected" data-id="<?= $item['cart_id'] ?>"><i class="fa-solid fa-trash"></i></button>
+                                <button type="button" class="btn-delete-selected" data-id="<?= $item['cart_id'] ?>"><i
+                                        class="fa-solid fa-trash"></i></button>
                             </div>
                         </li>
                     <?php endforeach; ?>
@@ -64,7 +65,7 @@
 
 
         <div class="address">
-            <form method="POST" action="index.php?controller=checkout&action=storeOrder">
+            <form class="address-form" method="POST" action="index.php?controller=checkout&action=storeOrder">
                 <!-- Các trường ẩn để gửi thông tin sản phẩm -->
                 <input type="hidden" name="product_name" value="<?php echo $product['name']; ?>">
                 <input type="hidden" name="product_id" value="<?php echo $product['product_id']; ?>">
@@ -82,11 +83,12 @@
                     placeholder="" required>
 
                 <label>Province/City, District/County, Ward/Commune</label>
-                <input type="text" name="location" placeholder="Province/City, District/County, Ward/Commune" required>
+                <input type="text" name="location"
+                    value="<?php echo isset($_SESSION['user']['user_address']) ? htmlspecialchars($_SESSION['user']['user_address']) : ''; ?>"
+                    placeholder="Enter your location" required>
 
-                <label>Specific Address</label>
-                <input type="text" name="specific_address" placeholder="" required>
-
+                    <label>Note for Shop</label>
+                    <textarea name="specific_address" placeholder="Enter your notes for the shop (e.g., delivery instructions, preferred time)" rows="2"></textarea>
                 <div class="payment-options" style="display: none;">
                     <label>
                         <input type="radio" name="payment_method" class="cod" value="cod" checked> Cash on delivery
@@ -105,7 +107,7 @@
                     value="<?php echo isset($_SESSION['user_id']) ? htmlspecialchars($_SESSION['user_id']) : ''; ?>">
                 <div id="error-message" style="color: red;"></div>
                 <div class="footers">
-                    <p style="color: red;"><span id="shipping-price"></span></p>
+                    <!-- <p style="color: red;"><span id="shipping-price"></span></p> -->
                     <p style="color: red;">Total Price: <span id="total-price">0</span>$</p>
                     <input type="hidden" id="hidden-total-price" name="total_price" value="">
                     <button type="submit" class="buy-now">Buy Now</button>
@@ -180,6 +182,7 @@
                 alert('There was an error processing your request.');
             });
     });
+
 </script>
 
 

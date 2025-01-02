@@ -217,3 +217,37 @@
     flex-shrink: 0;
     object-fit: cover;
 }
+.name-user {
+    position: relative;
+}
+
+.dropdown-menu {
+    max-height: 0; /* Chiều cao mặc định là 0 để ẩn */
+    overflow: hidden; /* Ẩn nội dung vượt quá chiều cao */
+    position: absolute;
+    background-color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 0 10px; /* Không có padding ban đầu */
+    border-radius: 5px;
+    z-index: 1000;
+    transition: max-height 0.3s ease, padding 0.3s ease; /* Hiệu ứng chuyển động */
+    top: 60px;
+    width: 200px;
+}
+
+.dropdown-menu a {
+    display: block;
+    padding: 10px 0;
+    text-decoration: none;
+    color: #333;
+}
+
+.dropdown-menu a:hover {
+    background-color: #f0f0f0;
+}
+
+/* Trạng thái hiển thị */
+.dropdown-menu.show {
+    max-height: 300px; /* Đặt chiều cao tối đa đủ lớn */
+    padding: 10px; /* Thêm padding khi hiển thị */
+}

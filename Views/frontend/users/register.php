@@ -12,10 +12,11 @@
 
 </head>
  <body>
-                <div id="loading" class="loading-overlay">
-                <div class="spinner"></div>
-                <p>Loading...</p>
-            </div>
+    <div id="loading" class="loading-overlay">
+        <img src="/LocalProduct/public/images/logo.jpg" alt="" style="width: 100px; height: 100px; boder-radius: 50%;">
+        <div class="spinner"></div>
+        <p>Loading...</p>
+    </div>
     <!-- Phần 1: Logo, tiêu đề, và hình ảnh trang phục -->
     <div class="header-section">
         <img src="/LocalProduct/public/images/logo.jpg" alt="Logo" class="logo">
