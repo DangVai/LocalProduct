@@ -21,7 +21,7 @@ document.querySelector('.buy-now').addEventListener('click', function (event) {
         phone: document.querySelector('[name="phone"]').value.trim(),
         location: document.querySelector('[name="location"]').value.trim(),
         specific_address: document.querySelector('[name="specific_address"]').value.trim(),
-        user_id: document.querySelector('[name="user_id"]').value.trim(),
+        total_price: parseFloat(document.getElementById('total-price').textContent), // Lấy tổng giá từ phần tử ẩn
         payment_method: paymentMethod.value // Ghi nhận phương thức thanh toán
     };
 
@@ -66,17 +66,33 @@ document.querySelector('.buy-now').addEventListener('click', function (event) {
         },
         body: JSON.stringify({ userInfo, products })
     })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.text().then(text => {
+                // Log the response text to see what's being returned
+                console.log('Response text:', text);
+                try {
+                    return JSON.parse(text); // Attempt to parse the text as JSON
+                } catch (error) {
+                    throw new Error('Unexpected response format: not JSON');
+                }
+            });
+        })
         .then(data => {
+            console.log('Response Data:', data);
             if (data.success) {
-                alert('Order placed successfully!');
-                // Bạn có thể thêm hành động như chuyển hướng trang hoặc xóa giỏ hàng sau khi đặt hàng thành công
+                alert(data.message || 'Order placed successfully!');
             } else {
-                alert('Error placing the order.');
+                console.error('Error placing the order:', data.message || 'Unknown error');
+                alert('Failed to place the order!');
             }
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('There was an error processing your request.');
+            alert('Failed to place the order!');
         });
+
+
 });

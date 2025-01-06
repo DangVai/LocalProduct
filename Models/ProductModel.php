@@ -230,18 +230,25 @@ class ProductModel extends BaseModel
         $phone = $this->connect->real_escape_string($userInfo['phone']);
         $location = $this->connect->real_escape_string($userInfo['location']);
         $specificAddress = $this->connect->real_escape_string($userInfo['specific_address']);
-        $userId = $this->connect->real_escape_string($userInfo['user_id']);
+        if (isset($_SESSION['user_id'])) {
+            $userId = $this->connect->real_escape_string($_SESSION['user_id']);
+        } else {
+            // Xử lý nếu user_id không tồn tại trong session
+            $userId = null; // Hoặc xử lý khác phù hợp
+        }
+
+        $totalPrice = $this->connect->real_escape_string($userInfo['total_price']);
 
         // Trạng thái mặc định của đơn hàng
-        $status = 'pending'; // Bạn có thể thay đổi trạng thái nếu cần
+        $status = 'pending';
 
         // Bắt đầu giao dịch (transaction)
         $this->connect->begin_transaction();
 
         try {
             // Lưu thông tin đơn hàng vào bảng 'orderss'
-            $stmt = $this->connect->prepare("INSERT INTO orderss (user_id, full_name, phone, location, specific_address, status) VALUES (?, ?, ?, ?, ?, ?)");
-            $stmt->bind_param('isssss', $userId, $fullName, $phone, $location, $specificAddress, $status);
+            $stmt = $this->connect->prepare("INSERT INTO orderss (user_id, full_name, phone, location, specific_address, status, total_price) VALUES (?, ?, ?, ?, ?, ?, ?)");
+            $stmt->bind_param('isssssd', $userId, $fullName, $phone, $location, $specificAddress, $status, $totalPrice);
             $stmt->execute();
             $orderId = $this->connect->insert_id; // Lấy ID của đơn hàng vừa tạo
 
@@ -258,13 +265,14 @@ class ProductModel extends BaseModel
                 $stmt->bind_param('iissdi', $orderId, $productId, $productName, $size, $price, $quantity);
                 $stmt->execute();
 
-                // Gọi phương thức updateQuantity để cập nhật số lượng sản phẩm
+                // Cập nhật số lượng sản phẩm sau khi đặt
                 $updateResult = $this->updateQuantity($productId, $quantity);
                 if (!$updateResult) {
                     throw new Exception("Error updating product quantity");
                 }
             }
 
+            // Commit transaction nếu mọi thứ thành công
             $this->connect->commit();
             return true; // Đơn hàng đã được lưu thành công
         } catch (Exception $e) {

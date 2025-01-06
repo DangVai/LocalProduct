@@ -108,8 +108,8 @@
                 <div id="error-message" style="color: red;"></div>
                 <div class="footers">
                     <!-- <p style="color: red;"><span id="shipping-price"></span></p> -->
-                    <p style="color: red;">Total Price: <span id="total-price">0</span>$</p>
-                    <input type="hidden" id="hidden-total-price" name="total_price" value="">
+                    <p style="color: red;">Total Price: <span name="total_price"  id="total-price">0</span>$</p>
+                    <!-- <input type="hidden" id="hidden-total-price" name="total_price" value=""> -->
                     <button type="submit" class="buy-now">Buy Now</button>
                 </div>
             </form>
