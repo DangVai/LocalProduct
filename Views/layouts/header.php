@@ -7,9 +7,16 @@
     <!-- Thêm link đến Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="/LocalProduct/public/css/header.css">
+<?php
+session_start();
+if (isset($_SESSION['user_logged_in']) && $_SESSION['user_logged_in']) {
+    echo "<script>console.log('User is logged in');</script>";
+} else {
+    echo "<script>console.log('User is not logged in');</script>";
+}
+?>
 
 </head>
-
 <body>
     <div class="container-H">
         <div class="header">
@@ -40,10 +47,9 @@
             </form>
             <div class="cart">
                 <div class="box-cart">
-                    <a href="index.php?controller=cart&action=viewCart">
+                    <a href="#" onclick="checkLogin(event, 'index.php?controller=cart&action=viewCart')">
                         <b><i class="fas fa-shopping-cart"></i></b>
                     </a>
-
                 </div>
             </div>
             <!-- User Account -->
@@ -121,6 +127,28 @@
             dropdownMenu.classList.remove('show');
         }
     });
+
+        function checkLogin(event, url) {
+        event.preventDefault(); // Ngăn chuyển hướng mặc định
+
+        // Kiểm tra trạng thái đăng nhập từ PHP
+       const isLoggedIn = <?php echo isset($_SESSION['user_logged_in']) && $_SESSION['user_logged_in'] ? 'true' : 'false'; ?>;
+
+                if (isLoggedIn) {
+                    // Nếu đã đăng nhập, cho phép chuyển hướng
+                    window.location.href = url;
+                } else {
+                    // Nếu chưa đăng nhập, hiển thị thông báo với tùy chọn
+                    const userChoice = confirm("Bạn cần đăng nhập để sử dụng tính năng này. Bạn có muốn đăng nhập không?");
+                    if (userChoice) {
+                        // Chuyển hướng tới trang đăng nhập
+                        window.location.href = 'index.php?controller=user&action=login';
+                    } else {
+                        // Người dùng chọn hủy, không làm gì
+                        console.log("Người dùng đã hủy hành động.");
+                    }
+                }
+            }
 </script>
 
 </html>

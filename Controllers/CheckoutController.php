@@ -100,7 +100,8 @@ public function onlinePayment()
                 'phone' => $_POST['phone'],
                 'location' => $_POST['location'],
                 'specific_address' => $_POST['specific_address'],
-                'user_id' => isset($_POST['user_id']) ? $_POST['user_id'] : null
+                'user_id' => isset($_POST['user_id']) ? $_POST['user_id'] : null,
+                
             ];
 
             // Lấy thông tin sản phẩm từ form
@@ -143,28 +144,29 @@ public function onlinePayment()
 
     public function storeOrders()
     {
-        // Kiểm tra yêu cầu từ AJAX
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $inputData = json_decode(file_get_contents('php://input'), true);
-
             if (isset($inputData['userInfo']) && isset($inputData['products'])) {
                 $userInfo = $inputData['userInfo'];
                 $products = $inputData['products'];
 
-                // Tạo đối tượng model và gọi phương thức để lưu dữ liệu
-                $orderModel = new ProductModel();
-                $result = $orderModel->saveOrder($userInfo, $products);
-
-                if ($result) {
-                    echo json_encode(['success' => true]);
-                } else {
-                    echo json_encode(['success' => false, 'error' => 'Error saving order']);
+                try {
+                    $orderModel = new ProductModel();
+                    $result = $orderModel->saveOrder($userInfo, $products);
+                    if ($result) {
+                        echo json_encode(['success' => true, 'message' => 'Order placed successfully!']);
+                    } else {
+                        echo json_encode(['error' => false, 'message' => 'Failed to place the order!']);
+                    }
+                } catch (Exception $e) {
+                    echo json_encode(['error' => false, 'message' => 'An error occurred while placing the order!']);
                 }
             } else {
-                echo json_encode(['success' => false, 'error' => 'Invalid data']);
+                echo json_encode(['error' => false, 'message' => 'Invalid data!']);
             }
         } else {
-            echo json_encode(['success' => false, 'error' => 'Invalid request method']);
+            echo json_encode(['error' => false, 'message' => 'Invalid request method!']);
         }
     }
+
 }
