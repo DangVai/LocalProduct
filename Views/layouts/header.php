@@ -28,10 +28,11 @@ if (isset($_SESSION['user_logged_in']) && $_SESSION['user_logged_in']) {
             <!-- Navigation Menu -->
             <div class="nav">
                 <a href="index.php?controller=home&action=home"><b>Home</b></a>
-                <a href="index.php?controller=product&action=fashion"><b>Thời Trang</b></a>
-                <a href="index.php?controller=product&action=food"><b>Ẩm thực</b></a>
-                <a href="index.php?controller=home&action=aboutus"><b>Khác</b></a>
-                <!-- <a href="index.php?controller=product&action=another"><b>Khác</b></a> -->
+                <a href="index.php?controller=product&action=fashion"><b>Fashion</b></a>
+                <a href="index.php?controller=product&action=food"><b>Cuisin</b></a>
+                <a href="index.php?controller=product&action=another"><b>Other</b></a>
+                <a href="index.php?controller=home&action=aboutus"><b>About us</b></a>
+
             </div>
 
             <!-- Search -->
@@ -39,7 +40,7 @@ if (isset($_SESSION['user_logged_in']) && $_SESSION['user_logged_in']) {
                 <div class="searchHome">
                     <input type="hidden" name="controller" value="product">
                     <input type="hidden" name="action" value="search">
-                    <input type="text" name="keyword" id="search-keyword" placeholder="Tìm kiếm..." class="searchInput"
+                    <input type="text" name="keyword" id="search-keyword" placeholder="Search..." class="searchInput"
                         required>
                     <button type="submit" class="searchButton">🔍</button>
                 </div>
@@ -49,6 +50,13 @@ if (isset($_SESSION['user_logged_in']) && $_SESSION['user_logged_in']) {
                 <div class="box-cart">
                     <a href="#" onclick="checkLogin(event, 'index.php?controller=cart&action=viewCart')">
                         <b><i class="fas fa-shopping-cart"></i></b>
+                    </a>
+                </div>
+            </div>
+            <div class="favorite">
+                <div class="box-heart">
+                    <a href="index.php?controller=favorite&action=showFavorites">
+                        <b><i class="fas fa-heart"></i></b>
                     </a>
                 </div>
             </div>
@@ -73,8 +81,7 @@ if (isset($_SESSION['user_logged_in']) && $_SESSION['user_logged_in']) {
         </div>
     </div>
     <div class=" text-run ">
-        <span>Chào mừng bạn đến với cửa hàng thời trang Vân Kiều và Pa Cô! Khám phá các sản phẩm đặc sắc ngay hôm
-            nay!</span>
+        <span>Welcome to Vân Kiều and Pa Cô fashion store! Explore the unique products today!</span>
     </div>
 
     <!-- Banner -->
@@ -119,7 +126,7 @@ if (isset($_SESSION['user_logged_in']) && $_SESSION['user_logged_in']) {
     }
 
     // Đóng menu khi click bên ngoài
-    document.addEventListener('click', function (event) {
+    document.addEventListener('click', function(event) {
         const dropdownMenu = document.getElementById('account-menu');
         const accountBox = document.querySelector('.box-account');
 

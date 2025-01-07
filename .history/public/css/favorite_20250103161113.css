@@ -1,0 +1,193 @@
+   /* Toàn bộ trang */
+   
+   body {
+       font-family: Arial, sans-serif;
+       margin: 150px 30px 50px30px;
+       padding: 0;
+       font-family: Arial, sans-serif;
+   }
+   
+   .container {
+       display: flex;
+       justify-content: space-between;
+       /* Căn khoảng cách giữa các cột */
+       align-items: flex-start;
+       /* Căn cột theo chiều dọc */
+       width: 100%;
+       margin: 0 auto;
+       gap: 20px;
+       /* Khoảng cách giữa các cột */
+   }
+   
+   .filter-container {
+       width: 25%;
+       height: auto;
+       text-align: center;
+       background-color: #f9f9f9;
+       margin: 130px 0px 100px 30px;
+       border: 1px solid #ddd;
+       border-radius: 15px;
+       box-shadow: 0 8px 10px rgba(0, 0, 0, 0.1);
+   }
+   
+   .filter-container h3 {
+       font-size: 20px;
+       margin-bottom: 20px;
+       color: #333;
+       left: 0;
+   }
+   
+   .filter-container label {
+       display: block;
+       left: 0;
+       margin-bottom: 10px;
+       font-weight: bold;
+   }
+   
+   .filter-container select,
+   .filter-container input,
+   .filter-container button {
+       width: 300px;
+       padding: 10px;
+       margin-bottom: 20px;
+       border: 1px solid #ccc;
+       border-radius: 10px;
+       font-size: 14px;
+   }
+   
+   .filter-container button {
+       background-color: rgb(86, 18, 9);
+       color: #fff;
+       border: none;
+       cursor: pointer;
+       transition: background-color 0.3s ease;
+   }
+   
+   .filter-container button:hover {
+       background-color: rgb(95, 37, 37);
+   }
+   
+   .product-list {
+       display: flex;
+       flex-wrap: wrap;
+       text-align: center;
+       gap: 30px;
+       justify-content: center;
+       padding: 0;
+       margin: 30px 30px 100px 30px;
+       width: 1300px;
+       box-shadow: 0 10px 12px rgba(0, 0, 0, 0.1);
+   }
+   /* Individual product item */
+   
+   .product-item {
+       width: calc(20% - 30px);
+       /* Chia đều chiều rộng cho 5 sản phẩm trên mỗi hàng */
+       height: 350px;
+       border: 1px solid #ddd;
+       border-radius: 10px;
+       overflow: hidden;
+       background-color: #fff;
+       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+       text-align: center;
+       transition: transform 0.3s ease;
+   }
+   
+   .product-item:hover {
+       transform: scale(1.05);
+   }
+   /* Favourite button above image */
+   
+   .favourite-btn {
+       position: absolute;
+       top: 10px;
+       right: 10px;
+       border: none;
+       border-radius: 50%;
+       font-size: 18px;
+       cursor: pointer;
+   }
+   
+   .favourite-btn:hover {
+       background-color: rgba(255, 0, 0, 0.3);
+   }
+   /* Product image */
+   
+   .product-image {
+       width: 100%;
+       height: 200px;
+       object-fit: cover;
+   }
+   /* Product details */
+   
+   .detail {
+       padding: 10px;
+   }
+   /* Product name */
+   
+   .product-name {
+       font-size: 18px;
+       font-weight: bold;
+       margin-bottom: 10px;
+       text-overflow: ellipsis;
+       overflow: hidden;
+       white-space: nowrap;
+   }
+   /* Product price */
+   
+   .product-price {
+       font-size: 16px;
+       color: #060505;
+       margin-bottom: 15px;
+   }
+   /* Cart icon */
+   
+   .cart-home {
+       position: absolute;
+       bottom: 10px;
+       height: 50px;
+       width: 50px;
+       right: 10px;
+       background-color: #ff6600;
+       color: #fff;
+       border-radius: 50%;
+       font-size: 18px;
+       cursor: pointer;
+       display: flex;
+       align-items: center;
+       justify-content: center;
+       transition: background-color 0.3s ease;
+   }
+   
+   .cart-home:hover {
+       background-color: #ff4500;
+   }
+   /* Header for featured products */
+   
+   .product-list h1 {
+       width: 100%;
+       text-align: center;
+       font-size: 24px;
+       font-weight: bold;
+       color: #333;
+       margin-bottom: 20px;
+   }
+   /* Text for empty product list */
+   
+   .product-list p {
+       width: 100%;
+       text-align: center;
+       font-size: 18px;
+       color: #999;
+   }
+   
+   .product-link {
+       text-decoration: none;
+       color: inherit;
+       /* Giữ nguyên màu sắc gốc */
+   }
+   
+   .product-link:hover {
+       text-decoration: underline;
+       /* Thêm gạch chân khi hover */
+   }
