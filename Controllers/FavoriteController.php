@@ -17,19 +17,18 @@ class FavoriteController extends BaseController
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
-
-        // Kiểm tra xem người dùng đã đăng nhập chưa
         if (!isset($_SESSION['user_id'])) {
             echo json_encode([
                 'status' => 'error',
-                'message' => 'Vui lòng đăng nhập để thêm yêu thích.'
+                'message' => 'Vui lòng đăng nhập để thêm yêu thích.',
+                header('Location: login.php')
             ]);
-            exit(); // Dừng chương trình nếu chưa đăng nhập
+            exit();
         }
 
-        $data = json_decode(file_get_contents('php://input'), true); // Nhận dữ liệu JSON
+        $data = json_decode(file_get_contents('php://input'), true);
         if (!$data) {
-            error_log("Invalid JSON: " . file_get_contents('php://input')); // Ghi log nếu JSON không hợp lệ
+            error_log("Invalid JSON: " . file_get_contents('php://input'));
             echo json_encode([
                 'status' => 'error',
                 'message' => 'Dữ liệu không hợp lệ!'
@@ -47,8 +46,6 @@ class FavoriteController extends BaseController
 
         $productId = $data['product_id'];
         $userId = $_SESSION['user_id'];
-
-        // Kiểm tra xem sản phẩm đã yêu thích chưa
         if ($this->productModel->isFavorite($userId, $productId)) {
             $this->productModel->removeFromFavorites($userId, $productId);
             echo json_encode([
@@ -76,6 +73,6 @@ class FavoriteController extends BaseController
         $userId = $_SESSION['user_id'];
         $favorites = $this->productModel->getFavorites($userId);
 
-        $this->view('frontend.products.favorite', ['favorites' => $favorites]);
+        $this->viewWithoutLayout('frontend.products.favorite', ['favorites' => $favorites]);
     }
 }
