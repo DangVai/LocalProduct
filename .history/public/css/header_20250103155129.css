@@ -1,0 +1,270 @@
+/* Đảm bảo bố cục dọc */
+
+.container-H {
+    display: flex;
+    flex-direction: column;
+    /* Sắp xếp theo chiều dọc */
+    margin: 0px 30px 30px 30px;
+    padding: 0;
+}
+
+
+/* Header cố định trên cùng */
+
+.header {
+    top: 0;
+    left: 0;
+    display: flex;
+    width: 100%;
+    height: 150px;
+    align-items: center;
+    position: fixed;
+    z-index: 4;
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.1);
+    background-color: white;
+}
+
+.box_logo {
+    width: 15%;
+    display: flex;
+    align-items: center;
+}
+
+.box_logo img {
+    position: absolute;
+    top: 10px;
+    left: 30px;
+    width: 160px;
+    height: 130px;
+    z-index: 10;
+}
+
+.nav {
+    width: 550px;
+    height: 50%;
+    display: flex;
+    margin-right: 150px;
+    justify-content: center;
+    align-items: center;
+    justify-content: space-evenly;
+    border-radius: 10px;
+    font-size: 18px;
+    color: black;
+    margin-left: 20px;
+    border: 1px solid black;
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.1);
+    background-color: rgba(252, 245, 245, 0.667);
+}
+
+.nav a {
+    text-decoration: none;
+    color: rgb(1, 1, 1);
+    font-weight: bold;
+}
+
+.nav a:hover {
+    font-size: 22px;
+}
+
+.searchHome {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    border: 1px black solid;
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.1);
+    <!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Product Details</title><link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet"><link rel="stylesheet" href="/LocalProduct/public/css/food.css"><!-- Link to CSS file --></head><body><div class="container"><div class="filter-container"><h3>Product Filter</h3><form id="filter-form"><label for="price">Filter by Price: </label> <select name="price" id="price"> <option value="">Select Price Range</option> <option value="0-500000">Under 500, 000 VNĐ</option> <option value="500000-1000000">500, 000 - 1, 000, 000 VNĐ</option> <option value="1000000-1500000">1, 000, 000 - 1, 500, 000 VNĐ</option> </select> <label for="type">Filter by Type: </label> <select name="type" id="type"> <option value="">Select Type</option> <option value="Vân Kiều">Vân Kiều</option> <option value="Pa Cô">Pa Cô</option> </select> <label for="keyword">Search by Name: </label> <input type="text" name="keyword" id="keyword" placeholder="Enter keyword" /> <button type="button" id="apply-filter">Filter</button> </form> </div> <!-- Product List Section --> <div class="product-list"> <?php if (!empty($products)): ?> <h1>CUISINE</h1> <?php foreach ($products as $product): ?> <div class="product-item" data-price="<?= $product['price'] ?>" data-type="<?= htmlspecialchars($product['type']) ?>" data-name="<?= htmlspecialchars($product['product_name']) ?>"> <button class="favourite-btn" type="button" onclick="addToFavorite(<?php echo $product['product_id']; ?>)"> <i class="fas fa-heart"></i> </button> <a href="index.php?controller=product&action=detail&id=<?php echo $product['product_id']; ?>" class="product-link"> <img src="/LocalProduct/<?php echo htmlspecialchars($product['product_image']); ?>" alt="Product Image" class="product-image" width="150"> </a> <div class="detail"> <a href="index.php?controller=product&action=detail&id=<?php echo $product['product_id']; ?>" class="product-link"> <h3 class="product-name"><?php echo htmlspecialchars($product['product_name']);
+    ?></h3></a><a href="index.php?controller=product&action=detail&id=<?php echo $product['product_id']; ?>" class="product-link"><p class="product-price">Price: <?php echo number_format($product['price'], 0, ',', '.');
+    ?>VNĐ</p></a><a href="index.php?controller=cart&action=addToCart" class="cart-home"><i class="bi bi-cart-plus"></i></a></div></div><?php endforeach;
+    ?><?php else: ?> <p>No products to display.</p> <?php endif;
+    ?></div></div><script src="/LocalProduct/public/js/fashion.js"></script></body></html>border-radius: 20px;
+    width: 300px;
+}
+
+.searchInput {
+    flex: 1;
+    border: none;
+    padding: 5px 10px;
+    font-size: 16px;
+    outline: none;
+}
+
+.searchButton {
+    border: none;
+    background-color: white;
+    cursor: pointer;
+    height: 40px;
+    width: 40px;
+}
+
+.cart {
+    width: 130px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    margin-left: 20px;
+}
+
+.box-cart {
+    border: 2px solid rgb(6, 6, 6);
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.box-cart i {
+    font-size: 25px;
+    color: black;
+}
+
+.box-heart i {
+    font-size: 38px;
+    color: rgb(231, 77, 77);
+}
+
+.account {
+    width: 130px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.box-account {
+    border: 2px solid rgb(6, 6, 6);
+    width: 55px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.box-account i {
+    font-size: 25px;
+    color: black;
+    cursor: pointer;
+}
+
+.text-run {
+    width: 100%;
+    height: 50px;
+    overflow: hidden;
+    background: rgb(113, 74, 74);
+    white-space: nowrap;
+    box-sizing: border-box;
+    text-align: center;
+    z-index: 3;
+    position: relative;
+}
+
+.text-run span {
+    display: inline-block;
+    animation: marquee 15s linear infinite;
+    font-size: 15px;
+    font-weight: bold;
+    color: white;
+}
+
+@keyframes marquee {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+.banner {
+    position: relative;
+    width: 100%;
+    height: 600px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 0px;
+    z-index: 2;
+}
+
+.banner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.5);
+}
+
+.img-sliders {
+    width: 100%;
+    height: 150px;
+    margin: 50px 30px 50px 30px;
+    display: flex;
+    justify-content: space-between;
+    gap: 25px;
+    z-index: 1;
+}
+
+.slider-container {
+    flex: 1;
+    overflow: hidden;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+}
+
+.slides {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+.slide {
+    width: 100%;
+    flex-shrink: 0;
+    object-fit: cover;
+}
+
+.name-user {
+    position: relative;
+}
+
+.dropdown-menu {
+    max-height: 0;
+    /* Chiều cao mặc định là 0 để ẩn */
+    overflow: hidden;
+    /* Ẩn nội dung vượt quá chiều cao */
+    position: absolute;
+    background-color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 0 10px;
+    /* Không có padding ban đầu */
+    border-radius: 5px;
+    z-index: 1000;
+    transition: max-height 0.3s ease, padding 0.3s ease;
+    /* Hiệu ứng chuyển động */
+    top: 60px;
+    width: 200px;
+}
+
+.dropdown-menu a {
+    display: block;
+    padding: 10px 0;
+    text-decoration: none;
+    color: #333;
+}
+
+.dropdown-menu a:hover {
+    background-color: #f0f0f0;
+}
+
+
+/* Trạng thái hiển thị */
+
+.dropdown-menu.show {
+    max-height: 300px;
+    /* Đặt chiều cao tối đa đủ lớn */
+    padding: 10px;
+    /* Thêm padding khi hiển thị */
+}
