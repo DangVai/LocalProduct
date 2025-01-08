@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Product</title>
-    <link rel="stylesheet" href="public/css/createProduct.css">
+    <link rel="stylesheet" href="/LocalProduct/public/css/createProduct.css">
 </head>
 <body>
     <h1>Edit Product</h1>
@@ -24,6 +24,8 @@
             <option value="Food" <?php echo $product['category'] === 'Food' ? 'selected' : ''; ?>>Food</option>
             <option value="Musical Instruments" <?php echo $product['category'] === 'Musical Instruments' ? 'selected' : ''; ?>>Musical Instruments</option>
             <option value="Household Items" <?php echo $product['category'] === 'Household Items' ? 'selected' : ''; ?>>Household Items</option>
+            <option value="fashion" <?php echo $product['category'] === 'fashion' ? 'selected' : ''; ?>>Fashion</option>
+             <option value="another" <?php echo $product['category'] === 'another' ? 'selected' : ''; ?>>Other</option>
         </select><br>
 
          <!-- Input để thêm nhiều ảnh -->

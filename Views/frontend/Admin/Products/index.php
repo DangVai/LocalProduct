@@ -39,7 +39,7 @@
                             <td><?= htmlspecialchars($product['category']) ?></td>
                             <td>
                                 <?php if (!empty($product['image_id'])) { ?>
-                                    <img src="<?= htmlspecialchars($product['image_id']) ?>" alt="Product Image" class="product-img">
+                                    <img src="/LocalProduct/<?= htmlspecialchars($product['image_id']) ?>" alt="Product Image" class="product-img">
                                 <?php } else { echo "No Image"; } ?>
                             </td>
                             <td><?= htmlspecialchars($product['quantity']) ?></td>

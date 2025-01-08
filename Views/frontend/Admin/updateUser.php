@@ -30,14 +30,13 @@
     <div>
         <label for="avatar">Avatar:</label>
         <!-- Hiển thị avatar hiện tại nếu có -->
-        <?php if ($user['avata']): ?>
+        <?php if (!empty($user['avata'])): ?>
             <div>
-                <img src="public/images/User_Avata/<?= $user['avata'] ?>" alt="Current Avatar" width="100" />
+                <img src="/<?= $user['avata'] ?>" alt="Current Avatar" width="100" />
             </div>
         <?php else: ?>
             <p>No avatar</p>
         <?php endif; ?>
-
         <input type="file" name="avatar" id="avatar">
         <input type="hidden" name="old_avatar" value="<?= $user['avata'] ?>"> <!-- Giữ ảnh cũ nếu không thay đổi -->
     </div>

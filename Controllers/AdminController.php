@@ -23,8 +23,7 @@ use PHPMailer\PHPMailer\Exception;
          $products = $this->AdminModel->getAllProducts();
 
          $this->viewNoLayt('frontend.Admin.products.index', ['products' => $products]);
-         $this->viewNoLayt('frontend.Admin.products.index', ['products' => $products]);
-        //  require_once('frontend.Admin.products.index', ['products' => $products]);
+         
      }
 
 
@@ -69,7 +68,7 @@ use PHPMailer\PHPMailer\Exception;
 
                  foreach ($images['name'] as $key => $image_name) {
                      $image_tmp_name = $images['tmp_name'][$key];
-                     $image_path = "/LocalProduct/public/images/Product_image/" . basename($image_name);
+                     $image_path = "public/images/Product_image/" . basename($image_name);
                      move_uploaded_file($image_tmp_name, $image_path);  // Di chuyển ảnh vào thư mục uploads
  
                      // Lưu vào bảng image
@@ -135,7 +134,7 @@ use PHPMailer\PHPMailer\Exception;
              if (!empty($_FILES['replace_images']['name'])) {
                  foreach ($_FILES['replace_images']['name'] as $key => $filename) {
                      if (!empty($filename)) {
-                         $uploadDir = '/LocalProduct/public/images/Product_image/';
+                         $uploadDir = 'public/images/Product_image/';
                          $newFileName = uniqid() . "_" . $filename; // Tạo tên file mới
                          $newFilePath = $uploadDir . $newFileName;
 
@@ -151,7 +150,7 @@ use PHPMailer\PHPMailer\Exception;
              if (!empty($_FILES['new_images']['name'][0])) {
                  foreach ($_FILES['new_images']['name'] as $key => $filename) {
                      if (!empty($filename)) {
-                         $uploadDir = '/LocalProduct/public/images/Product_image/';
+                         $uploadDir = 'public/images/Product_image/';
                          $newFileName = uniqid() . "_" . $filename; // Tạo tên file mới
                          $newFilePath = $uploadDir . $newFileName;
 
@@ -383,48 +382,57 @@ public function orderDetail() {
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $userId = $_POST['user_id'];
         // Xử lý file upload
-        $avatarFileName = null;
-        // Kiểm tra nếu người dùng chọn ảnh để tải lên
-        if (!empty($_FILES['avatar']['name'])) {
-            $targetDir = $_SERVER['DOCUMENT_ROOT'] . "/LocalProduct/public/images/User_Avata/";
-            if (!file_exists($targetDir)) {
-                mkdir($targetDir, 0777, true); 
-            }
+       $avatarFileName = null;
 
-            $avatarFileName = time() . "_" . basename($_FILES['avatar']['name']);
-            $targetFile = $targetDir . $avatarFileName;
-            move_uploaded_file($_FILES['avatar']['tmp_name'], $targetFile);
+// Kiểm tra nếu người dùng chọn ảnh để upload
+if (!empty($_FILES['avatar']['name'])) {
+    $targetDir = $_SERVER['DOCUMENT_ROOT'] . "/LocalProduct/public/images/User_Avata/";
 
-            // Lưu tên tệp avatar vào CSDL:
-            $avatarToDB = $avatarFileName;
+    // Tạo thư mục nếu chưa tồn tại
+    if (!file_exists($targetDir)) {
+        mkdir($targetDir, 0777, true);
+    }
+
+    // Tạo tên file mới với timestamp
+    $avatarFileName = time() . "_" . basename($_FILES['avatar']['name']);
+    $targetFile = $targetDir . $avatarFileName;
+
+    // Kiểm tra định dạng file
+    $fileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
+    $allowedTypes = ['jpg', 'jpeg', 'png', 'gif'];
+    if (!in_array($fileType, $allowedTypes)) {
+        header("Location: index.php?controller=admin&action=updateUser&id=$userId&error=" . urlencode("Invalid avatar file type. Allowed types: JPG, JPEG, PNG, GIF."));
+        exit();
+    }
+
+    // Di chuyển file upload vào thư mục đích
+    if (move_uploaded_file($_FILES['avatar']['tmp_name'], $targetFile)) {
+        // Lưu đường dẫn file vào CSDL
+        $avatarFileName = "public/images/User_Avata/" . $avatarFileName;
+    } else {
+        header("Location: index.php?controller=admin&action=updateUser&id=$userId&error=" . urlencode("Failed to upload avatar."));
+        exit();
+    }
+}
+
+// Sử dụng ảnh cũ nếu không upload ảnh mới
+if (empty($avatarFileName)) {
+    $avatarFileName = $_POST['old_avatar'];
+}
 
 
-            // Kiểm tra loại file (chỉ chấp nhận các định dạng ảnh phổ biến)
-            $fileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
-            $allowedTypes = ['jpg', 'jpeg', 'png', 'gif'];
-            if (in_array($fileType, $allowedTypes)) {
-                // Nếu file hợp lệ, tiến hành upload
-                if (move_uploaded_file($_FILES['avatar']['tmp_name'], $targetFile)) {
-                    $avatarFileName = basename($targetFile); // Lưu tên file vào CSDL
-                } else {
-                    header("Location: index.php?controller=admin&action=updateUser&id=$userId&error=" . urlencode("Failed to upload avatar."));
-                    exit();
-                }
-            } else {
-                header("Location: index.php?controller=admin&action=updateUser&id=$userId&error=" . urlencode("Invalid avatar file type."));
-                exit();
-            }
-        }
 
-        // Dữ liệu từ form
+        //Dữ liệu từ form
         $userData = [
             'Name' => $_POST['name'] ?? '',
             'email' => $_POST['email'] ?? '',
             'phone' => $_POST['phone'] ?? '',
             // Kiểm tra nếu người dùng chưa upload ảnh mới, giữ ảnh cũ
-            'avatar' => $avatarFileName ?: ($_POST['avatar'] ?? $this->AdminModel->getUserById($userId)['avata']),
+            'avatar' => $avatarFileName ?: $_POST['old_avatar'],
             'status' => $_POST['status'] ?? 'active'
         ];
+
+  
 
         // Kiểm tra ràng buộc cơ bản
         if (empty($userData['Name']) || empty($userData['email']) || empty($userId)) {

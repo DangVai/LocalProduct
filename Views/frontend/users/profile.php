@@ -46,6 +46,7 @@
                     <p>Address: <?= htmlspecialchars($order['location']) ?></p>
                     <p>Note: <?= htmlspecialchars($order['specific_address']) ?></p>
                     <p>Status: <?= htmlspecialchars($order['status']) ?></p>
+                    <p>Total Price:<?= htmlspecialchars($order['total_price']) ?></p>
                 </div>
             <?php endforeach; ?>
         <?php else: ?>

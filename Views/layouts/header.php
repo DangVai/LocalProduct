@@ -91,7 +91,7 @@ if (isset($_SESSION['user_logged_in']) && $_SESSION['user_logged_in']) {
     <div class="img-sliders ">
         <div class="slider-container ">
             <div class="slides " id="slider1 ">
-                <img src="/LocalProduct/public/imgaes/Product_image/tui1.jpg" class="slide " alt="Slide 1 ">
+                <img src="/LocalProduct/public/images/slide3.jpg " class="slide " alt="Slide 1 ">
                 <img src="/LocalProduct/public/images/slide2.jpg " class="slide " alt="Slide 2 ">
                 <img src="/LocalProduct/public/images/slide3.jpg " class="slide " alt="Slide 3 ">
             </div>

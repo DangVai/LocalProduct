@@ -17,10 +17,10 @@
         <!-- Dropdown để chọn trạng thái cần lọc -->
         <select id="filter-status" onchange="filterOrders(this.value)">
             <option>Filter</option>
-            <option value="Chờ duyệt">Pending Approval</option>
-            <option value="Đang chuẩn bị">Preparing</option>
-            <option value="Đang giao">In Transit</option>
-            <option value="Đã giao">Delivered</option>
+            <option value="Pending Approval">Pending Approval</option>
+            <option value="Preparing">Preparing</option>
+            <option value="In Transit">In Transit</option>
+            <option value="Delivered">Delivered</option>
         </select>
     </div>
 
@@ -35,6 +35,7 @@
             <th>Phone</th>
             <th>Address</th>
             <th>Status</th>
+            <th>Total Price</th>
             <th>Action</th>
 
         </tr>
@@ -52,13 +53,14 @@
                         <form method="POST" action="index.php?controller=admin&action=updateOrderStatus">
                             <input type="hidden" name="order_id" value="<?= htmlspecialchars($order['order_id']) ?>">
                             <select name="status" onchange="this.form.submit()" class="status-dropdown">
-                                <option value="Chờ duyệt" <?= $order['status'] == "Chờ duyệt" ? "selected" : "" ?>>Pending Approval</option>
-                                <option value="Đang chuẩn bị" <?= $order['status'] == "Đang chuẩn bị" ? "selected" : "" ?>>Preparing</option>
-                                <option value="Đang giao" <?= $order['status'] == "Đang giao" ? "selected" : "" ?>>In Transit</option>
-                                <option value="Đã giao" <?= $order['status'] == "Đã giao" ? "selected" : "" ?>>Delivered</option>
+                                <option value="Pending Approval" <?= $order['status'] == "Pending Approval" ? "selected" : "" ?>>Pending Approval</option>
+                                <option value="Preparing" <?= $order['status'] == "Preparing" ? "selected" : "" ?>>Preparing</option>
+                                <option value="In Transit" <?= $order['status'] == "In Transit" ? "selected" : "" ?>>In Transit</option>
+                                <option value="Delivered" <?= $order['status'] == "Delivered" ? "selected" : "" ?>>Delivered</option>
                             </select>
                         </form>
                     </td>
+                    <td><?= htmlspecialchars($order['total_price']) ?></td>
                     <td>
                         <button class="detail"><a href="index.php?controller=admin&action=orderDetail&order_id=<?= htmlspecialchars($order['order_id']); ?>" class="btn-detail">Order Detail</a></button>
                     </td>
