@@ -292,7 +292,7 @@ public function checkLogin($username, $password) {
     }
     public function getOrders($userId)
     {
-        $query = "SELECT order_id, user_id, phone,location, specific_address, status
+        $query = "SELECT order_id, user_id, phone,location, specific_address, status, total_price
               FROM orderss
               WHERE user_id = ?";
 

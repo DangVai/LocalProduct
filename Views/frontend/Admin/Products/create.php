@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="public/css/createProduct.css">
+    <link rel="stylesheet" href="/LocalProduct/public/css/createProduct.css">
 </head>
 <body>
     <h1>Insert product</h1>
@@ -21,6 +21,8 @@
                 <option value="Food">Food</option>
                 <option value="Musical Instruments">Musical Instruments</option>
                 <option value="Household Items">Household Items</option>
+                <option value="fashion">Fashion</option>
+                <option value="another">other</option>
             </select><br>
 
             <label>Image(s):</label>

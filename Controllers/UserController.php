@@ -477,27 +477,27 @@ public function updateProfile()
         }
     }
 
-    public function showOrders()
-    {
-        // Kiểm tra nếu có danh sách đã lọc trong session
-        if (isset($_SESSION['filteredOrders'])) {
-            $orders = $_SESSION['filteredOrders'];
-            unset($_SESSION['filteredOrders']); // Xóa sau khi sử dụng để tránh dữ liệu cũ
-        } else {
-            // Lấy toàn bộ danh sách nếu không có bộ lọc
-            $orders = $this->userModel->getOrders();
-        }
+    // public function showOrders()
+    // {
+    //     // Kiểm tra nếu có danh sách đã lọc trong session
+    //     if (isset($_SESSION['filteredOrders'])) {
+    //         $orders = $_SESSION['filteredOrders'];
+    //         unset($_SESSION['filteredOrders']); // Xóa sau khi sử dụng để tránh dữ liệu cũ
+    //     } else {
+    //         // Lấy toàn bộ danh sách nếu không có bộ lọc
+    //         $orders = $this->userModel->getOrders();
+    //     }
 
-        // Xử lý giá trị NULL và thay thế bằng "N/A"
-        foreach ($orders as &$order) {
-            foreach ($order as $key => &$value) {
-                if (is_null($value)) {
-                    $value = "N/A";
-                }
-            }
-        }
+    //     // Xử lý giá trị NULL và thay thế bằng "N/A"
+    //     foreach ($orders as &$order) {
+    //         foreach ($order as $key => &$value) {
+    //             if (is_null($value)) {
+    //                 $value = "N/A";
+    //             }
+    //         }
+    //     }
 
-        // Trả về View với dữ liệu
-        $this->viewNoLayt("frontend.Admin.oderTracking", ["orders" => $orders]);
-    }
+    //     // Trả về View với dữ liệu
+    //     $this->viewNoLayt("frontend.Admin.oderTracking", ["orders" => $orders]);
+    // }
 }

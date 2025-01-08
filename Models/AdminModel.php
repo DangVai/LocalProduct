@@ -315,7 +315,7 @@ public function delete($id)
 
 //===================================================Oder tracking==========================================================
 public function getOrders() {
-    $query = "SELECT order_id, user_id, phone, specific_address, status
+    $query = "SELECT order_id, user_id, phone, specific_address, status, total_price
               FROM orderss";
 
     $result = $this->connect->query($query);
@@ -454,9 +454,9 @@ public function getAllUsers() {
 
 // Cập nhật thông tin người dùng
 
-// Cập nhật thông tin người dùng
 public function updateUserById($userId, $userData) {
-    $avatarPath = $userData['avatar'] ? "public/images/User_Avata/" . $userData['avatar'] : null;
+   $avatarPath = $userData['avatar'];
+
 
     // Truy vấn CSDL để cập nhật thông tin người dùng
     $query = "UPDATE users SET Name = ?, email = ?, phone = ?, avata = ?, status = ? WHERE user_id = ?";
@@ -476,6 +476,7 @@ public function updateUserById($userId, $userData) {
 
     $stmt->close();
 }
+
 
 
 // Lấy thông tin người dùng theo userId
