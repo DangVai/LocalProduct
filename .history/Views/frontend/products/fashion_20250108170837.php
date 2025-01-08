@@ -41,7 +41,7 @@
         </div>
         <div class="product-list">
             <?php if (!empty($products)): ?>
-                <h1>CUISIN</h1>
+                <h1>FA</h1>
                 <?php foreach ($products as $product): ?>
                     <div class="product-item" data-price="<?= $product['price'] ?>" data-type="<?= htmlspecialchars($product['type']) ?>" data-name="<?= htmlspecialchars($product['product_name']) ?>">
                         <button class="favourite-btn" data-product-id="<?= $product['product_id']; ?>">
@@ -51,13 +51,13 @@
                             <img src="/LocalProduct/<?php echo htmlspecialchars($product['product_image']); ?>" alt="Product Image" class="product-image" width="150">
                         </a>
                         <div class="detail">
-                            <a href="index.php?controller=product&action=detail&id=<?php echo $product['product_id']; ?>" class="product-link">
+                            <a href=" index.php?controller=product&action=detail&id=<?php echo $product['product_id']; ?>" class="product-link">
                                 <h3 class="product-name"><?php echo htmlspecialchars($product['product_name']); ?></h3>
                             </a>
                             <a href="index.php?controller=product&action=detail&id=<?php echo $product['product_id']; ?>" class="product-link">
                                 <p class="product-price">Price: <?php echo number_format($product['price'], 0, ',', '.'); ?> $</p>
                             </a>
-                            <button class="cart-home" id="add-to-cart-btn" type="button" onclick="addToCart('add')">
+                            <button class="cart-home" type="button" onclick="addToCart('add')">
                                 <i class="bi bi-cart-plus"></i>
                             </button>
                         </div>
