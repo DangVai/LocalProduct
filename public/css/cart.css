@@ -32,22 +32,17 @@
         width: 35%;
         background-color: green;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-
         margin-left: 20px;
     }
 
     .address-form {
         display: flex;
         flex-direction: column;
-        /* Sắp xếp các phần tử theo cột */
         padding:15px;
         background-color: #fff;
-        /* Màu nền trắng */
         border-radius: 8px;
-        /* Bo góc */
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        /* Tạo hiệu ứng đổ bóng */
-        gap: 5px;
+        gap: 11px;
     }
 
     .address-form label {
