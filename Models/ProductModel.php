@@ -13,8 +13,6 @@ class ProductModel extends BaseModel
     {
         return $this->all();
     }
-
-    public function findProduct($id) {}
     public function getById($id)
     {
         // Truy vấn lấy thông tin sản phẩm

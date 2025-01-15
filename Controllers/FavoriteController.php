@@ -20,7 +20,7 @@ class FavoriteController extends BaseController
         if (!isset($_SESSION['user_id'])) {
             echo json_encode([
                 'status' => 'error',
-                'message' => 'Vui lòng đăng nhập để thêm yêu thích.',
+                'message' => 'Please log in to add favorites.',
                 header('Location: login.php')
             ]);
             exit();
@@ -31,7 +31,7 @@ class FavoriteController extends BaseController
             error_log("Invalid JSON: " . file_get_contents('php://input'));
             echo json_encode([
                 'status' => 'error',
-                'message' => 'Dữ liệu không hợp lệ!'
+                'message' => 'Invalid data!'
             ]);
             exit();
         }
@@ -39,7 +39,7 @@ class FavoriteController extends BaseController
         if (!isset($data['product_id'])) {
             echo json_encode([
                 'status' => 'error',
-                'message' => 'ID sản phẩm không hợp lệ.'
+                'message' => 'Invalid product ID.'
             ]);
             exit();
         }
@@ -50,14 +50,14 @@ class FavoriteController extends BaseController
             $this->productModel->removeFromFavorites($userId, $productId);
             echo json_encode([
                 'status' => 'success',
-                'message' => 'Đã xóa khỏi yêu thích.',
+                'message' => 'Removed from favorites.',
                 'is_favorite' => false
             ]);
         } else {
             $this->productModel->addToFavorites($userId, $productId);
             echo json_encode([
                 'status' => 'success',
-                'message' => 'Đã thêm vào yêu thích.',
+                'message' => 'Added to favorites.',
                 'is_favorite' => true
             ]);
         }

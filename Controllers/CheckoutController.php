@@ -32,40 +32,28 @@ function execPostRequest($url, $data)
     return $result;
 }
 
-public function onlinePayment()
-{
-    
-    $endpoint = "https://test-payment.momo.vn/v2/gateway/api/create";
-    
-    
-    $partnerCode = 'MOMOBKUN20180529';
-    $accessKey = 'klm05TvNBzhg7h7j';
-    $secretKey = 'at67qH6mk8w5Y1nAyMoYKMWACiEi2bsa';
-    $orderInfo = "Thanh toán qua MoMo";
-    $amount = "10000";
-    $orderId = time() . "";
-    $redirectUrl = "https://webhook.site/b3088a6a-2d17-4f8d-a383-71389a6c600b";
-    $ipnUrl = "https://webhook.site/b3088a6a-2d17-4f8d-a383-71389a6c600b";
-    $extraData = "";
-    
-    
-    
-        $partnerCode = $partnerCode;
-        $accessKey = $accessKey;
-        $serectkey = $secretKey;
-        $orderId = $orderId; // Mã đơn hàng
-        $orderInfo = $orderInfo;
-        $amount = $amount;
-        $ipnUrl = $ipnUrl;
-        $redirectUrl = $redirectUrl;
-        $extraData = $extraData;
-    
+    public function onlinePayment()
+    {
+        $endpoint = "https://test-payment.momo.vn/v2/gateway/api/create";
+        $partnerCode = 'MOMOBKUN20180529';
+        $accessKey = 'klm05TvNBzhg7h7j';
+        $secretKey = 'at67qH6mk8w5Y1nAyMoYKMWACiEi2bsa';
+        $orderInfo = "Thanh toán qua MoMo";
+
+        // Nhận giá trị totalPrice từ yêu cầu POST
+        $amount = isset($_POST['totalPrice']) ? $_POST['totalPrice'] : "230000";
+        echo "Received total price: " . $amount;
+
+        $orderId = time() . "";
+        $redirectUrl = "https://webhook.site/b3088a6a-2d17-4f8d-a383-71389a6c600b"; // URL nhận kết quả thanh toán
+        $ipnUrl = "https://webhook.site/b3088a6a-2d17-4f8d-a383-71389a6c600b"; // URL nhận thông báo IPN
+        $extraData = "";
+
         $requestId = time() . "";
         $requestType = "payWithATM";
-        // $extraData = ($_POST["extraData"] ? $_POST["extraData"] : "");
-        //before sign HMAC SHA256 signature
         $rawHash = "accessKey=" . $accessKey . "&amount=" . $amount . "&extraData=" . $extraData . "&ipnUrl=" . $ipnUrl . "&orderId=" . $orderId . "&orderInfo=" . $orderInfo . "&partnerCode=" . $partnerCode . "&redirectUrl=" . $redirectUrl . "&requestId=" . $requestId . "&requestType=" . $requestType;
-        $signature = hash_hmac("sha256", $rawHash, $serectkey);
+        $signature = hash_hmac("sha256", $rawHash, $secretKey);
+
         $data = array(
             'partnerCode' => $partnerCode,
             'partnerName' => "Test",
@@ -81,14 +69,21 @@ public function onlinePayment()
             'requestType' => $requestType,
             'signature' => $signature
         );
+
         $result = $this->execPostRequest($endpoint, json_encode($data));
-        $jsonResult = json_decode($result, true);  // decode json
-    
-        //Just a example, please check more in there
-    
-        header('Location: ' . $jsonResult['payUrl']);
-}
-// NGUYEN VAN A	9704 0000 0000 0018	03/07
+        $jsonResult = json_decode($result, true);
+
+        // Kiểm tra kết quả từ MoMo và chuyển hướng đến trang thanh toán của MoMo
+        if (isset($jsonResult['payUrl'])) {
+            header('Location: ' . $jsonResult['payUrl']);
+        } else {
+            // Nếu có lỗi, bạn có thể xử lý và thông báo cho người dùng
+            echo "Payment URL not found or error occurred.";
+        }
+    }
+
+
+    // NGUYEN VAN A	9704 0000 0000 0018	03/07
 
     public function storeOrder()
     {
@@ -123,12 +118,12 @@ public function onlinePayment()
             $result = $orderModel->saveOrder($userInfo, $products, $status);
 
             if ($result) {
-                $_SESSION['order_success'] = 'Đơn hàng của bạn đã được đặt thành công!';
+                $_SESSION['order_success'] = 'Your order has been placed successfully!';
                 // Nếu thành công, trả về thông báo thành công
                 header("Location: index.php?controller=product&action=detail&id=" . $_POST['product_id']);
                 exit();
             } else {
-                $_SESSION['order_error'] = 'Có lỗi xảy ra trong quá trình đặt hàng. Vui lòng thử lại!';
+                $_SESSION['order_error'] = 'An error occurred during the ordering process. Please try again!';
                 header("Location: index.php?controller=product&action=detail&id=" . $_POST['product_id']);
                 exit();
             }
