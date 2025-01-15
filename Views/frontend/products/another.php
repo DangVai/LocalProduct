@@ -20,9 +20,9 @@
                 <label for="price">Filter by Price:</label>
                 <select name="price" id="price">
                     <option value="">Select Price Range</option>
-                    <option value="0-500">Under 500$</option>
-                    <option value="500-1000">500$ - 1000$</option>
-                    <option value="1000000 ->">1000$ -> </option>
+                    <option value="0-50">Under 50$</option>
+                    <option value="50-100">50$ - 100$</option>
+                    <option value="100 ->">100$ -> </option>
                 </select>
 
                 <label for="type">Filter by Type:</label>

@@ -92,7 +92,7 @@
     <div class="img-sliders ">
         <div class="slider-container ">
             <div class="slides " id="slider1 ">
-                <img src="/LocalProduct/public/imgaes/khánh Huyền.jpg" class="slide " alt="Slide 1 ">
+                <img src="/LocalProduct/public/images/R.jpg" class="slide " alt="Slide 1 ">
                 <img src="/LocalProduct/public/images/choidan.jpg " class="slide " alt="Slide 2 ">
                 <img src="/LocalProduct/public/images/canuong 1.jpg " class="slide " alt="Slide 3 ">
             </div>

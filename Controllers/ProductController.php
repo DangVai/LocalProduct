@@ -20,7 +20,7 @@ class ProductController extends BaseController
     {
         // Kiểm tra xem id có hợp lệ không
         if (empty($id) || !is_numeric($id)) {
-            $_SESSION['success'] = "Mật khẩu đã được thay đổi thành công.";
+            $_SESSION['success'] = "Password has been changed successfully.";
             header("Location: index.php?controller=user&action=profile");
             exit(); 
         }
@@ -30,7 +30,7 @@ class ProductController extends BaseController
 
         // Nếu không tìm thấy sản phẩm
         if (!$product) {
-            die('Sản phẩm không tồn tại');
+            die('Product does not exist.');
         }
 
         // Lấy các sản phẩm cùng category với sản phẩm hiện tại
@@ -90,7 +90,7 @@ class ProductController extends BaseController
 
         if (empty($productData)) {
             // Nếu không có sản phẩm, hiển thị thông báo
-            echo "Không có sản phẩm nào trong cơ sở dữ liệu.";
+            echo "There are no products in the database.";
             return;
         }
 

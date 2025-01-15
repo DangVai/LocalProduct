@@ -17,36 +17,22 @@ class BaseController extends db
      */
     public function view($viewPath, array $data = [])
     {
-        // Truyền trực tiếp mảng data vào view
         extract($data);  // Biến mảng $data thành các biến động
-
-        // Gọi file view từ thư mục Views/frontend
         $file = self::VERSION . '/'. str_replace('.', '/', $viewPath) . '.php';
 
-        // Kiểm tra file tồn tại trước khi require
         if (!file_exists($file)) {
             die("File view '{$file}' không tồn tại.");
         }
-
-        // require($file);
         require("Views/layouts/defaultlayouts.php");
-
     }
     public function viewWithoutLayout($viewPath, array $data = [])
     {
-        extract($data);  // Biến mảng $data thành các biến động
-
-        // Gọi file view từ thư mục Views/frontend
+        extract($data);
         $file = self::VERSION . '/' . str_replace('.', '/', $viewPath) . '.php';
-
-        // Kiểm tra file tồn tại trước khi require
         if (!file_exists($file)) {
             die("File view '{$file}' không tồn tại.");
         }
-
-        // require file view mà không có layout
         require("Views/layouts/customlayout.php");
-
     }
     public function withThoutFooter($viewPath, array $data = [])
     {

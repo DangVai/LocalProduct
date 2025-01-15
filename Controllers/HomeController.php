@@ -18,7 +18,7 @@ class HomeController extends BaseController
         $featuredProducts = $this->productModel->getTopProductsByQuantity();
         if (empty($featuredProducts)) {
             // Nếu không có sản phẩm, hiển thị thông báo
-            echo "Không có sản phẩm nào trong cơ sở dữ liệu.";
+            echo "There are no products in the database.";
             return;
         }
 

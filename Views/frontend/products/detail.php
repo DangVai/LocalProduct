@@ -127,8 +127,10 @@
                             <input type="hidden" id="max-quantity" value="<?= $product['quantity'] ?>">
                             <button class="add-to-cart btn btn-default" id="add-to-cart-btn" type="button"
                                 onclick="addToCart('add')">Add to Cart</button>
-                            <button class="like btn btn-default" type="button"><span class="fa fa-heart">
-                                </span>&#9829;</button>
+                            <button class="like favourite-btn btn btn-default" type="button" data-product-id="<?= $product['product_id']; ?>">
+                                <span class="fa fa-heart"></span>&#9829;
+                            </button>
+
                         </div>
                         <h3>Details</h3>
                         <p class="product-descriptions"><?php echo $product['description']; ?></p>
@@ -179,6 +181,7 @@ if (isset($_SESSION['error'])) {
 </html>
 <script src="/LocalProduct/public/js/payment.js"></script>
 <script src="/LocalProduct/public/js/detail.js"></script>
+<script src="/LocalProduct/public/js/fashion.js"></script>
 <script src="/LocalProduct/public/js/check.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
